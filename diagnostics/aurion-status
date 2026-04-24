@@ -58,8 +58,22 @@ else
   line "Network:" "nmcli unavailable"
 fi
 
+if [ -r /usr/share/aurionos/release/channel.conf ]; then
+  line "Channel:" "$(awk -F= '$1 == "AURIONOS_CHANNEL" { print $2 }' /usr/share/aurionos/release/channel.conf)"
+fi
+
 printf '\nAurionOS tools:\n'
-for tool in aurion-assistant aurion-diagnostics aurion-hw-scan aurion-rollback-status; do
+for tool in \
+  aurion-control \
+  aurion-status \
+  aurion-channel \
+  aurion-assistant \
+  aurion-ai-status \
+  aurion-hardware-center \
+  aurion-hw-scan \
+  aurion-store \
+  aurion-diagnostics \
+  aurion-rollback-status; do
   if command -v "$tool" >/dev/null 2>&1; then
     printf '  [ok] %s\n' "$tool"
   else
