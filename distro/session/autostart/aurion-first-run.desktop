@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=AurionOS Welcome
+Comment=Show AurionOS alpha welcome page once per live user
+Exec=aurion-first-run
+OnlyShowIn=LXQt;
+X-LXQt-Need-Tray=false
