@@ -17,26 +17,30 @@ if ! command -v lspci >/dev/null 2>&1; then
   exec aurion-hw-scan
 fi
 
+pci_output="$(lspci)"
 matched=0
-while IFS= read -r device; do
-  [ -n "$device" ] || continue
-  if grep -Fq "$device" "$db"; then
+
+awk '
+  /"match"/ { match_text=$0; gsub(/[\",]/, "", match_text); sub(/^ *match: */, "", match_text) }
+  /"status"/ { status=$0; gsub(/[\",]/, "", status); sub(/^ *status: */, "", status) }
+  /"notes"/ {
+    notes=$0; gsub(/[\",]/, "", notes); sub(/^ *notes: */, "", notes)
+    if (match_text != "") print match_text "\t" status "\t" notes
+    match_text=""; status=""; notes=""
+  }
+' "$db" | while IFS=$'\t' read -r match_text status notes; do
+  [ -n "$match_text" ] || continue
+  if printf '%s\n' "$pci_output" | grep -Fq "$match_text"; then
     matched=$((matched + 1))
-    status="$(awk -v d="$device" '
-      $0 ~ "\"match\"" && index($0, d) { in_device=1 }
-      in_device && $0 ~ "\"status\"" { gsub(/[\",]/, ""); sub(/^ *status: */, ""); print; exit }
-    ' "$db")"
-    notes="$(awk -v d="$device" '
-      $0 ~ "\"match\"" && index($0, d) { in_device=1 }
-      in_device && $0 ~ "\"notes\"" { gsub(/[\",]/, ""); sub(/^ *notes: */, ""); print; exit }
-    ' "$db")"
-    printf '[known] %s\n' "$device"
+    printf '[known] %s\n' "$match_text"
     printf '        status: %s\n' "${status:-unknown}"
     printf '        notes: %s\n\n' "${notes:-no notes}"
   fi
-done <<EOF
-$(lspci | sed 's/^[0-9a-fA-F:.]* //')
-EOF
+  printf '%s\n' "$matched" > "${TMPDIR:-/tmp}/aurion-hw-matched.$$"
+done
+
+matched="$(cat "${TMPDIR:-/tmp}/aurion-hw-matched.$$" 2>/dev/null || echo 0)"
+rm -f "${TMPDIR:-/tmp}/aurion-hw-matched.$$"
 
 if [ "$matched" -eq 0 ]; then
   echo "No database matches yet. Raw hardware scan follows."
