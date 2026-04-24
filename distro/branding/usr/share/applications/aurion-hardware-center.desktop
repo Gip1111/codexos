@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Aurion Hardware Center
+Comment=Open AurionOS hardware compatibility report
+Exec=qterminal -e aurion-hardware-center
+Icon=computer
+Terminal=false
+Categories=System;Utility;
