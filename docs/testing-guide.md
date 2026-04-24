@@ -34,7 +34,8 @@ For the first run, inspect these points in order:
 2. `Build AurionOS ISO` downloads a Lubuntu 24.04 desktop amd64 ISO and verifies SHA256.
 3. The log prints `Secure Boot critical file hashes are unchanged`.
 4. `Verify ISO output` prints a SHA256 for `aurion-os-0.1-alpha-amd64.iso`.
-5. `aurion-os-alpha-iso` contains both the ISO and `.sha256` file.
+5. `Verify ISO contents` confirms AurionOS branding, tools, welcome files, AI metadata, hardware database, and store catalog are present inside the ISO.
+6. `aurion-os-alpha-iso` contains both the ISO and `.sha256` file.
 
 If the run fails, download `aurion-os-alpha-build-logs` first. The most useful files are:
 
@@ -43,6 +44,8 @@ If the run fails, download `aurion-os-alpha-build-logs` first. The most useful f
 - `iso-build/logs/secure-boot-hashes.diff`
 - `iso-build/logs/xorriso-write.log`
 - `iso-build/logs/mksquashfs.log`
+- `iso-build/logs/verify-iso.log`
+- `iso-build/logs/verify-filesystem.list`
 
 ## VM test
 

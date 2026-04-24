@@ -1,0 +1,19 @@
+* text=auto
+
+.gitattributes text eol=lf
+*.sh text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.desktop text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+
+iso-build/* text eol=lf
+iso-build/hooks/* text eol=lf
+distro/session/scripts/* text eol=lf
+distro/branding/usr/local/bin/* text eol=lf
+ai-services/aurion-* text eol=lf
+app-store/aurion-* text eol=lf
+control-center/aurion-* text eol=lf
+diagnostics/aurion-* text eol=lf
+hardware-compat/aurion-* text eol=lf

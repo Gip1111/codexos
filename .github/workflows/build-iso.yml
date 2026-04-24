@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: aurionos-iso-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-iso:
     name: Build amd64 live installer ISO
@@ -57,6 +61,13 @@ jobs:
           fi
           sha256sum "$ISO" | tee "$ISO.sha256"
           ls -lh "$ISO" "$ISO.sha256"
+
+      - name: Verify ISO contents
+        shell: bash
+        run: |
+          set -o pipefail
+          ISO="iso-build/output/aurion-os-0.1-alpha-amd64.iso"
+          bash iso-build/verify-iso.sh "$ISO" 2>&1 | tee iso-build/logs/verify-iso.log
 
       - name: Upload ISO artifact
         uses: actions/upload-artifact@v4

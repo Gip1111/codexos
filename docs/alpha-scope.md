@@ -23,6 +23,7 @@
 - Rollback status placeholder
 - GitHub Actions build workflow
 - Build logs artifact
+- CI ISO content verification for required AurionOS payload files
 
 ## Mocked
 
@@ -80,5 +81,6 @@ AurionOS Alpha Fast Track v0.1 is accepted only when:
 - Installer launches.
 - Installed system boots.
 - `aurion-status`, `aurion-control`, `aurion-hardware-center`, `aurion-ai-status`, and `aurion-store` run in the live session.
+- CI verifies the built ISO contains required AurionOS tools, metadata, welcome page, and catalogs.
 - Build logs are available.
 - Docs explain what works and what is deferred.

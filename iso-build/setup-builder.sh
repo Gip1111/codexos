@@ -14,6 +14,7 @@ export DEBIAN_FRONTEND=noninteractive
   ca-certificates \
   coreutils \
   curl \
+  diffutils \
   dpkg-dev \
   file \
   findutils \
