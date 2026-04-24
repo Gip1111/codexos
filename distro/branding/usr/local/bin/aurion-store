@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+catalog="/usr/share/aurionos/store/alpha-catalog.json"
+
+echo "Aurion Store - alpha foundation"
+echo
+
+if [ ! -r "$catalog" ]; then
+  echo "Catalog missing: $catalog"
+  exit 1
+fi
+
+echo "Install policy: list-only in this alpha ISO"
+echo "Future default: Flatpak-first, Snap optional, .deb and AppImage graphical flows"
+echo
+
+echo "Featured catalog:"
+awk '
+  /"name"/ { gsub(/[",]/, ""); sub(/^ *name: */, ""); name=$0 }
+  /"source"/ { gsub(/[",]/, ""); sub(/^ *source: */, ""); source=$0 }
+  /"category"/ { gsub(/[",]/, ""); sub(/^ *category: */, ""); category=$0; if (name != "") printf "- %s [%s] via %s\n", name, category, source }
+' "$catalog"
+
+echo
+echo "No packages were installed. This command is a UX and architecture placeholder."
