@@ -60,12 +60,13 @@ Basic VM acceptance:
 1. Boot the ISO in UEFI mode.
 2. Confirm the live desktop starts.
 3. Confirm AurionOS wallpaper or release branding is visible.
-4. Open the application menu and launch `Aurion Assistant`.
+4. Confirm the welcome page opens once or is available from `Welcome to AurionOS`.
 5. Run `aurion-status`.
-6. Run `aurion-diagnostics`.
-7. Launch the installer.
-8. Install to a blank VM disk.
-9. Reboot into the installed system.
+6. Run `aurion-control` and open each menu option.
+7. Run `aurion-diagnostics`.
+8. Launch the installer.
+9. Install to a blank VM disk.
+10. Reboot into the installed system.
 
 ## USB test
 
@@ -87,10 +88,13 @@ Hardware acceptance:
 4. Confirm the AurionOS wallpaper is visible.
 5. Run `aurion-status`.
 6. Run `aurion-hw-scan`.
-7. Launch the installer and confirm the visible installer branding says AurionOS where safe.
-8. Do not install to a real disk unless the target disk can be erased.
+7. Run `aurion-hardware-center`.
+8. Run `aurion-ai-status`.
+9. Run `aurion-store`.
+10. Launch the installer and confirm the visible installer branding says AurionOS where safe.
+11. Do not install to a real disk unless the target disk can be erased.
 
-## Real hardware retest after v0.1.1 branding hardening
+## Real hardware retest after platform foundation additions
 
 Run:
 
@@ -98,13 +102,22 @@ Run:
 cat /etc/os-release
 cat /etc/aurionos-release
 aurion-status
+aurion-channel
+aurion-control
+aurion-ai-status
+aurion-hardware-center
+aurion-store
 aurion-diagnostics
 aurion-hw-scan
 ```
 
-Expected improvements over the first live USB test:
+Expected improvements:
 
-- `aurion-status` exists.
+- `aurion-status` shows all AurionOS foundation tools as `[ok]`.
+- `aurion-control` opens a grouped alpha control surface.
+- `aurion-ai-status` shows Ollama/phi4-mini metadata and confirms cloud AI is disabled by default.
+- `aurion-hardware-center` uses the alpha hardware database where it matches known devices.
+- `aurion-store` lists the alpha catalog without installing packages.
 - Terminal session variables report AurionOS instead of Lubuntu where the live shell allows it.
 - Calamares visible strings should be rebranded from Lubuntu to AurionOS where text replacement is safe.
 - Secure Boot may still report disabled if the PC firmware is in Setup Mode; that is a firmware state, not an ISO branding failure.
@@ -115,4 +128,4 @@ Expected improvements over the first live USB test:
 - The labwc/Qt shell is not active.
 - Plymouth branding is included but not enabled.
 - Driver installation and DKMS are not part of v0.1.
-- App store and graphical package flows are deferred.
+- Aurion Store is catalog-only and does not install packages yet.
