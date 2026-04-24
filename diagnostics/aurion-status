@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+value_or_unknown() {
+  if [ -n "${1:-}" ]; then
+    printf '%s\n' "$1"
+  else
+    printf 'unknown\n'
+  fi
+}
+
+line() {
+  printf '%-20s %s\n' "$1" "$2"
+}
+
+os_name="unknown"
+if [ -r /etc/os-release ]; then
+  # shellcheck disable=SC1091
+  . /etc/os-release
+  os_name="${PRETTY_NAME:-unknown}"
+fi
+
+line "OS:" "$os_name"
+line "Kernel:" "$(uname -r)"
+
+if [ -d /sys/firmware/efi ]; then
+  line "Boot mode:" "UEFI"
+else
+  line "Boot mode:" "legacy BIOS or EFI unavailable"
+fi
+
+if command -v mokutil >/dev/null 2>&1; then
+  secure_boot="$(mokutil --sb-state 2>/dev/null | tr '\n' '; ' | sed 's/; $//')"
+  line "Secure Boot:" "$(value_or_unknown "$secure_boot")"
+else
+  line "Secure Boot:" "mokutil unavailable"
+fi
+
+line "Desktop session:" "${DESKTOP_SESSION:-unknown}"
+line "Current desktop:" "${XDG_CURRENT_DESKTOP:-unknown}"
+line "Session desktop:" "${XDG_SESSION_DESKTOP:-unknown}"
+
+if command -v calamares >/dev/null 2>&1; then
+  line "Installer:" "Calamares present"
+else
+  line "Installer:" "Calamares not found"
+fi
+
+if command -v nmcli >/dev/null 2>&1; then
+  line "Network:" "$(nmcli -t -f STATE general 2>/dev/null || echo unknown)"
+  wifi="$(nmcli -t -f DEVICE,TYPE,STATE device 2>/dev/null | awk -F: '$2 == "wifi" { print $1 " " $3 }' | paste -sd ', ' -)"
+  line "Wi-Fi:" "$(value_or_unknown "$wifi")"
+else
+  line "Network:" "nmcli unavailable"
+fi
+
+printf '\nAurionOS tools:\n'
+for tool in aurion-assistant aurion-diagnostics aurion-hw-scan aurion-rollback-status; do
+  if command -v "$tool" >/dev/null 2>&1; then
+    printf '  [ok] %s\n' "$tool"
+  else
+    printf '  [missing] %s\n' "$tool"
+  fi
+done
