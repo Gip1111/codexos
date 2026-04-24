@@ -66,4 +66,5 @@ AurionOS v0.1 preserves Ubuntu's signed Secure Boot flow. The build does not rep
 - `docs/secure-boot-strategy.md`
 - `docs/alpha-scope.md`
 - `docs/testing-guide.md`
+- `docs/final-project-foundations.md`
 
