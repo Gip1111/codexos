@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Aurion Hub
+Comment=Open the AurionOS alpha system overview
+Exec=aurion-hub
+Icon=preferences-system
+Terminal=false
+Categories=System;Settings;

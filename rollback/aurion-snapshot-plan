@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "AurionOS Snapshot Planner - alpha read-only report"
+echo
+
+root_fs="$(findmnt -n -o FSTYPE / 2>/dev/null || echo unknown)"
+root_src="$(findmnt -n -o SOURCE / 2>/dev/null || echo unknown)"
+
+echo "Root source: $root_src"
+echo "Root filesystem: $root_fs"
+echo
+
+if [ "$root_fs" = "btrfs" ]; then
+  echo "[ready] Btrfs root detected."
+  if command -v btrfs >/dev/null 2>&1; then
+    echo
+    echo "Existing subvolumes:"
+    btrfs subvolume list / 2>/dev/null || true
+  else
+    echo "[missing] btrfs-progs is not installed."
+  fi
+else
+  echo "[defer] Root is not Btrfs. Automatic rollback should stay disabled."
+fi
+
+echo
+for tool in snapper timeshift; do
+  if command -v "$tool" >/dev/null 2>&1; then
+    echo "[available] $tool"
+  else
+    echo "[missing] $tool"
+  fi
+done
+
+cat <<'EOF'
+
+Recommended final policy:
+- Btrfs root subvolumes for installed systems
+- snapshot before risky package operations
+- keep live ISO read-only and non-mutating
+- expose rollback through Aurion Control Center
+EOF

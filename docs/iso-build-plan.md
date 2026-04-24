@@ -22,6 +22,8 @@ App strategy: include an Aurion Store alpha command and catalog. It is list-only
 
 Control Center strategy: include `aurion-control`, a terminal-safe grouping surface for status, hardware, AI, app catalog, diagnostics, and rollback. Final target is Qt6/QML.
 
+Hub strategy: include `aurion-hub`, a generated local HTML overview that gives the alpha a graphical system surface without adding new live ISO package dependencies. Final target is a Qt6/QML application.
+
 GitHub Actions strategy: build on `ubuntu-24.04`, free disk space, install ISO tools, run the build script, clearly fail if the expected ISO is absent, upload the ISO artifact, and upload logs even on failure.
 
 ## Must do today
@@ -34,6 +36,7 @@ GitHub Actions strategy: build on `ubuntu-24.04`, free disk space, install ISO t
 - Keep Calamares installer stable.
 - Include build logs as an artifact.
 - Include alpha foundations for Control Center, AI provider, Hardware Center, Store, diagnostics, and release channel.
+- Include alpha foundations for app install handling, AppImage integration, Hub report, and snapshot planning.
 
 ## Repository structure
 
@@ -55,6 +58,9 @@ control-center/
 ai-services/
 hardware-compat/
 app-store/
+app-installer/
+hub/
+rollback/
 diagnostics/
 docs/
 ```
@@ -71,6 +77,10 @@ Important payload files:
 - `hardware-compat/aurion-hw-scan`
 - `hardware-compat/aurion-hardware-center`
 - `app-store/aurion-store`
+- `app-installer/aurion-install`
+- `app-installer/aurion-appimage-integrate`
+- `hub/aurion-hub`
+- `rollback/aurion-snapshot-plan`
 - `diagnostics/aurion-status`
 - `diagnostics/aurion-diagnostics`
 - `diagnostics/aurion-rollback-status`

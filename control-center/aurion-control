@@ -16,24 +16,30 @@ while true; do
   cat <<'MENU'
 AurionOS Control Center - Alpha Foundation
 
-1. System status
-2. Hardware compatibility
-3. AI provider status
-4. App Store alpha catalog
-5. Diagnostics
-6. Rollback status
+1. Open Aurion Hub report
+2. System status
+3. Hardware compatibility
+4. AI provider status
+5. App Store alpha catalog
+6. App install foundation
+7. Diagnostics
+8. Snapshot planner
+9. Rollback status
 0. Exit
 MENU
   printf '\nSelect: '
   IFS= read -r choice || exit 0
   printf '\n'
   case "$choice" in
-    1) run_or_missing aurion-status ;;
-    2) run_or_missing aurion-hardware-center ;;
-    3) run_or_missing aurion-ai-status ;;
-    4) run_or_missing aurion-store ;;
-    5) run_or_missing aurion-diagnostics ;;
-    6) run_or_missing aurion-rollback-status ;;
+    1) run_or_missing aurion-hub ;;
+    2) run_or_missing aurion-status ;;
+    3) run_or_missing aurion-hardware-center ;;
+    4) run_or_missing aurion-ai-status ;;
+    5) run_or_missing aurion-store ;;
+    6) run_or_missing aurion-install --explain ;;
+    7) run_or_missing aurion-diagnostics ;;
+    8) run_or_missing aurion-snapshot-plan ;;
+    9) run_or_missing aurion-rollback-status ;;
     0|q|quit|exit) exit 0 ;;
     *) echo "Unknown option: $choice" ;;
   esac

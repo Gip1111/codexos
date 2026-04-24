@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Aurion Snapshot Planner
+Comment=Show AurionOS rollback and snapshot readiness
+Exec=qterminal -e aurion-snapshot-plan
+Icon=drive-harddisk
+Terminal=false
+Categories=System;Utility;

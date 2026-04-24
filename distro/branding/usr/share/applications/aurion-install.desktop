@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Aurion Install
+Comment=Show AurionOS app installation foundation
+Exec=qterminal -e aurion-install --explain
+Icon=system-software-install
+Terminal=false
+Categories=System;Utility;

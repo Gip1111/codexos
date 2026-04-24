@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Aurion Install - alpha foundation
+
+Usage:
+  aurion-install --explain
+  aurion-install <file.deb|file.flatpakref|file.AppImage>
+  aurion-install --integrate-appimage <file.AppImage>
+
+Alpha policy:
+  - no packages are installed automatically
+  - .deb and .flatpakref print the intended graphical/install flow
+  - AppImage integration writes only to the current user's home directory
+EOF
+}
+
+explain() {
+  cat <<'EOF'
+Final app installation model:
+
+- Flatpak-first graphical installs from Aurion Store
+- Snap optional during MVP
+- .deb local package flow for trusted files
+- .flatpakref flow through Flatpak
+- AppImage flow: run once, integrate, add launcher
+
+Alpha implementation:
+
+- aurion-store lists the catalog only
+- aurion-install explains the handler path
+- aurion-appimage-integrate can integrate an AppImage into the user launcher
+EOF
+}
+
+if [ $# -eq 0 ]; then
+  usage
+  exit 0
+fi
+
+case "${1:-}" in
+  --help|-h)
+    usage
+    ;;
+  --explain)
+    explain
+    ;;
+  --integrate-appimage)
+    [ -n "${2:-}" ] || { echo "Missing AppImage path" >&2; exit 2; }
+    exec aurion-appimage-integrate "$2"
+    ;;
+  *)
+    file="$1"
+    [ -e "$file" ] || { echo "File not found: $file" >&2; exit 2; }
+    case "$file" in
+      *.AppImage|*.appimage)
+        echo "Detected AppImage: $file"
+        echo "To integrate it into the launcher:"
+        echo "  aurion-install --integrate-appimage '$file'"
+        ;;
+      *.flatpakref)
+        echo "Detected Flatpak reference: $file"
+        echo "Future graphical flow: open in Aurion Store and install via Flatpak after user confirmation."
+        if command -v flatpak >/dev/null 2>&1; then
+          echo "Manual equivalent after confirmation would be:"
+          echo "  flatpak install '$file'"
+        else
+          echo "Flatpak is not installed in this image."
+        fi
+        ;;
+      *.deb)
+        echo "Detected Debian package: $file"
+        echo "Future graphical flow: verify source, show permissions/metadata, then install after user confirmation."
+        apt_path="$file"
+        case "$apt_path" in
+          /*|*/*) ;;
+          *) apt_path="./$apt_path" ;;
+        esac
+        echo "Manual equivalent after confirmation would be:"
+        echo "  sudo apt install '$apt_path'"
+        ;;
+      *)
+        echo "Unsupported file type: $file"
+        exit 3
+        ;;
+    esac
+    ;;
+esac

@@ -65,13 +65,17 @@ fi
 printf '\nAurionOS tools:\n'
 for tool in \
   aurion-control \
+  aurion-hub \
   aurion-status \
   aurion-channel \
   aurion-assistant \
   aurion-ai-status \
+  aurion-install \
+  aurion-appimage-integrate \
   aurion-hardware-center \
   aurion-hw-scan \
   aurion-store \
+  aurion-snapshot-plan \
   aurion-diagnostics \
   aurion-rollback-status; do
   if command -v "$tool" >/dev/null 2>&1; then

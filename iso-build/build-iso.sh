@@ -133,6 +133,8 @@ install_doc_payload() {
   "${SUDO[@]}" install -d -m 0755 "$doc_dir"
   "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/README.md" "$doc_dir/README.md"
   "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/docs/alpha-scope.md" "$doc_dir/alpha-scope.md"
+  "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/docs/final-project-foundations.md" "$doc_dir/final-project-foundations.md"
+  "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/docs/iso-build-plan.md" "$doc_dir/iso-build-plan.md"
   "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/docs/secure-boot-strategy.md" "$doc_dir/secure-boot-strategy.md"
   "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/docs/testing-guide.md" "$doc_dir/testing-guide.md"
 }
@@ -140,11 +142,24 @@ install_doc_payload() {
 install_tool_payload() {
   local rootfs="$1"
 
+  if [ -d "$PROJECT_ROOT/distro/branding/usr" ]; then
+    "${SUDO[@]}" rsync -a "$PROJECT_ROOT/distro/branding/usr/" "$rootfs/usr/"
+  fi
+
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-assistant" "$rootfs/usr/local/bin/aurion-assistant"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-ai-status" "$rootfs/usr/local/bin/aurion-ai-status"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/app-installer/aurion-appimage-integrate" "$rootfs/usr/local/bin/aurion-appimage-integrate"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/app-installer/aurion-install" "$rootfs/usr/local/bin/aurion-install"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/app-store/aurion-store" "$rootfs/usr/local/bin/aurion-store"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/control-center/aurion-control" "$rootfs/usr/local/bin/aurion-control"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hub/aurion-hub" "$rootfs/usr/local/bin/aurion-hub"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hardware-compat/aurion-hw-scan" "$rootfs/usr/local/bin/aurion-hw-scan"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hardware-compat/aurion-hardware-center" "$rootfs/usr/local/bin/aurion-hardware-center"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/diagnostics/aurion-channel" "$rootfs/usr/local/bin/aurion-channel"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/diagnostics/aurion-diagnostics" "$rootfs/usr/local/bin/aurion-diagnostics"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/diagnostics/aurion-rollback-status" "$rootfs/usr/local/bin/aurion-rollback-status"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/diagnostics/aurion-status" "$rootfs/usr/local/bin/aurion-status"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/rollback/aurion-snapshot-plan" "$rootfs/usr/local/bin/aurion-snapshot-plan"
 
   if compgen -G "$PROJECT_ROOT/shell/bin/*" > /dev/null; then
     for tool in "$PROJECT_ROOT"/shell/bin/*; do
@@ -153,9 +168,6 @@ install_tool_payload() {
     done
   fi
 
-  if [ -d "$PROJECT_ROOT/distro/branding/usr" ]; then
-    "${SUDO[@]}" rsync -a "$PROJECT_ROOT/distro/branding/usr/" "$rootfs/usr/"
-  fi
 }
 
 apply_home_branding() {

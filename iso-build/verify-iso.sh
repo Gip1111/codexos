@@ -111,12 +111,21 @@ main() {
   require_file_in_squashfs usr/share/aurionos/hardware/alpha-hardware.json
   require_file_in_squashfs usr/share/aurionos/store/alpha-catalog.json
   require_file_in_squashfs usr/share/aurionos/release/channel.conf
+  require_file_in_squashfs usr/share/doc/aurionos/final-project-foundations.md
+  require_file_in_squashfs usr/share/doc/aurionos/iso-build-plan.md
+  require_file_in_squashfs usr/share/applications/aurion-hub.desktop
+  require_file_in_squashfs usr/share/applications/aurion-install.desktop
+  require_file_in_squashfs usr/share/applications/aurion-snapshot-plan.desktop
 
   require_executable_in_squashfs usr/local/bin/aurion-status
   require_executable_in_squashfs usr/local/bin/aurion-control
+  require_executable_in_squashfs usr/local/bin/aurion-hub
   require_executable_in_squashfs usr/local/bin/aurion-ai-status
+  require_executable_in_squashfs usr/local/bin/aurion-install
+  require_executable_in_squashfs usr/local/bin/aurion-appimage-integrate
   require_executable_in_squashfs usr/local/bin/aurion-hardware-center
   require_executable_in_squashfs usr/local/bin/aurion-store
+  require_executable_in_squashfs usr/local/bin/aurion-snapshot-plan
   require_executable_in_squashfs usr/local/bin/aurion-channel
   require_executable_in_squashfs usr/local/bin/aurion-diagnostics
   require_executable_in_squashfs usr/local/bin/aurion-hw-scan

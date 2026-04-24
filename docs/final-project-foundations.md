@@ -8,6 +8,7 @@ Current alpha:
 
 - LXQt session remains the stable live desktop.
 - AurionOS session metadata and environment branding are applied.
+- `aurion-hub` generates a local HTML overview report.
 - `aurion-control` groups the first system surfaces.
 - Shell placeholders remain in `shell/bin/`.
 
@@ -54,6 +55,8 @@ Current alpha:
 
 - `aurion-store` lists an alpha catalog.
 - It does not install packages.
+- `aurion-install --explain` documents handler behavior.
+- `aurion-appimage-integrate` can integrate an AppImage into the current user's launcher.
 - The architecture is Flatpak-first, Snap optional, with future `.deb`, `.flatpakref`, and AppImage flows.
 
 Final target:
@@ -67,6 +70,7 @@ Final target:
 Current alpha:
 
 - `aurion-rollback-status` reports current filesystem state.
+- `aurion-snapshot-plan` reports Btrfs/Snapper/Timeshift readiness without changing disks.
 - No automatic snapshots are created.
 
 Final target:

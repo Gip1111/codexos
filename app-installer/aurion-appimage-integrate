@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+appimage="${1:-}"
+[ -n "$appimage" ] || { echo "Usage: aurion-appimage-integrate <file.AppImage>" >&2; exit 2; }
+[ -f "$appimage" ] || { echo "File not found: $appimage" >&2; exit 2; }
+
+case "$appimage" in
+  *.AppImage|*.appimage) ;;
+  *) echo "Not an AppImage file: $appimage" >&2; exit 3 ;;
+esac
+
+base="$(basename "$appimage")"
+name="${base%.*}"
+safe_name="$(printf '%s' "$name" | tr -c 'A-Za-z0-9._-' '-' | sed 's/--*/-/g; s/^-//; s/-$//')"
+[ -n "$safe_name" ] || safe_name="AppImage"
+
+apps_dir="$HOME/Applications/AurionOS"
+desktop_dir="${XDG_DATA_HOME:-$HOME/.local/share}/applications"
+target="$apps_dir/$safe_name.AppImage"
+desktop_file="$desktop_dir/aurion-${safe_name}.desktop"
+
+mkdir -p "$apps_dir" "$desktop_dir"
+cp "$appimage" "$target"
+chmod 0755 "$target"
+
+cat > "$desktop_file" <<EOF
+[Desktop Entry]
+Type=Application
+Name=$name
+Comment=Integrated AppImage
+Exec=$target
+Icon=application-x-executable
+Terminal=false
+Categories=Utility;
+X-AurionOS-AppImage=true
+EOF
+
+if command -v update-desktop-database >/dev/null 2>&1; then
+  update-desktop-database "$desktop_dir" >/dev/null 2>&1 || true
+fi
+
+echo "Integrated AppImage:"
+echo "  Binary: $target"
+echo "  Launcher: $desktop_file"

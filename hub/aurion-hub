@@ -1,0 +1,112 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+outdir="${XDG_RUNTIME_DIR:-/tmp}/aurionos-hub"
+sections="$outdir/sections"
+report="$outdir/index.html"
+open_report=1
+
+if [ "${1:-}" = "--no-open" ]; then
+  open_report=0
+fi
+
+mkdir -p "$sections"
+
+capture() {
+  local id="$1"
+  local title="$2"
+  shift 2
+
+  {
+    printf '$'
+    printf ' %q' "$@"
+    printf '\n\n'
+    "$@" 2>&1 || true
+  } > "$sections/$id.txt"
+
+  printf '%s\t%s\t%s\n' "$id" "$title" "$sections/$id.txt" >> "$sections/index.tsv"
+}
+
+: > "$sections/index.tsv"
+
+capture status "System Status" aurion-status
+capture ai "AI Provider" aurion-ai-status
+capture hardware "Hardware Center" aurion-hardware-center
+capture store "Aurion Store" aurion-store
+capture installer "App Install Foundation" aurion-install --explain
+capture rollback "Rollback Planner" aurion-snapshot-plan
+
+generated=0
+if command -v python3 >/dev/null 2>&1; then
+  if python3 - "$report" "$sections/index.tsv" 2>"$sections/python.err" <<'PY'
+import html
+import pathlib
+import sys
+
+report = pathlib.Path(sys.argv[1])
+index = pathlib.Path(sys.argv[2])
+
+cards = []
+for line in index.read_text(encoding="utf-8").splitlines():
+    ident, title, path = line.split("\t", 2)
+    body = pathlib.Path(path).read_text(encoding="utf-8", errors="replace")
+    cards.append(
+        f"<section class='card' id='{html.escape(ident)}'>"
+        f"<h2>{html.escape(title)}</h2>"
+        f"<pre>{html.escape(body)}</pre>"
+        "</section>"
+    )
+
+report.write_text(
+    """<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aurion Hub</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, sans-serif; background: #0f141d; color: #f8fafc; }
+    header { padding: 28px 32px; border-bottom: 1px solid #263241; background: #141c28; }
+    h1 { margin: 0 0 6px; font-size: 34px; }
+    p { margin: 0; color: #cbd5e1; }
+    main { padding: 24px 32px 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+    .card { border: 1px solid #2f3d4e; background: #151f2c; border-radius: 8px; padding: 16px; min-width: 0; }
+    h2 { color: #f5c15c; font-size: 18px; margin: 0 0 12px; }
+    pre { white-space: pre-wrap; word-break: break-word; margin: 0; color: #dbe4ee; font: 13px/1.45 ui-monospace, SFMono-Regular, Consolas, monospace; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Aurion Hub</h1>
+  <p>Alpha system overview generated locally from AurionOS tools.</p>
+</header>
+<main>
+"""
+    + "\n".join(cards)
+    + """
+</main>
+</body>
+</html>
+""",
+    encoding="utf-8",
+)
+PY
+  then
+    generated=1
+  fi
+fi
+
+if [ "$generated" -ne 1 ]; then
+  {
+    echo "<!doctype html><title>Aurion Hub</title><pre>"
+    cat "$sections"/*.txt
+    echo "</pre>"
+  } > "$report"
+fi
+
+echo "Aurion Hub report: $report"
+
+if [ "$open_report" -eq 1 ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v xdg-open >/dev/null 2>&1; then
+  xdg-open "$report" >/dev/null 2>&1 || true
+fi
