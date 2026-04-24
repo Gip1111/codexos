@@ -9,6 +9,10 @@ value_or_unknown() {
   fi
 }
 
+join_lines() {
+  awk 'BEGIN { sep = "" } { printf "%s%s", sep, $0; sep = "; " } END { print "" }'
+}
+
 line() {
   printf '%-20s %s\n' "$1" "$2"
 }
@@ -30,7 +34,7 @@ else
 fi
 
 if command -v mokutil >/dev/null 2>&1; then
-  secure_boot="$(mokutil --sb-state 2>/dev/null | tr '\n' '; ' | sed 's/; $//')"
+  secure_boot="$(mokutil --sb-state 2>/dev/null | join_lines)"
   line "Secure Boot:" "$(value_or_unknown "$secure_boot")"
 else
   line "Secure Boot:" "mokutil unavailable"
