@@ -8,7 +8,7 @@ ISO strategy: remaster the official Lubuntu 24.04 desktop ISO in GitHub Actions.
 
 Secure Boot strategy: preserve the signed Ubuntu boot chain. The build does not replace shim, signed GRUB, the signed Ubuntu kernel, or the live initrd. It hashes critical boot files before and after branding and fails if they change.
 
-Live session strategy: ship an `AurionOS` LXQt session entry, live-session branding, a custom LXQt visual profile, top bar, bottom dock, desktop shortcuts, keyboard shortcuts, and local graphical Aurion Shell/Experience surfaces. LXQt remains the stable desktop foundation for v0.1. The future labwc/Qt shell is represented by safe HTML alpha surfaces and command entry points.
+Live session strategy: ship an `AurionOS` LXQt session entry, live-session branding, a guarded `aurion-startlxqt` wrapper, a session watchdog, a custom LXQt visual profile, top bar, bottom dock, desktop shortcuts, keyboard shortcuts, and local graphical Aurion Shell/Experience surfaces. LXQt remains the stable desktop foundation for v0.1. The future labwc/Qt shell is represented by safe HTML alpha surfaces and command entry points.
 
 Installer strategy: keep the Lubuntu Calamares installer. Safe text rebranding is applied where present. No custom installer is attempted in v0.1.
 
@@ -38,6 +38,7 @@ GitHub Actions strategy: build on `ubuntu-24.04`, free disk space, install ISO t
 - Upload artifact as `aurion-os-alpha-iso`.
 - Add visible AurionOS branding, wallpaper, session entry, release files, welcome, and docs.
 - Add the AurionOS LXQt visual profile so the live desktop no longer looks like stock Lubuntu.
+- Add a guarded LXQt session starter and session watchdog so a missing autostart module does not leave the user at a cursor-only desktop.
 - Keep Calamares installer stable.
 - Include build logs as an artifact.
 - Include alpha foundations for Control Center, AI provider, Hardware Center, Store, diagnostics, and release channel.
@@ -78,6 +79,9 @@ Important payload files:
 - `distro/wallpapers/aurionos-alpha.svg`
 - `distro/session/aurionos-lxqt.desktop`
 - `distro/session/scripts/aurion-apply-live-branding`
+- `distro/session/scripts/aurion-startlxqt`
+- `distro/session/scripts/aurion-session-watchdog`
+- `distro/session/autostart/aurion-session-watchdog.desktop`
 - `distro/branding/usr/share/aurionos/welcome/index.html`
 - `control-center/aurion-control`
 - `ai-services/aurion-assistant`

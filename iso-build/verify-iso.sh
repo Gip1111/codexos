@@ -106,6 +106,8 @@ main() {
   require_file_in_squashfs etc/aurionos-release
   require_file_in_squashfs usr/share/backgrounds/aurionos/aurionos-alpha.png
   require_file_in_squashfs usr/share/xsessions/aurionos-lxqt.desktop
+  require_file_in_squashfs etc/xdg/autostart/aurion-live-branding.desktop
+  require_file_in_squashfs etc/xdg/autostart/aurion-session-watchdog.desktop
   require_file_in_squashfs usr/share/lxqt/themes/aurionos-alpha/lxqt-panel.qss
   require_file_in_squashfs usr/share/lxqt/themes/aurionos-alpha/lxqt-runner.qss
   require_file_in_squashfs usr/share/lxqt/themes/aurionos-alpha/lxqt-notificationd.qss
@@ -148,6 +150,9 @@ main() {
   require_file_in_squashfs usr/share/applications/aurion-snapshot-plan.desktop
 
   require_executable_in_squashfs usr/local/bin/aurion-status
+  require_executable_in_squashfs usr/local/bin/aurion-apply-live-branding
+  require_executable_in_squashfs usr/local/bin/aurion-session-watchdog
+  require_executable_in_squashfs usr/local/bin/aurion-startlxqt
   require_executable_in_squashfs usr/local/bin/aurion-control
   require_executable_in_squashfs usr/local/bin/aurion-shell
   require_executable_in_squashfs usr/local/bin/aurion-launcher
@@ -176,6 +181,29 @@ main() {
   cat_squashfs_file usr/lib/os-release > "$WORK_DIR/os-release"
   grep -Fq 'PRETTY_NAME="AurionOS Alpha Fast Track v0.1"' "$WORK_DIR/os-release" \
     || fail "Live filesystem os-release does not contain AurionOS identity"
+
+  cat_squashfs_file usr/share/xsessions/aurionos-lxqt.desktop > "$WORK_DIR/aurionos-lxqt.desktop"
+  grep -Fq 'Exec=/usr/local/bin/aurion-startlxqt' "$WORK_DIR/aurionos-lxqt.desktop" \
+    || fail "AurionOS session does not use the guarded LXQt starter"
+  grep -Fq 'DesktopNames=LXQt;AurionOS;' "$WORK_DIR/aurionos-lxqt.desktop" \
+    || fail "AurionOS session does not keep LXQt in DesktopNames"
+
+  cat_squashfs_file etc/skel/.config/lxqt/session.conf > "$WORK_DIR/session.conf"
+  if grep -Fq '__userfile__=true' "$WORK_DIR/session.conf"; then
+    fail "LXQt session.conf must not be a complete user override in the live profile"
+  fi
+  grep -Fq 'window_manager=openbox' "$WORK_DIR/session.conf" \
+    || fail "LXQt session.conf does not declare openbox as the window manager"
+  grep -Fq 'lxqt-panel=true' "$WORK_DIR/session.conf" \
+    || fail "LXQt session.conf does not keep the panel module enabled"
+  grep -Fq 'pcmanfm-desktop=true' "$WORK_DIR/session.conf" \
+    || fail "LXQt session.conf does not keep the desktop module enabled"
+
+  cat_squashfs_file etc/skel/.config/pcmanfm-qt/lxqt/settings.conf > "$WORK_DIR/pcmanfm-qt-settings.conf"
+  grep -Fq '[*]' "$WORK_DIR/pcmanfm-qt-settings.conf" \
+    || fail "PCManFM-Qt settings do not include the default desktop section"
+  grep -Fq 'Wallpaper=/usr/share/backgrounds/aurionos/aurionos-alpha.png' "$WORK_DIR/pcmanfm-qt-settings.conf" \
+    || fail "PCManFM-Qt settings do not point to the AurionOS wallpaper"
 
   cat_squashfs_file usr/share/aurionos/ai/providers/ollama-phi4-mini.json > "$WORK_DIR/ai-provider.json"
   grep -Fq '"default_model": "phi4-mini"' "$WORK_DIR/ai-provider.json" \

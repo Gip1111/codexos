@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mode="${1:---rescue}"
+runtime_dir="${XDG_RUNTIME_DIR:-/tmp}"
+lock_dir="$runtime_dir/aurion-session-watchdog.lock"
+home_dir="${HOME:-/tmp}"
+log_dir="${XDG_STATE_HOME:-$home_dir/.local/state}/aurionos"
+log_file="$log_dir/session-watchdog.log"
+
+log() {
+  mkdir -p "$log_dir"
+  printf '%s %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" >> "$log_file"
+}
+
+is_running_exact() {
+  local process="$1"
+  pgrep -u "$(id -u)" -x "$process" >/dev/null 2>&1
+}
+
+is_running_command() {
+  local process="$1"
+  is_running_exact "$process" || pgrep -u "$(id -u)" -f "(^|/)$process([[:space:]]|$)" >/dev/null 2>&1
+}
+
+is_running_match() {
+  local pattern="$1"
+  pgrep -u "$(id -u)" -f "$pattern" >/dev/null 2>&1
+}
+
+start_if_missing() {
+  local process="$1"
+  shift
+
+  if ! command -v "$process" >/dev/null 2>&1; then
+    log "skip missing command: $process"
+    return 0
+  fi
+
+  if is_running_command "$process"; then
+    return 0
+  fi
+
+  log "starting missing module: $*"
+  "$@" >/dev/null 2>&1 &
+}
+
+start_pcmanfm_desktop_if_missing() {
+  if ! command -v pcmanfm-qt >/dev/null 2>&1; then
+    log "skip missing command: pcmanfm-qt"
+    return 0
+  fi
+
+  if is_running_match 'pcmanfm-qt.*--desktop'; then
+    return 0
+  fi
+
+  log "starting missing module: pcmanfm-qt --desktop --profile=lxqt"
+  pcmanfm-qt --desktop --profile=lxqt >/dev/null 2>&1 &
+}
+
+rescue_once() {
+  [ -n "${DISPLAY:-}" ] || return 0
+
+  export DESKTOP_SESSION="${DESKTOP_SESSION:-AurionOS}"
+  export XDG_SESSION_DESKTOP="${XDG_SESSION_DESKTOP:-AurionOS}"
+  case ":${XDG_CURRENT_DESKTOP:-}:" in
+    *:LXQt:*)
+      case ":${XDG_CURRENT_DESKTOP:-}:" in
+        *:AurionOS:*) ;;
+        *) export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP}:AurionOS" ;;
+      esac
+      ;;
+    ::) export XDG_CURRENT_DESKTOP="LXQt:AurionOS" ;;
+    *)
+      case ":${XDG_CURRENT_DESKTOP:-}:" in
+        *:AurionOS:*) export XDG_CURRENT_DESKTOP="LXQt:${XDG_CURRENT_DESKTOP}" ;;
+        *) export XDG_CURRENT_DESKTOP="LXQt:${XDG_CURRENT_DESKTOP}:AurionOS" ;;
+      esac
+      ;;
+  esac
+
+  start_if_missing lxqt-globalkeysd lxqt-globalkeysd
+  start_if_missing lxqt-notificationd lxqt-notificationd
+  start_if_missing lxqt-policykit-agent lxqt-policykit-agent
+  start_if_missing lxqt-powermanagement lxqt-powermanagement
+  start_pcmanfm_desktop_if_missing
+  start_if_missing lxqt-panel lxqt-panel
+  start_if_missing lxqt-runner lxqt-runner
+}
+
+if ! mkdir "$lock_dir" 2>/dev/null; then
+  exit 0
+fi
+trap 'rmdir "$lock_dir" 2>/dev/null || true' EXIT
+
+case "$mode" in
+  --once)
+    rescue_once
+    ;;
+  --rescue|*)
+    for _ in 1 2 3; do
+      sleep 2
+      rescue_once
+    done
+    ;;
+esac

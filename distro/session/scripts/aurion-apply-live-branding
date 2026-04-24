@@ -33,14 +33,17 @@ parser.optionxform = str
 if os.path.exists(config_file):
     parser.read(config_file)
 
-if "Desktop" not in parser:
-    parser["Desktop"] = {}
-
-desktop = parser["Desktop"]
-desktop["Wallpaper"] = wallpaper
-desktop["wallpaper"] = wallpaper
-desktop["WallpaperMode"] = "stretch"
-desktop["wallpaper_mode"] = "stretch"
+# pcmanfm-qt legge la configurazione wallpaper dalla sezione "*" (default
+# per tutti gli schermi). Manteniamo anche la vecchia sezione [Desktop]
+# per compatibilita' con eventuali letture legacy.
+for section in ("*", "Desktop"):
+    if section not in parser:
+        parser[section] = {}
+    s = parser[section]
+    s["Wallpaper"] = wallpaper
+    s["wallpaper"] = wallpaper
+    s["WallpaperMode"] = "stretch"
+    s["wallpaper_mode"] = "stretch"
 
 with open(config_file, "w", encoding="utf-8") as fh:
     parser.write(fh)
@@ -88,6 +91,10 @@ if [ ! -e "$visual_marker" ]; then
       lxqt-panel >/dev/null 2>&1 &
     ) &
   fi
+fi
+
+if command -v aurion-session-watchdog >/dev/null 2>&1; then
+  aurion-session-watchdog --once >/dev/null 2>&1 || true
 fi
 
 if [ -f "$welcome" ] && [ ! -e "$welcome_marker" ]; then

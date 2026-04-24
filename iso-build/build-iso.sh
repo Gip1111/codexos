@@ -282,7 +282,10 @@ apply_branding() {
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/branding/aurionos-release" "$rootfs/etc/aurionos-release"
 
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/autostart/aurion-live-branding.desktop" "$rootfs/etc/xdg/autostart/aurion-live-branding.desktop"
+  "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/autostart/aurion-session-watchdog.desktop" "$rootfs/etc/xdg/autostart/aurion-session-watchdog.desktop"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-apply-live-branding" "$rootfs/usr/local/bin/aurion-apply-live-branding"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-session-watchdog" "$rootfs/usr/local/bin/aurion-session-watchdog"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-startlxqt" "$rootfs/usr/local/bin/aurion-startlxqt"
 
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/wallpapers/aurionos-alpha.svg" "$rootfs/usr/share/backgrounds/aurionos/aurionos-alpha.svg"
   rsvg-convert -w 1920 -h 1080 "$PROJECT_ROOT/distro/wallpapers/aurionos-alpha.svg" -o "$WORK_DIR/aurionos-alpha.png"

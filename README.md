@@ -20,6 +20,7 @@ The alpha goal is a credible first ISO, not a finished distribution. Ubuntu/Lubu
 - AurionOS wallpaper
 - AurionOS LXQt session entry
 - AurionOS visual profile for LXQt with branded theme, top bar, bottom dock, window theme, icons, desktop shortcuts, and keyboard shortcuts
+- Guarded LXQt session starter and live-session watchdog to recover the desktop if panel or wallpaper modules do not autostart
 - Welcome page and first-run live branding hook
 - Aurion Shell graphical alpha surface with Launcher, AI Sidebar, Dock concept, app flow, hardware flow, and control flow
 - Aurion Experience graphical alpha shell with task-oriented AI surface
@@ -64,6 +65,8 @@ aurion-hw-scan
 aurion-channel
 aurion-rollback-status
 ```
+
+The guarded session path is `aurion-startlxqt`. If a live boot shows only a mouse cursor, the ISO is failing the session acceptance test: the expected desktop is wallpaper, top bar, dock, and desktop shortcuts. The build verifier checks that the guarded starter, watchdog, LXQt profile, and PCManFM-Qt wallpaper configuration are present in the ISO.
 
 ## Build from GitHub Actions
 

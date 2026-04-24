@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export DESKTOP_SESSION="AurionOS"
+export XDG_SESSION_DESKTOP="AurionOS"
+
+case ":${XDG_CURRENT_DESKTOP:-}:" in
+  *:LXQt:*)
+    case ":${XDG_CURRENT_DESKTOP:-}:" in
+      *:AurionOS:*) ;;
+      *) export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP}:AurionOS" ;;
+    esac
+    ;;
+  ::) export XDG_CURRENT_DESKTOP="LXQt:AurionOS" ;;
+  *)
+    case ":${XDG_CURRENT_DESKTOP:-}:" in
+      *:AurionOS:*) export XDG_CURRENT_DESKTOP="LXQt:${XDG_CURRENT_DESKTOP}" ;;
+      *) export XDG_CURRENT_DESKTOP="LXQt:${XDG_CURRENT_DESKTOP}:AurionOS" ;;
+    esac
+    ;;
+esac
+
+if command -v aurion-session-watchdog >/dev/null 2>&1; then
+  (
+    sleep 6
+    aurion-session-watchdog --rescue >/dev/null 2>&1 || true
+  ) &
+fi
+
+exec startlxqt "$@"

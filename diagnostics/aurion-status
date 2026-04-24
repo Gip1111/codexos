@@ -73,6 +73,9 @@ for tool in \
   aurion-experience \
   aurion-hub \
   aurion-status \
+  aurion-startlxqt \
+  aurion-session-watchdog \
+  aurion-apply-live-branding \
   aurion-channel \
   aurion-assistant \
   aurion-ai-status \

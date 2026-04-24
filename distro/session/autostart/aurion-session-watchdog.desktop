@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=AurionOS Session Watchdog
+Comment=Restore AurionOS live desktop modules if LXQt autostart is incomplete
+Exec=aurion-session-watchdog --rescue
+OnlyShowIn=LXQt;
+X-LXQt-Need-Tray=false
