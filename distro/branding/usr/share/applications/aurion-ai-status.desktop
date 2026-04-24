@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Aurion AI Status
+Comment=Check local AI provider readiness
+Exec=qterminal -e aurion-ai-status
+Icon=applications-science
+Terminal=false
+Categories=System;Utility;
