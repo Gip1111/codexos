@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "channel": "alpha",
+  "install_policy": "list-only in v0.1; no package installation from the alpha store command",
+  "sources": {
+    "flatpak": "preferred future default",
+    "snap": "optional during MVP",
+    "deb": "trusted local packages only",
+    "appimage": "integrate after first run"
+  },
+  "featured": [
+    {
+      "name": "Firefox",
+      "source": "snap-or-flatpak-later",
+      "category": "browser",
+      "alpha_action": "document only"
+    },
+    {
+      "name": "LibreOffice",
+      "source": "ubuntu-deb-or-flatpak-later",
+      "category": "office",
+      "alpha_action": "document only"
+    },
+    {
+      "name": "VLC",
+      "source": "flatpak-later",
+      "category": "media",
+      "alpha_action": "document only"
+    }
+  ]
+}
