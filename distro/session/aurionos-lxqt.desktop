@@ -2,7 +2,7 @@
 Type=Application
 Name=AurionOS
 Comment=AurionOS Alpha desktop session on LXQt
-Exec=startlxqt
+Exec=env DESKTOP_SESSION=AurionOS XDG_SESSION_DESKTOP=AurionOS XDG_CURRENT_DESKTOP=LXQt:AurionOS startlxqt
 TryExec=startlxqt
 DesktopNames=LXQt;AurionOS;
 
