@@ -9,10 +9,11 @@
 - AurionOS wallpaper placeholder
 - AurionOS LXQt session entry
 - Branded live environment defaults
-- Safe installer launcher rebranding where present
+- Safer installer text rebranding where present
 - Mock AI assistant
 - Hardware scanner CLI
 - Diagnostics CLI
+- One-command `aurion-status` live validation helper
 - Rollback status placeholder
 - GitHub Actions build workflow
 - Build logs artifact
@@ -31,7 +32,7 @@
 - Active custom Plymouth boot splash
 - labwc Aurion session
 - Qt6/QML shell
-- Custom installer branding beyond safe launcher text
+- Full Calamares theme replacement
 - Graphical hardware compatibility center
 - Ollama runtime integration
 - App store
