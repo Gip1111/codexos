@@ -61,10 +61,11 @@ Basic VM acceptance:
 2. Confirm the live desktop starts.
 3. Confirm AurionOS wallpaper or release branding is visible.
 4. Open the application menu and launch `Aurion Assistant`.
-5. Run `aurion-diagnostics`.
-6. Launch the installer.
-7. Install to a blank VM disk.
-8. Reboot into the installed system.
+5. Run `aurion-status`.
+6. Run `aurion-diagnostics`.
+7. Launch the installer.
+8. Install to a blank VM disk.
+9. Reboot into the installed system.
 
 ## USB test
 
@@ -80,11 +81,33 @@ Recommended Rufus settings:
 
 Hardware acceptance:
 
-1. Enable Secure Boot in firmware.
+1. Enable Secure Boot in firmware if the machine supports it and has enrolled keys.
 2. Boot the USB in UEFI mode.
 3. Confirm the live environment starts.
-4. Run `aurion-hw-scan`.
-5. Launch the installer.
+4. Confirm the AurionOS wallpaper is visible.
+5. Run `aurion-status`.
+6. Run `aurion-hw-scan`.
+7. Launch the installer and confirm the visible installer branding says AurionOS where safe.
+8. Do not install to a real disk unless the target disk can be erased.
+
+## Real hardware retest after v0.1.1 branding hardening
+
+Run:
+
+```bash
+cat /etc/os-release
+cat /etc/aurionos-release
+aurion-status
+aurion-diagnostics
+aurion-hw-scan
+```
+
+Expected improvements over the first live USB test:
+
+- `aurion-status` exists.
+- Terminal session variables report AurionOS instead of Lubuntu where the live shell allows it.
+- Calamares visible strings should be rebranded from Lubuntu to AurionOS where text replacement is safe.
+- Secure Boot may still report disabled if the PC firmware is in Setup Mode; that is a firmware state, not an ISO branding failure.
 
 ## Known alpha limits
 
