@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+db="/usr/share/aurionos/hardware/alpha-hardware.json"
+
+echo "AurionOS Hardware Center - alpha read-only classification"
+echo
+
+if [ ! -r "$db" ]; then
+  echo "Hardware database missing: $db"
+  echo "Falling back to raw hardware scan."
+  exec aurion-hw-scan
+fi
+
+if ! command -v lspci >/dev/null 2>&1; then
+  echo "lspci is unavailable; raw scan follows."
+  exec aurion-hw-scan
+fi
+
+matched=0
+while IFS= read -r device; do
+  [ -n "$device" ] || continue
+  if grep -Fq "$device" "$db"; then
+    matched=$((matched + 1))
+    status="$(awk -v d="$device" '
+      $0 ~ "\"match\"" && index($0, d) { in_device=1 }
+      in_device && $0 ~ "\"status\"" { gsub(/[\",]/, ""); sub(/^ *status: */, ""); print; exit }
+    ' "$db")"
+    notes="$(awk -v d="$device" '
+      $0 ~ "\"match\"" && index($0, d) { in_device=1 }
+      in_device && $0 ~ "\"notes\"" { gsub(/[\",]/, ""); sub(/^ *notes: */, ""); print; exit }
+    ' "$db")"
+    printf '[known] %s\n' "$device"
+    printf '        status: %s\n' "${status:-unknown}"
+    printf '        notes: %s\n\n' "${notes:-no notes}"
+  fi
+done <<EOF
+$(lspci | sed 's/^[0-9a-fA-F:.]* //')
+EOF
+
+if [ "$matched" -eq 0 ]; then
+  echo "No database matches yet. Raw hardware scan follows."
+  echo
+  aurion-hw-scan
+else
+  echo "Matched devices: $matched"
+  echo "Alpha policy: no driver changes were made."
+fi
