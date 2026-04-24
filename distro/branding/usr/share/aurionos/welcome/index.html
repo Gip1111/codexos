@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AurionOS Alpha</title>
+  <style>
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, sans-serif; background: #10151f; color: #f8fafc; }
+    main { max-width: 960px; margin: 0 auto; padding: 48px 28px; }
+    h1 { font-size: 44px; margin: 0 0 8px; }
+    h2 { margin-top: 32px; color: #f5c15c; }
+    p, li { line-height: 1.55; color: #dbe4ee; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 18px; }
+    .card { border: 1px solid #2b3b4d; border-radius: 8px; padding: 16px; background: #151d29; }
+    code { background: #0b111a; padding: 2px 6px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>AurionOS Alpha</h1>
+  <p>Fast Track v0.1 on the Lubuntu 24.04 LTS base. This live system validates boot, installability, branding, diagnostics, AI foundation, and hardware compatibility direction.</p>
+
+  <div class="grid">
+    <section class="card"><h2>System</h2><p>Run <code>aurion-status</code> for the live validation summary.</p></section>
+    <section class="card"><h2>Hardware</h2><p>Run <code>aurion-hardware-center</code> for read-only compatibility classification.</p></section>
+    <section class="card"><h2>AI</h2><p>Run <code>aurion-ai-status</code>. The future default is local Ollama with phi4-mini.</p></section>
+    <section class="card"><h2>Apps</h2><p>Run <code>aurion-store</code> to inspect the alpha catalog and final install strategy.</p></section>
+  </div>
+
+  <h2>Alpha safety</h2>
+  <ul>
+    <li>Ubuntu signed boot components are preserved.</li>
+    <li>No custom kernel is used.</li>
+    <li>No proprietary or DKMS modules are installed by the live ISO.</li>
+    <li>Cloud AI is disabled by default and must remain opt-in.</li>
+  </ul>
+</main>
+</body>
+</html>
