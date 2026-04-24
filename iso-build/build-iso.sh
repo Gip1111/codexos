@@ -62,7 +62,7 @@ require_builder_tools() {
   local missing=()
   local tool
 
-  for tool in awk basename chmod curl diff du find install mksquashfs realpath rsvg-convert rsync sed sha256sum sort stat tee unsquashfs xargs xorriso; do
+  for tool in awk basename chmod curl diff du find grep install mksquashfs realpath rsvg-convert rsync sed sha256sum sort stat tee unsquashfs xargs xorriso; do
     if ! command -v "$tool" >/dev/null 2>&1; then
       missing+=("$tool")
     fi
@@ -144,6 +144,7 @@ install_tool_payload() {
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hardware-compat/aurion-hw-scan" "$rootfs/usr/local/bin/aurion-hw-scan"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/diagnostics/aurion-diagnostics" "$rootfs/usr/local/bin/aurion-diagnostics"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/diagnostics/aurion-rollback-status" "$rootfs/usr/local/bin/aurion-rollback-status"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/diagnostics/aurion-status" "$rootfs/usr/local/bin/aurion-status"
 
   if compgen -G "$PROJECT_ROOT/shell/bin/*" > /dev/null; then
     for tool in "$PROJECT_ROOT"/shell/bin/*; do
@@ -168,7 +169,7 @@ apply_home_branding() {
       [ -d "$home" ] || continue
       "${SUDO[@]}" install -Dm0644 "$config_source" "$home/.config/pcmanfm-qt/lxqt/settings.conf"
       local owner
-      owner="$("${SUDO[@]}" stat -c '%u:%g' "$home")"
+      owner="$(${SUDO[@]} stat -c '%u:%g' "$home")"
       "${SUDO[@]}" chown -R "$owner" "$home/.config"
     done
   fi
@@ -176,6 +177,13 @@ apply_home_branding() {
 
 apply_session_selection() {
   local rootfs="$1"
+  local session_source="$PROJECT_ROOT/distro/session/aurionos-lxqt.desktop"
+
+  "${SUDO[@]}" install -Dm0644 "$session_source" "$rootfs/usr/share/xsessions/aurionos-lxqt.desktop"
+  "${SUDO[@]}" install -Dm0644 "$session_source" "$rootfs/usr/share/xsessions/AurionOS.desktop"
+  "${SUDO[@]}" install -Dm0644 "$session_source" "$rootfs/usr/share/xsessions/Lubuntu.desktop"
+  "${SUDO[@]}" install -Dm0644 "$session_source" "$rootfs/usr/share/xsessions/lubuntu.desktop"
+  "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/profile/aurionos-session.sh" "$rootfs/etc/profile.d/aurionos-session.sh"
 
   for session_file in \
     "$rootfs/etc/sddm.conf" \
@@ -187,6 +195,30 @@ apply_session_selection() {
       -e 's/^XSession=.*/XSession=aurionos-lxqt/' \
       "$session_file"
   done
+}
+
+apply_installer_branding() {
+  local rootfs="$1"
+  local paths=()
+
+  [ -d "$rootfs/etc/calamares" ] && paths+=("$rootfs/etc/calamares")
+  [ -d "$rootfs/usr/share/calamares" ] && paths+=("$rootfs/usr/share/calamares")
+  [ -d "$rootfs/usr/share/applications" ] && paths+=("$rootfs/usr/share/applications")
+  [ -d "$rootfs/etc/skel" ] && paths+=("$rootfs/etc/skel")
+  [ -d "$rootfs/home" ] && paths+=("$rootfs/home")
+
+  [ "${#paths[@]}" -gt 0 ] || return 0
+
+  log "Applying safe text rebranding for Calamares and installer launchers"
+  while IFS= read -r -d '' file; do
+    "${SUDO[@]}" sed -i \
+      -e 's/Try or Install Lubuntu/Try or Install AurionOS/g' \
+      -e 's/Try Lubuntu without installing/Try AurionOS without installing/g' \
+      -e 's/Install Lubuntu/Install AurionOS/g' \
+      -e 's/Welcome to Lubuntu/Welcome to AurionOS/g' \
+      -e 's/Lubuntu/AurionOS/g' \
+      "$file"
+  done < <("${SUDO[@]}" grep -IlZ -E 'Lubuntu|Install Lubuntu|Try or Install Lubuntu' "${paths[@]}" 2>/dev/null || true)
 }
 
 apply_branding() {
@@ -203,7 +235,6 @@ apply_branding() {
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/branding/motd" "$rootfs/etc/motd"
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/branding/aurionos-release" "$rootfs/etc/aurionos-release"
 
-  "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/aurionos-lxqt.desktop" "$rootfs/usr/share/xsessions/aurionos-lxqt.desktop"
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/autostart/aurion-live-branding.desktop" "$rootfs/etc/xdg/autostart/aurion-live-branding.desktop"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-apply-live-branding" "$rootfs/usr/local/bin/aurion-apply-live-branding"
 
@@ -218,6 +249,7 @@ apply_branding() {
   install_doc_payload "$rootfs"
   apply_home_branding "$rootfs"
   apply_session_selection "$rootfs"
+  apply_installer_branding "$rootfs"
 
   log "Applying safe ISO-level text branding"
   mkdir -p "$iso_root/.disk"
@@ -237,15 +269,6 @@ apply_branding() {
         "$grub_cfg"
     fi
   done
-
-  if [ -d "$rootfs/usr/share/applications" ]; then
-    while IFS= read -r -d '' desktop_file; do
-      "${SUDO[@]}" sed -i \
-        -e 's/Install Lubuntu/Install AurionOS/g' \
-        -e 's/Try or Install Lubuntu/Try or Install AurionOS/g' \
-        "$desktop_file"
-    done < <("${SUDO[@]}" find "$rootfs/usr/share/applications" "$rootfs/etc/skel" "$rootfs/home" -name '*calamares*.desktop' -print0 2>/dev/null || true)
-  fi
 }
 
 run_hooks() {
@@ -261,7 +284,7 @@ run_hooks() {
     AURION_ISO_ROOT="$iso_root" \
     AURION_PROJECT_ROOT="$PROJECT_ROOT" \
     bash "$hook"
-  done < <(find "$hook_dir" -maxdepth 1 -type f -name '*.sh' -perm -0100 -print0 | sort -z)
+  done < <(find "$hook_dir" -maxdepth 1 -type f -name '*.sh' -print0 | sort -z)
 }
 
 rebuild_squashfs() {
