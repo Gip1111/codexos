@@ -63,16 +63,18 @@ Basic VM acceptance:
 1. Boot the ISO in UEFI mode.
 2. Confirm the live desktop starts.
 3. Confirm AurionOS wallpaper or release branding is visible.
-4. Confirm the welcome page opens once or is available from `Welcome to AurionOS`.
+4. Confirm Aurion Experience opens once or is available from `Aurion Experience`.
 5. Run `aurion-status`.
-6. Run `aurion-hub`.
-7. Run `aurion-control` and open each menu option.
-8. Run `aurion-install --explain`.
-9. Run `aurion-snapshot-plan`.
-10. Run `aurion-diagnostics`.
-11. Launch the installer.
-12. Install to a blank VM disk.
-13. Reboot into the installed system.
+6. Run `aurion-experience`.
+7. Run `aurion-task-assist "read email"`.
+8. Run `aurion-hub`.
+9. Run `aurion-control` and open each menu option.
+10. Run `aurion-install --explain`.
+11. Run `aurion-snapshot-plan`.
+12. Run `aurion-diagnostics`.
+13. Launch the installer.
+14. Install to a blank VM disk.
+15. Reboot into the installed system.
 
 ## USB test
 
@@ -97,11 +99,13 @@ Hardware acceptance:
 7. Run `aurion-hardware-center`.
 8. Run `aurion-ai-status`.
 9. Run `aurion-store`.
-10. Run `aurion-hub`.
-11. Run `aurion-install --explain`.
-12. Run `aurion-snapshot-plan`.
-13. Launch the installer and confirm the visible installer branding says AurionOS where safe.
-14. Do not install to a real disk unless the target disk can be erased.
+10. Run `aurion-experience`.
+11. Run `aurion-task-assist "install vlc"`.
+12. Run `aurion-hub`.
+13. Run `aurion-install --explain`.
+14. Run `aurion-snapshot-plan`.
+15. Launch the installer and confirm the visible installer branding says AurionOS where safe.
+16. Do not install to a real disk unless the target disk can be erased.
 
 ## Real hardware retest after platform foundation additions
 
@@ -111,6 +115,9 @@ Run:
 cat /etc/os-release
 cat /etc/aurionos-release
 aurion-status
+aurion-experience
+aurion-task-assist "read email"
+aurion-task-assist "install vlc"
 aurion-hub
 aurion-channel
 aurion-control
@@ -126,6 +133,8 @@ aurion-hw-scan
 Expected improvements:
 
 - `aurion-status` shows all AurionOS foundation tools as `[ok]`.
+- `aurion-experience` opens the graphical alpha shell.
+- `aurion-task-assist` maps email/browser/install/hardware/diagnostics tasks to safe actions.
 - `aurion-hub` opens or generates a local HTML overview report.
 - `aurion-control` opens a grouped alpha control surface.
 - `aurion-ai-status` shows Ollama/phi4-mini metadata and confirms cloud AI is disabled by default.

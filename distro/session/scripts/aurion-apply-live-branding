@@ -4,7 +4,7 @@ set -euo pipefail
 wallpaper="/usr/share/backgrounds/aurionos/aurionos-alpha.png"
 config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/pcmanfm-qt/lxqt"
 config_file="$config_dir/settings.conf"
-welcome="/usr/share/aurionos/welcome/index.html"
+welcome="/usr/share/aurionos/experience/index.html"
 welcome_marker="${XDG_STATE_HOME:-$HOME/.local/state}/aurionos/welcome-shown"
 
 export DESKTOP_SESSION="AurionOS"

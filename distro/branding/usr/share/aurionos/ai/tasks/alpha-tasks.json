@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "release": "0.1-alpha",
+  "policy": "task guidance only; no silent system mutation",
+  "tasks": [
+    {
+      "id": "email",
+      "title": "Read email",
+      "keywords": ["email", "mail", "gmail", "outlook", "posta"],
+      "intent": "Open a webmail provider in the browser.",
+      "primary_command": "xdg-open https://mail.google.com",
+      "safe": true
+    },
+    {
+      "id": "browser",
+      "title": "Open the browser",
+      "keywords": ["browser", "web", "internet", "firefox"],
+      "intent": "Open the default browser.",
+      "primary_command": "xdg-open https://www.google.com",
+      "safe": true
+    },
+    {
+      "id": "install-app",
+      "title": "Install a program",
+      "keywords": ["install", "program", "app", "software", "programma", "installa"],
+      "intent": "Use Aurion Store or explain local package handling.",
+      "primary_command": "aurion-store",
+      "safe": true
+    },
+    {
+      "id": "hardware",
+      "title": "Check hardware",
+      "keywords": ["hardware", "driver", "wifi", "gpu", "nvidia", "audio"],
+      "intent": "Show hardware compatibility and diagnostics.",
+      "primary_command": "aurion-hardware-center",
+      "safe": true
+    },
+    {
+      "id": "diagnostics",
+      "title": "Run diagnostics",
+      "keywords": ["diagnostic", "problem", "errore", "fix", "repair"],
+      "intent": "Collect a read-only diagnostic summary.",
+      "primary_command": "aurion-diagnostics",
+      "safe": true
+    },
+    {
+      "id": "rollback",
+      "title": "Check rollback",
+      "keywords": ["rollback", "snapshot", "restore", "ripristino"],
+      "intent": "Show snapshot and rollback readiness.",
+      "primary_command": "aurion-snapshot-plan",
+      "safe": true
+    }
+  ]
+}

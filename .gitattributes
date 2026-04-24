@@ -6,6 +6,9 @@
 *.yaml text eol=lf
 *.desktop text eol=lf
 *.json text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
 *.md text eol=lf
 
 iso-build/* text eol=lf
@@ -17,6 +20,8 @@ app-store/aurion-* text eol=lf
 app-installer/aurion-* text eol=lf
 control-center/aurion-* text eol=lf
 diagnostics/aurion-* text eol=lf
+experience/aurion-* text eol=lf
 hardware-compat/aurion-* text eol=lf
 hub/aurion-* text eol=lf
 rollback/aurion-* text eol=lf
+shell/bin/aurion-* text eol=lf

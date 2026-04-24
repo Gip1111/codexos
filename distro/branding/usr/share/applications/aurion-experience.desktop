@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Aurion Experience
+Comment=Open the AurionOS graphical alpha experience
+Exec=aurion-experience
+Icon=preferences-desktop
+Terminal=false
+Categories=System;Settings;

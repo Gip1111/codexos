@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+query="${*:-}"
+
+usage() {
+  cat <<'EOF'
+Aurion Task Assist - alpha
+
+Usage:
+  aurion-task-assist "read my email"
+  aurion-task-assist "install vlc"
+  aurion-task-assist --list
+
+Alpha policy:
+  This command suggests and opens safe task paths. It does not silently install
+  packages, change drivers, or enable cloud AI.
+EOF
+}
+
+task_line() {
+  printf '%-14s %s\n' "$1" "$2"
+}
+
+if [ -z "$query" ] || [ "$query" = "--help" ] || [ "$query" = "-h" ]; then
+  usage
+  exit 0
+fi
+
+if [ "$query" = "--list" ]; then
+  task_line email "Open webmail in the browser"
+  task_line browser "Open the default web browser"
+  task_line install "Open Aurion Store / app install guidance"
+  task_line hardware "Check hardware compatibility"
+  task_line diagnose "Run diagnostics"
+  task_line rollback "Check snapshot readiness"
+  exit 0
+fi
+
+lower="$(printf '%s' "$query" | tr '[:upper:]' '[:lower:]')"
+
+respond() {
+  local title="$1"
+  local action="$2"
+  local command="$3"
+  local note="$4"
+
+  cat <<EOF
+Task: $title
+Action: $action
+Command: $command
+Note: $note
+EOF
+}
+
+case "$lower" in
+  *email*|*mail*|*gmail*|*outlook*|*posta*)
+    respond "Read email" "Open webmail in the browser." "xdg-open https://mail.google.com" "You can choose another provider from the browser if needed."
+    ;;
+  *browser*|*web*|*internet*|*firefox*)
+    respond "Open browser" "Open the default browser." "xdg-open https://www.google.com" "The final assistant should route this through the preferred browser and privacy settings."
+    ;;
+  *install*|*installa*|*programma*|*program*|*software*|*app*)
+    respond "Install a program" "Open Aurion Store or explain a local installer file." "aurion-store" "For local files use aurion-install <file.deb|file.flatpakref|file.AppImage>."
+    ;;
+  *wifi*|*hardware*|*driver*|*gpu*|*nvidia*|*audio*)
+    respond "Check hardware" "Open read-only hardware compatibility classification." "aurion-hardware-center" "No driver changes are made in the alpha live ISO."
+    ;;
+  *diagnostic*|*diagnostica*|*problem*|*problema*|*errore*|*fix*|*repair*)
+    respond "Run diagnostics" "Collect a read-only diagnostic summary." "aurion-diagnostics" "Share this output when debugging the ISO."
+    ;;
+  *rollback*|*snapshot*|*restore*|*ripristino*)
+    respond "Check rollback" "Show snapshot and rollback readiness." "aurion-snapshot-plan" "Automatic rollback is planned but not enabled in v0.1."
+    ;;
+  *)
+    respond "General help" "Open Aurion Experience for guided actions." "aurion-experience" "The alpha assistant is rule-based; Ollama + phi4-mini is the planned local model path."
+    ;;
+esac

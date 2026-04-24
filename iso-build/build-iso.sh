@@ -148,10 +148,12 @@ install_tool_payload() {
 
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-assistant" "$rootfs/usr/local/bin/aurion-assistant"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-ai-status" "$rootfs/usr/local/bin/aurion-ai-status"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-task-assist" "$rootfs/usr/local/bin/aurion-task-assist"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/app-installer/aurion-appimage-integrate" "$rootfs/usr/local/bin/aurion-appimage-integrate"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/app-installer/aurion-install" "$rootfs/usr/local/bin/aurion-install"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/app-store/aurion-store" "$rootfs/usr/local/bin/aurion-store"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/control-center/aurion-control" "$rootfs/usr/local/bin/aurion-control"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/experience/aurion-experience" "$rootfs/usr/local/bin/aurion-experience"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hub/aurion-hub" "$rootfs/usr/local/bin/aurion-hub"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hardware-compat/aurion-hw-scan" "$rootfs/usr/local/bin/aurion-hw-scan"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hardware-compat/aurion-hardware-center" "$rootfs/usr/local/bin/aurion-hardware-center"

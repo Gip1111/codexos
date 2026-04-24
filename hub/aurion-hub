@@ -30,6 +30,7 @@ capture() {
 : > "$sections/index.tsv"
 
 capture status "System Status" aurion-status
+capture experience "Aurion Experience" aurion-experience --path
 capture ai "AI Provider" aurion-ai-status
 capture hardware "Hardware Center" aurion-hardware-center
 capture store "Aurion Store" aurion-store

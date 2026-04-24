@@ -2,7 +2,7 @@
 set -euo pipefail
 
 marker="${XDG_STATE_HOME:-$HOME/.local/state}/aurionos/welcome-shown"
-welcome="/usr/share/aurionos/welcome/index.html"
+welcome="/usr/share/aurionos/experience/index.html"
 
 [ -f "$welcome" ] || exit 0
 [ -e "$marker" ] && exit 0

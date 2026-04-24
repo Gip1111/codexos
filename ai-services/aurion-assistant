@@ -7,16 +7,16 @@ if [ "${1:-}" = "--version" ]; then
 fi
 
 cat <<'EOF'
-Aurion Assistant - Alpha Mock
+Aurion Assistant - Alpha Task Layer
 
-This ISO includes the assistant foundation without downloading a model.
-Planned local provider: Ollama with phi4-mini.
-Cloud AI: optional, opt-in only, disabled by default.
+This alpha uses a safe local task router. It does not download a model or use
+cloud AI. Planned local provider: Ollama with phi4-mini.
 
 Try:
+  read my email
+  install vlc
+  check wifi drivers
   aurion-hw-scan
-  aurion-diagnostics
-  aurion-rollback-status
 
 Type a question and press Enter. Type exit to quit.
 EOF
@@ -29,11 +29,13 @@ while true; do
     "") continue ;;
   esac
 
-  cat <<EOF
+  if command -v aurion-task-assist >/dev/null 2>&1; then
+    aurion-task-assist "$question"
+  else
+    cat <<EOF
 Alpha response:
-I cannot call a model in v0.1 yet. For this ISO, I can point you at the
-local diagnostics commands and explain that the future provider layer will
-prefer Ollama + phi4-mini when enabled by the user.
+I cannot call a model in v0.1 yet. Open Aurion Experience for guided actions.
+Command: aurion-experience
 EOF
+  fi
 done
-

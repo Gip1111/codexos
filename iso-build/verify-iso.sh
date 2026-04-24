@@ -107,20 +107,27 @@ main() {
   require_file_in_squashfs usr/share/backgrounds/aurionos/aurionos-alpha.png
   require_file_in_squashfs usr/share/xsessions/aurionos-lxqt.desktop
   require_file_in_squashfs usr/share/aurionos/welcome/index.html
+  require_file_in_squashfs usr/share/aurionos/experience/index.html
+  require_file_in_squashfs usr/share/aurionos/experience/styles.css
+  require_file_in_squashfs usr/share/aurionos/experience/app.js
   require_file_in_squashfs usr/share/aurionos/ai/providers/ollama-phi4-mini.json
+  require_file_in_squashfs usr/share/aurionos/ai/tasks/alpha-tasks.json
   require_file_in_squashfs usr/share/aurionos/hardware/alpha-hardware.json
   require_file_in_squashfs usr/share/aurionos/store/alpha-catalog.json
   require_file_in_squashfs usr/share/aurionos/release/channel.conf
   require_file_in_squashfs usr/share/doc/aurionos/final-project-foundations.md
   require_file_in_squashfs usr/share/doc/aurionos/iso-build-plan.md
   require_file_in_squashfs usr/share/applications/aurion-hub.desktop
+  require_file_in_squashfs usr/share/applications/aurion-experience.desktop
   require_file_in_squashfs usr/share/applications/aurion-install.desktop
   require_file_in_squashfs usr/share/applications/aurion-snapshot-plan.desktop
 
   require_executable_in_squashfs usr/local/bin/aurion-status
   require_executable_in_squashfs usr/local/bin/aurion-control
+  require_executable_in_squashfs usr/local/bin/aurion-experience
   require_executable_in_squashfs usr/local/bin/aurion-hub
   require_executable_in_squashfs usr/local/bin/aurion-ai-status
+  require_executable_in_squashfs usr/local/bin/aurion-task-assist
   require_executable_in_squashfs usr/local/bin/aurion-install
   require_executable_in_squashfs usr/local/bin/aurion-appimage-integrate
   require_executable_in_squashfs usr/local/bin/aurion-hardware-center

@@ -24,6 +24,8 @@ Control Center strategy: include `aurion-control`, a terminal-safe grouping surf
 
 Hub strategy: include `aurion-hub`, a generated local HTML overview that gives the alpha a graphical system surface without adding new live ISO package dependencies. Final target is a Qt6/QML application.
 
+Experience strategy: include `aurion-experience`, a local graphical task shell that becomes the default visible first-run surface. It combines AI task routing, app install paths, browser/email actions, hardware checks, and recovery status in one place without adding runtime package risk.
+
 GitHub Actions strategy: build on `ubuntu-24.04`, free disk space, install ISO tools, run the build script, clearly fail if the expected ISO is absent, upload the ISO artifact, and upload logs even on failure.
 
 ## Must do today
@@ -37,6 +39,7 @@ GitHub Actions strategy: build on `ubuntu-24.04`, free disk space, install ISO t
 - Include build logs as an artifact.
 - Include alpha foundations for Control Center, AI provider, Hardware Center, Store, diagnostics, and release channel.
 - Include alpha foundations for app install handling, AppImage integration, Hub report, and snapshot planning.
+- Include the graphical Aurion Experience shell and task assistant routing for common desktop work.
 
 ## Repository structure
 
@@ -80,6 +83,8 @@ Important payload files:
 - `app-installer/aurion-install`
 - `app-installer/aurion-appimage-integrate`
 - `hub/aurion-hub`
+- `experience/aurion-experience`
+- `ai-services/aurion-task-assist`
 - `rollback/aurion-snapshot-plan`
 - `diagnostics/aurion-status`
 - `diagnostics/aurion-diagnostics`

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aurion Experience</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="rail" aria-label="Aurion navigation">
+      <div class="brand-mark">
+        <span>A</span>
+      </div>
+      <nav>
+        <button class="rail-btn is-active" data-view="today">Today</button>
+        <button class="rail-btn" data-view="apps">Apps</button>
+        <button class="rail-btn" data-view="hardware">Hardware</button>
+        <button class="rail-btn" data-view="ai">AI</button>
+      </nav>
+    </aside>
+
+    <main class="workspace">
+      <section class="hero-panel" aria-labelledby="aurion-title">
+        <div class="hero-copy">
+          <p class="eyebrow">AurionOS Alpha Fast Track</p>
+          <h1 id="aurion-title">Aurion Experience</h1>
+          <div class="task-box">
+            <label for="task-input">What do you want to do?</label>
+            <div class="task-row">
+              <input id="task-input" type="search" autocomplete="off" placeholder="read email, install vlc, check wifi, diagnose errors">
+              <button id="task-run" type="button">Ask</button>
+            </div>
+          </div>
+        </div>
+        <img class="hero-art" src="../../backgrounds/aurionos/aurionos-alpha.svg" alt="AurionOS wallpaper preview">
+      </section>
+
+      <section class="status-strip" aria-label="System status">
+        <div>
+          <span class="metric-label">Boot</span>
+          <strong>UEFI target</strong>
+        </div>
+        <div>
+          <span class="metric-label">Secure Boot</span>
+          <strong>Ubuntu chain preserved</strong>
+        </div>
+        <div>
+          <span class="metric-label">AI</span>
+          <strong>Local-first mock</strong>
+        </div>
+        <div>
+          <span class="metric-label">Apps</span>
+          <strong>Store alpha</strong>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <section class="panel assistant-panel">
+          <div class="panel-head">
+            <p class="eyebrow">Task Assistant</p>
+            <h2 id="assistant-title">Ready</h2>
+          </div>
+          <p id="assistant-response">Choose a task or type what you need. Aurion will map it to a safe alpha action.</p>
+          <div class="command-card">
+            <span>Suggested command</span>
+            <code id="assistant-command">aurion-status</code>
+            <button id="copy-command" type="button">Copy</button>
+          </div>
+          <div class="quick-actions" id="quick-actions"></div>
+        </section>
+
+        <section class="panel view-panel" id="view-panel">
+          <div class="panel-head">
+            <p class="eyebrow">Today</p>
+            <h2>Fast actions</h2>
+          </div>
+          <div class="action-grid" id="action-grid"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

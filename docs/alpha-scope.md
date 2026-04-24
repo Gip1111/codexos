@@ -9,11 +9,13 @@
 - AurionOS wallpaper placeholder
 - AurionOS LXQt session entry
 - Welcome page and first-run live branding hook
+- Aurion Experience graphical alpha shell
 - Aurion Hub generated local HTML report
 - Branded live environment defaults
 - Safer installer text rebranding where present
 - Aurion Control Center alpha command
 - Mock AI assistant
+- Task assistant routing for browser, email, app install, hardware, diagnostics, and rollback tasks
 - Ollama/phi4-mini provider metadata and AI status command
 - Hardware scanner CLI
 - Hardware Center alpha classification database
@@ -32,6 +34,7 @@
 ## Mocked
 
 - AI responses
+- AI natural language handling beyond rule-based task routing
 - Hardware compatibility explanations beyond the small alpha database
 - Shell TopBar, Dock, Launcher, and AI Sidebar behavior
 - Rollback automation
@@ -86,7 +89,7 @@ AurionOS Alpha Fast Track v0.1 is accepted only when:
 - Installer launches.
 - Installed system boots.
 - `aurion-status`, `aurion-control`, `aurion-hardware-center`, `aurion-ai-status`, and `aurion-store` run in the live session.
-- `aurion-hub`, `aurion-install --explain`, and `aurion-snapshot-plan` run in the live session.
+- `aurion-experience`, `aurion-hub`, `aurion-install --explain`, and `aurion-snapshot-plan` run in the live session.
 - CI verifies the built ISO contains required AurionOS tools, metadata, welcome page, and catalogs.
 - Build logs are available.
 - Docs explain what works and what is deferred.

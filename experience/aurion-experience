@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+page="/usr/share/aurionos/experience/index.html"
+
+if [ "${1:-}" = "--path" ]; then
+  echo "$page"
+  exit 0
+fi
+
+if [ ! -f "$page" ]; then
+  echo "Aurion Experience page is missing: $page" >&2
+  exit 1
+fi
+
+echo "Opening Aurion Experience: $page"
+
+if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v xdg-open >/dev/null 2>&1; then
+  xdg-open "$page" >/dev/null 2>&1 || {
+    echo "Could not open a browser automatically. Open this file manually:"
+    echo "$page"
+  }
+else
+  echo "No graphical session detected. Open this file from the desktop:"
+  echo "$page"
+fi

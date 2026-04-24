@@ -65,11 +65,13 @@ fi
 printf '\nAurionOS tools:\n'
 for tool in \
   aurion-control \
+  aurion-experience \
   aurion-hub \
   aurion-status \
   aurion-channel \
   aurion-assistant \
   aurion-ai-status \
+  aurion-task-assist \
   aurion-install \
   aurion-appimage-integrate \
   aurion-hardware-center \
