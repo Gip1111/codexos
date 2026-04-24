@@ -8,11 +8,11 @@ ISO strategy: remaster the official Lubuntu 24.04 desktop ISO in GitHub Actions.
 
 Secure Boot strategy: preserve the signed Ubuntu boot chain. The build does not replace shim, signed GRUB, the signed Ubuntu kernel, or the live initrd. It hashes critical boot files before and after branding and fails if they change.
 
-Live session strategy: ship an `AurionOS` LXQt session entry, live-session branding, and a welcome page. LXQt remains the stable desktop foundation for v0.1. The future labwc/Qt shell is represented by lightweight command placeholders.
+Live session strategy: ship an `AurionOS` LXQt session entry, live-session branding, a custom LXQt visual profile, top bar, bottom dock, desktop shortcuts, keyboard shortcuts, and a welcome/task surface. LXQt remains the stable desktop foundation for v0.1. The future labwc/Qt shell is represented by lightweight command placeholders.
 
 Installer strategy: keep the Lubuntu Calamares installer. Safe text rebranding is applied where present. No custom installer is attempted in v0.1.
 
-Branding strategy: set AurionOS release identity, issue text, MOTD, wallpaper, application launchers, session metadata, ISO menu text, welcome page, and docs. Plymouth theme files are included but not enabled because enabling them would require boot/initrd changes that are not worth the alpha risk.
+Branding strategy: set AurionOS release identity, issue text, MOTD, wallpaper, application launchers, session metadata, LXQt theme, Openbox theme, Aurion icons, ISO menu text, welcome page, and docs. Plymouth theme files are included but not enabled because enabling them would require boot/initrd changes that are not worth the alpha risk.
 
 AI strategy: include a provider-agnostic mock assistant, AI provider metadata, and `aurion-ai-status`. The later default local provider target is Ollama with `phi4-mini`. Cloud AI remains disabled by default and must be opt-in.
 
@@ -35,11 +35,13 @@ GitHub Actions strategy: build on `ubuntu-24.04`, free disk space, install ISO t
 - Produce `iso-build/output/aurion-os-0.1-alpha-amd64.iso`.
 - Upload artifact as `aurion-os-alpha-iso`.
 - Add visible AurionOS branding, wallpaper, session entry, release files, welcome, and docs.
+- Add the AurionOS LXQt visual profile so the live desktop no longer looks like stock Lubuntu.
 - Keep Calamares installer stable.
 - Include build logs as an artifact.
 - Include alpha foundations for Control Center, AI provider, Hardware Center, Store, diagnostics, and release channel.
 - Include alpha foundations for app install handling, AppImage integration, Hub report, and snapshot planning.
 - Include the graphical Aurion Experience shell and task assistant routing for common desktop work.
+- Include first-boot desktop affordances for email/browser, app install, hardware checks, diagnostics, and AI status.
 
 ## Repository structure
 

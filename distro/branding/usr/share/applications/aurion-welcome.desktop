@@ -3,6 +3,6 @@ Type=Application
 Name=Welcome to AurionOS
 Comment=Open the AurionOS alpha welcome page
 Exec=xdg-open /usr/share/aurionos/welcome/index.html
-Icon=help-browser
+Icon=aurionos
 Terminal=false
 Categories=System;Documentation;

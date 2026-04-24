@@ -8,6 +8,7 @@ Current alpha:
 
 - LXQt session remains the stable live desktop.
 - AurionOS session metadata and environment branding are applied.
+- `aurionos-alpha` LXQt theme, `AurionOS` Openbox theme, top bar, bottom dock, branded icons, desktop shortcuts, and keyboard shortcuts replace the stock Lubuntu desktop feel.
 - `aurion-experience` provides the first graphical task-oriented shell surface.
 - `aurion-hub` generates a local HTML overview report.
 - `aurion-control` groups the first system surfaces.

@@ -3,6 +3,6 @@ Type=Application
 Name=Aurion Control Center
 Comment=Open AurionOS alpha system controls
 Exec=qterminal -e aurion-control
-Icon=preferences-system
+Icon=aurionos
 Terminal=false
 Categories=System;Settings;

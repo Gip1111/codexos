@@ -3,6 +3,6 @@ Type=Application
 Name=Aurion Install
 Comment=Show AurionOS app installation foundation
 Exec=qterminal -e aurion-install --explain
-Icon=system-software-install
+Icon=aurion-store
 Terminal=false
 Categories=System;Utility;

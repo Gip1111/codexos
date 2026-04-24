@@ -4,8 +4,11 @@ set -euo pipefail
 wallpaper="/usr/share/backgrounds/aurionos/aurionos-alpha.png"
 config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/pcmanfm-qt/lxqt"
 config_file="$config_dir/settings.conf"
+user_config="${XDG_CONFIG_HOME:-$HOME/.config}"
+skel_config="/etc/skel/.config"
 welcome="/usr/share/aurionos/experience/index.html"
 welcome_marker="${XDG_STATE_HOME:-$HOME/.local/state}/aurionos/welcome-shown"
+visual_marker="${XDG_STATE_HOME:-$HOME/.local/state}/aurionos/visual-profile-applied"
 
 export DESKTOP_SESSION="AurionOS"
 export XDG_SESSION_DESKTOP="AurionOS"
@@ -45,6 +48,46 @@ PY
 
 if command -v pcmanfm-qt >/dev/null 2>&1; then
   pcmanfm-qt --set-wallpaper="$wallpaper" >/dev/null 2>&1 || true
+fi
+
+if [ ! -e "$visual_marker" ]; then
+  mkdir -p "$(dirname "$visual_marker")" "$user_config/lxqt" "$user_config/openbox" "$HOME/Desktop"
+
+  for name in lxqt.conf panel.conf session.conf globalkeyshortcuts.conf; do
+    if [ -f "$skel_config/lxqt/$name" ]; then
+      cp -f "$skel_config/lxqt/$name" "$user_config/lxqt/$name"
+    fi
+  done
+
+  if [ -f "$skel_config/openbox/lxqt-rc.xml" ]; then
+    cp -f "$skel_config/openbox/lxqt-rc.xml" "$user_config/openbox/lxqt-rc.xml"
+  fi
+
+  if [ -d /etc/skel/Desktop ]; then
+    for launcher in /etc/skel/Desktop/*.desktop; do
+      [ -f "$launcher" ] || continue
+      cp -f "$launcher" "$HOME/Desktop/$(basename "$launcher")"
+      chmod 0755 "$HOME/Desktop/$(basename "$launcher")"
+    done
+  fi
+
+  mkdir -p "$(dirname "$visual_marker")"
+  touch "$visual_marker"
+
+  if command -v openbox >/dev/null 2>&1; then
+    openbox --reconfigure >/dev/null 2>&1 || true
+  fi
+
+  if command -v lxqt-panel >/dev/null 2>&1 \
+    && command -v pgrep >/dev/null 2>&1 \
+    && command -v pkill >/dev/null 2>&1 \
+    && pgrep -x lxqt-panel >/dev/null 2>&1; then
+    (
+      sleep 1
+      pkill -x lxqt-panel >/dev/null 2>&1 || true
+      lxqt-panel >/dev/null 2>&1 &
+    ) &
+  fi
 fi
 
 if [ -f "$welcome" ] && [ ! -e "$welcome_marker" ]; then

@@ -21,19 +21,47 @@
     </aside>
 
     <main class="workspace">
+      <header class="topline" aria-label="AurionOS desktop">
+        <div>
+          <strong>AurionOS</strong>
+          <span>Alpha Fast Track v0.1</span>
+        </div>
+        <div class="topline-actions">
+          <button type="button" data-task="read email">Mail</button>
+          <button type="button" data-task="install vlc">Install app</button>
+          <button type="button" data-task="check wifi">Wi-Fi</button>
+        </div>
+      </header>
+
       <section class="hero-panel" aria-labelledby="aurion-title">
         <div class="hero-copy">
-          <p class="eyebrow">AurionOS Alpha Fast Track</p>
-          <h1 id="aurion-title">Aurion Experience</h1>
+          <p class="eyebrow">Aurion command center</p>
+          <h1 id="aurion-title">Dimmi cosa vuoi fare.</h1>
           <div class="task-box">
             <label for="task-input">What do you want to do?</label>
             <div class="task-row">
               <input id="task-input" type="search" autocomplete="off" placeholder="read email, install vlc, check wifi, diagnose errors">
               <button id="task-run" type="button">Ask</button>
             </div>
+            <div class="task-presets" aria-label="Common tasks">
+              <button type="button" data-task="read email">Leggi email</button>
+              <button type="button" data-task="open browser">Browser</button>
+              <button type="button" data-task="install program">Installa</button>
+              <button type="button" data-task="diagnose errors">Diagnosi</button>
+            </div>
           </div>
         </div>
-        <img class="hero-art" src="../../backgrounds/aurionos/aurionos-alpha.svg" alt="AurionOS wallpaper preview">
+        <div class="hero-visual">
+          <img class="hero-art" src="../../backgrounds/aurionos/aurionos-alpha.svg" alt="AurionOS wallpaper preview">
+          <div class="hero-card">
+            <span>AI locale</span>
+            <strong>Mock pronto</strong>
+          </div>
+          <div class="hero-card hero-card-secondary">
+            <span>App</span>
+            <strong>Store alpha</strong>
+          </div>
+        </div>
       </section>
 
       <section class="status-strip" aria-label="System status">

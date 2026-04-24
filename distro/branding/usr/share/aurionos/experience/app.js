@@ -205,6 +205,13 @@ document.querySelectorAll(".rail-btn[data-view]").forEach((button) => {
   });
 });
 
+document.querySelectorAll("[data-task]").forEach((button) => {
+  button.addEventListener("click", () => {
+    input.value = button.dataset.task;
+    selectAction(matchTask(button.dataset.task));
+  });
+});
+
 renderQuickActions();
 renderActions();
 selectAction(actions[0]);

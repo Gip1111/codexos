@@ -3,6 +3,6 @@ Type=Application
 Name=Aurion Hub
 Comment=Open the AurionOS alpha system overview
 Exec=aurion-hub
-Icon=preferences-system
+Icon=aurionos
 Terminal=false
 Categories=System;Settings;

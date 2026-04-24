@@ -106,6 +106,24 @@ main() {
   require_file_in_squashfs etc/aurionos-release
   require_file_in_squashfs usr/share/backgrounds/aurionos/aurionos-alpha.png
   require_file_in_squashfs usr/share/xsessions/aurionos-lxqt.desktop
+  require_file_in_squashfs usr/share/lxqt/themes/aurionos-alpha/lxqt-panel.qss
+  require_file_in_squashfs usr/share/lxqt/themes/aurionos-alpha/lxqt-runner.qss
+  require_file_in_squashfs usr/share/lxqt/themes/aurionos-alpha/lxqt-notificationd.qss
+  require_file_in_squashfs usr/share/themes/AurionOS/openbox-3/themerc
+  require_file_in_squashfs usr/share/icons/hicolor/scalable/apps/aurionos.svg
+  require_file_in_squashfs usr/share/icons/hicolor/scalable/apps/aurion-experience.svg
+  require_file_in_squashfs usr/share/icons/hicolor/scalable/apps/aurion-assistant.svg
+  require_file_in_squashfs usr/share/icons/hicolor/scalable/apps/aurion-store.svg
+  require_file_in_squashfs usr/share/icons/hicolor/scalable/apps/aurion-hardware.svg
+  require_file_in_squashfs usr/share/icons/hicolor/scalable/apps/aurion-snapshot.svg
+  require_file_in_squashfs etc/skel/.config/lxqt/lxqt.conf
+  require_file_in_squashfs etc/skel/.config/lxqt/panel.conf
+  require_file_in_squashfs etc/skel/.config/lxqt/session.conf
+  require_file_in_squashfs etc/skel/.config/lxqt/globalkeyshortcuts.conf
+  require_file_in_squashfs etc/skel/.config/openbox/lxqt-rc.xml
+  require_file_in_squashfs etc/skel/Desktop/aurion-experience.desktop
+  require_file_in_squashfs etc/skel/Desktop/aurion-store.desktop
+  require_file_in_squashfs etc/skel/Desktop/aurion-installer.desktop
   require_file_in_squashfs usr/share/aurionos/welcome/index.html
   require_file_in_squashfs usr/share/aurionos/experience/index.html
   require_file_in_squashfs usr/share/aurionos/experience/styles.css
@@ -117,6 +135,7 @@ main() {
   require_file_in_squashfs usr/share/aurionos/release/channel.conf
   require_file_in_squashfs usr/share/doc/aurionos/final-project-foundations.md
   require_file_in_squashfs usr/share/doc/aurionos/iso-build-plan.md
+  require_file_in_squashfs usr/share/doc/aurionos/visual-design.md
   require_file_in_squashfs usr/share/applications/aurion-hub.desktop
   require_file_in_squashfs usr/share/applications/aurion-experience.desktop
   require_file_in_squashfs usr/share/applications/aurion-install.desktop
@@ -137,6 +156,9 @@ main() {
   require_executable_in_squashfs usr/local/bin/aurion-diagnostics
   require_executable_in_squashfs usr/local/bin/aurion-hw-scan
   require_executable_in_squashfs usr/local/bin/aurion-assistant
+  require_executable_in_squashfs etc/skel/Desktop/aurion-experience.desktop
+  require_executable_in_squashfs etc/skel/Desktop/aurion-store.desktop
+  require_executable_in_squashfs etc/skel/Desktop/aurion-installer.desktop
 
   cat_squashfs_file usr/lib/os-release > "$WORK_DIR/os-release"
   grep -Fq 'PRETTY_NAME="AurionOS Alpha Fast Track v0.1"' "$WORK_DIR/os-release" \

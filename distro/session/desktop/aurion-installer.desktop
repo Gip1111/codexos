@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Install AurionOS
+Comment=Install AurionOS to disk
+Exec=calamares
+Icon=aurion-store
+Terminal=false

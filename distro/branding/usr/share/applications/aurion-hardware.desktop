@@ -3,7 +3,6 @@ Type=Application
 Name=Aurion Hardware Scan
 Comment=Run the AurionOS hardware compatibility scanner
 Exec=qterminal -e aurion-hw-scan
-Icon=computer
+Icon=aurion-hardware
 Terminal=false
 Categories=System;Utility;
-

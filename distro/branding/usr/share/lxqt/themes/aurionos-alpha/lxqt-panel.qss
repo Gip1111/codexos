@@ -1,0 +1,60 @@
+/*
+  AurionOS Alpha LXQt panel theme.
+  Kept dependency-free: pure QSS over the Lubuntu/LXQt base.
+*/
+
+LXQtPanel,
+QFrame#BackgroundWidget {
+  background: rgba(13, 17, 24, 242);
+  color: #f8fafc;
+  border: 0;
+}
+
+QToolButton,
+QPushButton {
+  background: transparent;
+  color: #f8fafc;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 5px 9px;
+  margin: 3px;
+}
+
+QToolButton:hover,
+QPushButton:hover {
+  background: rgba(79, 209, 197, 32);
+  border-color: rgba(79, 209, 197, 120);
+}
+
+QToolButton:pressed,
+QPushButton:pressed,
+QToolButton:checked {
+  background: rgba(245, 193, 92, 42);
+  border-color: rgba(245, 193, 92, 140);
+}
+
+QMenu {
+  background: #151f2c;
+  color: #f8fafc;
+  border: 1px solid #2d3a4a;
+  padding: 8px;
+}
+
+QMenu::item {
+  min-height: 28px;
+  border-radius: 6px;
+  padding: 6px 26px 6px 18px;
+}
+
+QMenu::item:selected {
+  background: rgba(79, 209, 197, 44);
+  color: #ffffff;
+}
+
+QToolTip {
+  background: #111923;
+  color: #f8fafc;
+  border: 1px solid #4fd1c5;
+  border-radius: 6px;
+  padding: 6px;
+}

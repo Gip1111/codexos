@@ -1,8 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Aurion Store
-Comment=Open Aurion Store alpha catalog
+Comment=Apps and installers
 Exec=qterminal -e aurion-store
 Icon=aurion-store
 Terminal=false
-Categories=System;Utility;

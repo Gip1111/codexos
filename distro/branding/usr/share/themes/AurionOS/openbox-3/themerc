@@ -1,0 +1,31 @@
+border.width: 1
+padding.width: 6
+padding.height: 5
+window.client.padding.width: 0
+window.client.padding.height: 0
+window.handle.width: 0
+
+window.active.border.color: #4fd1c5
+window.inactive.border.color: #263241
+
+window.active.title.bg.color: #111923
+window.active.title.bg.colorTo: #192231
+window.inactive.title.bg.color: #101721
+window.inactive.title.bg.colorTo: #101721
+
+window.active.label.text.color: #f8fafc
+window.inactive.label.text.color: #94a3b8
+
+window.active.button.unpressed.bg.color: #111923
+window.inactive.button.unpressed.bg.color: #101721
+window.active.button.unpressed.image.color: #f8fafc
+window.inactive.button.unpressed.image.color: #94a3b8
+
+menu.border.width: 1
+menu.border.color: #2d3a4a
+menu.items.bg.color: #151f2c
+menu.items.text.color: #f8fafc
+menu.items.active.bg.color: #203447
+menu.items.active.text.color: #ffffff
+menu.title.bg.color: #111923
+menu.title.text.color: #f5c15c

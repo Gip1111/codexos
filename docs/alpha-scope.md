@@ -6,8 +6,9 @@
 - Installable Lubuntu 24.04 LTS base
 - Ubuntu signed boot chain preserved
 - AurionOS release identity
-- AurionOS wallpaper placeholder
+- AurionOS wallpaper
 - AurionOS LXQt session entry
+- AurionOS LXQt visual profile with branded panel theme, dark top bar, bottom dock, Openbox theme, icon set, desktop shortcuts, and keyboard shortcuts
 - Welcome page and first-run live branding hook
 - Aurion Experience graphical alpha shell
 - Aurion Hub generated local HTML report
@@ -36,14 +37,14 @@
 - AI responses
 - AI natural language handling beyond rule-based task routing
 - Hardware compatibility explanations beyond the small alpha database
-- Shell TopBar, Dock, Launcher, and AI Sidebar behavior
+- Advanced shell TopBar, Dock, Launcher, and AI Sidebar behavior beyond the LXQt visual profile
 - Rollback automation
 - Real app installation from Aurion Store
 - Full trusted package verification and GUI confirmation flow
 
 ## Incomplete
 
-- Final logo and visual system
+- Final logo, animation system, and complete visual identity
 - Active custom Plymouth boot splash
 - labwc Aurion session
 - Qt6/QML shell
@@ -86,6 +87,7 @@ AurionOS Alpha Fast Track v0.1 is accepted only when:
 - ISO preserves Ubuntu Secure Boot compatibility.
 - Live session starts.
 - AurionOS branding is visible.
+- AurionOS top bar, bottom dock, desktop shortcuts, icons, and Experience command center are visible.
 - Installer launches.
 - Installed system boots.
 - `aurion-status`, `aurion-control`, `aurion-hardware-center`, `aurion-ai-status`, and `aurion-store` run in the live session.

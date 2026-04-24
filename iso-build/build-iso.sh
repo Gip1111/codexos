@@ -137,6 +137,7 @@ install_doc_payload() {
   "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/docs/iso-build-plan.md" "$doc_dir/iso-build-plan.md"
   "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/docs/secure-boot-strategy.md" "$doc_dir/secure-boot-strategy.md"
   "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/docs/testing-guide.md" "$doc_dir/testing-guide.md"
+  "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/docs/visual-design.md" "$doc_dir/visual-design.md"
 }
 
 install_tool_payload() {
@@ -172,19 +173,49 @@ install_tool_payload() {
 
 }
 
+install_home_file() {
+  local source="$1"
+  local home="$2"
+  local relative_target="$3"
+  local mode="${4:-0644}"
+
+  [ -f "$source" ] || fail "Missing home branding source: $source"
+  "${SUDO[@]}" install -Dm"$mode" "$source" "$home/$relative_target"
+}
+
+install_visual_profile_to_home() {
+  local home="$1"
+  local lxqt_source="$PROJECT_ROOT/distro/session/lxqt"
+  local launcher_source="$PROJECT_ROOT/distro/session/desktop"
+
+  install_home_file "$lxqt_source/pcmanfm-qt-settings.conf" "$home" ".config/pcmanfm-qt/lxqt/settings.conf"
+  install_home_file "$lxqt_source/lxqt.conf" "$home" ".config/lxqt/lxqt.conf"
+  install_home_file "$lxqt_source/panel.conf" "$home" ".config/lxqt/panel.conf"
+  install_home_file "$lxqt_source/session.conf" "$home" ".config/lxqt/session.conf"
+  install_home_file "$lxqt_source/globalkeyshortcuts.conf" "$home" ".config/lxqt/globalkeyshortcuts.conf"
+  install_home_file "$PROJECT_ROOT/distro/session/openbox/lxqt-rc.xml" "$home" ".config/openbox/lxqt-rc.xml"
+
+  if compgen -G "$launcher_source/*.desktop" > /dev/null; then
+    for launcher in "$launcher_source"/*.desktop; do
+      [ -f "$launcher" ] || continue
+      install_home_file "$launcher" "$home" "Desktop/$(basename "$launcher")" 0755
+    done
+  fi
+}
+
 apply_home_branding() {
   local rootfs="$1"
-  local config_source="$PROJECT_ROOT/distro/session/lxqt/pcmanfm-qt-settings.conf"
 
-  "${SUDO[@]}" install -Dm0644 "$config_source" "$rootfs/etc/skel/.config/pcmanfm-qt/lxqt/settings.conf"
+  install_visual_profile_to_home "$rootfs/etc/skel"
 
   if compgen -G "$rootfs/home/*" > /dev/null; then
     for home in "$rootfs"/home/*; do
       [ -d "$home" ] || continue
-      "${SUDO[@]}" install -Dm0644 "$config_source" "$home/.config/pcmanfm-qt/lxqt/settings.conf"
+      install_visual_profile_to_home "$home"
       local owner
       owner="$(${SUDO[@]} stat -c '%u:%g' "$home")"
       "${SUDO[@]}" chown -R "$owner" "$home/.config"
+      [ ! -d "$home/Desktop" ] || "${SUDO[@]}" chown -R "$owner" "$home/Desktop"
     done
   fi
 }
