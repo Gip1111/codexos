@@ -4,6 +4,16 @@ set -euo pipefail
 wallpaper="/usr/share/backgrounds/aurionos/aurionos-alpha.png"
 config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/pcmanfm-qt/lxqt"
 config_file="$config_dir/settings.conf"
+welcome="/usr/share/aurionos/welcome/index.html"
+welcome_marker="${XDG_STATE_HOME:-$HOME/.local/state}/aurionos/welcome-shown"
+
+export DESKTOP_SESSION="AurionOS"
+export XDG_SESSION_DESKTOP="AurionOS"
+case ":${XDG_CURRENT_DESKTOP:-}:" in
+  *:AurionOS:*) ;;
+  ::) export XDG_CURRENT_DESKTOP="LXQt:AurionOS" ;;
+  *) export XDG_CURRENT_DESKTOP="${XDG_CURRENT_DESKTOP}:AurionOS" ;;
+esac
 
 [ -f "$wallpaper" ] || exit 0
 mkdir -p "$config_dir"
@@ -37,3 +47,13 @@ if command -v pcmanfm-qt >/dev/null 2>&1; then
   pcmanfm-qt --set-wallpaper="$wallpaper" >/dev/null 2>&1 || true
 fi
 
+if [ -f "$welcome" ] && [ ! -e "$welcome_marker" ]; then
+  mkdir -p "$(dirname "$welcome_marker")"
+  touch "$welcome_marker"
+  (
+    sleep 4
+    if command -v xdg-open >/dev/null 2>&1; then
+      xdg-open "$welcome" >/dev/null 2>&1 || true
+    fi
+  ) &
+fi
