@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+channel="/usr/share/aurionos/release/channel.conf"
+release="/etc/aurionos-release"
+
+echo "AurionOS release channel"
+echo
+
+if [ -r "$release" ]; then
+  cat "$release"
+else
+  echo "Missing $release"
+fi
+
+echo
+if [ -r "$channel" ]; then
+  cat "$channel"
+else
+  echo "Missing $channel"
+fi
