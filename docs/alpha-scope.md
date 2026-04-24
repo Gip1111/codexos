@@ -8,12 +8,18 @@
 - AurionOS release identity
 - AurionOS wallpaper placeholder
 - AurionOS LXQt session entry
+- Welcome page and first-run live branding hook
 - Branded live environment defaults
 - Safer installer text rebranding where present
+- Aurion Control Center alpha command
 - Mock AI assistant
+- Ollama/phi4-mini provider metadata and AI status command
 - Hardware scanner CLI
+- Hardware Center alpha classification database
 - Diagnostics CLI
 - One-command `aurion-status` live validation helper
+- Aurion Store alpha catalog and command
+- Release channel metadata
 - Rollback status placeholder
 - GitHub Actions build workflow
 - Build logs artifact
@@ -21,10 +27,10 @@
 ## Mocked
 
 - AI responses
-- Hardware compatibility explanations
+- Hardware compatibility explanations beyond the small alpha database
 - Shell TopBar, Dock, Launcher, and AI Sidebar behavior
 - Rollback automation
-- App store and one-click installer
+- Real app installation from Aurion Store
 
 ## Incomplete
 
@@ -35,12 +41,12 @@
 - Full Calamares theme replacement
 - Graphical hardware compatibility center
 - Ollama runtime integration
-- App store
+- Production App Store backend and installers
 - Btrfs snapshot automation
 
 ## App installation direction
 
-The alpha does not build the Aurion Store yet. The target architecture is:
+The alpha now includes an Aurion Store catalog command, but it does not install packages yet. The target architecture is:
 
 - Flatpak-first graphical app installation.
 - Snap remains optional for the MVP and is not aggressively removed in v0.1.
@@ -57,7 +63,8 @@ The alpha does not build the Aurion Store yet. The target architecture is:
 4. Verify installer launch and installed-system boot.
 5. Add QEMU smoke test automation.
 6. Add a labwc experimental session.
-7. Replace placeholders with Qt6/QML shell prototypes.
+7. Replace Control Center, Store, Hardware Center, and AI status commands with Qt6/QML applications.
+8. Add optional Ollama install/enable flow for `phi4-mini`.
 
 ## Acceptance criteria
 
@@ -72,5 +79,6 @@ AurionOS Alpha Fast Track v0.1 is accepted only when:
 - AurionOS branding is visible.
 - Installer launches.
 - Installed system boots.
+- `aurion-status`, `aurion-control`, `aurion-hardware-center`, `aurion-ai-status`, and `aurion-store` run in the live session.
 - Build logs are available.
 - Docs explain what works and what is deferred.
