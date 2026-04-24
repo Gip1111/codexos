@@ -1,0 +1,8 @@
+iso-build/cache/
+iso-build/work/
+iso-build/logs/
+iso-build/build.log
+iso-build/output/*.iso
+iso-build/output/*.sha256
+*.tmp
+

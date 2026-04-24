@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+wallpaper="/usr/share/backgrounds/aurionos/aurionos-alpha.png"
+config_dir="${XDG_CONFIG_HOME:-$HOME/.config}/pcmanfm-qt/lxqt"
+config_file="$config_dir/settings.conf"
+
+[ -f "$wallpaper" ] || exit 0
+mkdir -p "$config_dir"
+
+python3 - "$config_file" "$wallpaper" <<'PY'
+import configparser
+import os
+import sys
+
+config_file, wallpaper = sys.argv[1], sys.argv[2]
+parser = configparser.ConfigParser()
+parser.optionxform = str
+
+if os.path.exists(config_file):
+    parser.read(config_file)
+
+if "Desktop" not in parser:
+    parser["Desktop"] = {}
+
+desktop = parser["Desktop"]
+desktop["Wallpaper"] = wallpaper
+desktop["wallpaper"] = wallpaper
+desktop["WallpaperMode"] = "stretch"
+desktop["wallpaper_mode"] = "stretch"
+
+with open(config_file, "w", encoding="utf-8") as fh:
+    parser.write(fh)
+PY
+
+if command -v pcmanfm-qt >/dev/null 2>&1; then
+  pcmanfm-qt --set-wallpaper="$wallpaper" >/dev/null 2>&1 || true
+fi
+

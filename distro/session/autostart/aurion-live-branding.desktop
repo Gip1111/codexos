@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=AurionOS Live Branding
+Comment=Apply AurionOS live-session defaults
+Exec=aurion-apply-live-branding
+OnlyShowIn=LXQt;
+X-LXQt-Need-Tray=false
+

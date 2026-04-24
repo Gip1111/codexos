@@ -1,0 +1,8 @@
+PRETTY_NAME="AurionOS Alpha Fast Track v0.1"
+NAME="AurionOS"
+VERSION_ID="0.1"
+VERSION="Alpha Fast Track v0.1"
+VERSION_CODENAME=noble
+ID=aurionos
+ID_LIKE="ubuntu debian"
+UBUNTU_CODENAME=noble

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#10151f"/>
+      <stop offset="0.48" stop-color="#183448"/>
+      <stop offset="1" stop-color="#d79f38"/>
+    </linearGradient>
+    <linearGradient id="band" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4fd1c5" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#f5c15c" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+  <path d="M0 760 C330 640 560 880 910 720 C1260 560 1520 560 1920 420 L1920 1080 L0 1080 Z" fill="#0c1119" opacity="0.78"/>
+  <path d="M0 838 C360 700 610 970 1010 790 C1340 642 1585 650 1920 520" fill="none" stroke="url(#band)" stroke-width="12" opacity="0.88"/>
+  <path d="M0 884 C380 760 640 1000 1050 850 C1395 724 1610 736 1920 632" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.25"/>
+  <g transform="translate(160 160)">
+    <path d="M96 0 L192 168 H150 L124 122 H68 L42 168 H0 Z M96 45 L82 84 H110 Z" fill="#f5c15c"/>
+    <text x="230" y="86" font-family="Inter, Noto Sans, Ubuntu, Arial, sans-serif" font-size="76" font-weight="700" fill="#f8fafc">AurionOS</text>
+    <text x="234" y="136" font-family="Inter, Noto Sans, Ubuntu, Arial, sans-serif" font-size="30" fill="#cbd5e1">Alpha Fast Track v0.1</text>
+  </g>
+</svg>
+

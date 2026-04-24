@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=AurionOS
+Comment=AurionOS Alpha desktop session on LXQt
+Exec=startlxqt
+TryExec=startlxqt
+DesktopNames=LXQt;AurionOS;
+

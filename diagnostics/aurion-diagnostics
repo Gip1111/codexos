@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+section() {
+  printf '\n== %s ==\n' "$1"
+}
+
+echo "AurionOS diagnostics - alpha read-only report"
+
+section "Release"
+cat /etc/os-release || true
+[ -f /etc/aurionos-release ] && cat /etc/aurionos-release || true
+
+section "Kernel"
+uname -a
+
+section "Boot Mode"
+if [ -d /sys/firmware/efi ]; then
+  echo "UEFI boot detected"
+else
+  echo "Legacy BIOS boot or EFI variables unavailable"
+fi
+
+section "Secure Boot"
+if command -v mokutil >/dev/null 2>&1; then
+  mokutil --sb-state || true
+else
+  echo "mokutil is unavailable"
+fi
+
+section "Desktop Session"
+echo "XDG_CURRENT_DESKTOP=${XDG_CURRENT_DESKTOP:-unknown}"
+echo "DESKTOP_SESSION=${DESKTOP_SESSION:-unknown}"
+
+section "Installer"
+if command -v calamares >/dev/null 2>&1; then
+  echo "Calamares installer is present"
+else
+  echo "Calamares was not found in PATH"
+fi
+
+section "Disk"
+df -hT || true
+
+section "Recent Errors"
+if command -v journalctl >/dev/null 2>&1; then
+  journalctl -p err -b --no-pager -n 30 || true
+else
+  echo "journalctl is unavailable"
+fi
+

@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cat <<'EOF'
+Aurion Dock alpha placeholder
+
+Target:
+- pinned applications
+- running application indicators
+- app install and AppImage integration entry points
+
+Status: shipped as a foundation only in v0.1.
+EOF
+

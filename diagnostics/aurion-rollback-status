@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+echo "AurionOS rollback foundation - alpha status"
+echo
+
+if findmnt -n -o FSTYPE / 2>/dev/null | grep -q '^btrfs$'; then
+  echo "Root filesystem: btrfs"
+  if command -v btrfs >/dev/null 2>&1; then
+    btrfs subvolume list / || true
+  else
+    echo "btrfs-progs is not installed."
+  fi
+else
+  echo "Root filesystem is not btrfs or cannot be detected."
+fi
+
+cat <<'EOF'
+
+Alpha note:
+Automatic snapshots and graphical rollback are not enabled in v0.1.
+The target design is a Btrfs snapshot strategy integrated with updates
+after the base ISO build and install path are stable.
+EOF
+

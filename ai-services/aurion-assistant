@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ "${1:-}" = "--version" ]; then
+  echo "Aurion Assistant alpha mock 0.1"
+  exit 0
+fi
+
+cat <<'EOF'
+Aurion Assistant - Alpha Mock
+
+This ISO includes the assistant foundation without downloading a model.
+Planned local provider: Ollama with phi4-mini.
+Cloud AI: optional, opt-in only, disabled by default.
+
+Try:
+  aurion-hw-scan
+  aurion-diagnostics
+  aurion-rollback-status
+
+Type a question and press Enter. Type exit to quit.
+EOF
+
+while true; do
+  printf '\naurion> '
+  IFS= read -r question || break
+  case "$question" in
+    exit|quit) break ;;
+    "") continue ;;
+  esac
+
+  cat <<EOF
+Alpha response:
+I cannot call a model in v0.1 yet. For this ISO, I can point you at the
+local diagnostics commands and explain that the future provider layer will
+prefer Ollama + phi4-mini when enabled by the user.
+EOF
+done
+

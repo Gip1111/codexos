@@ -1,0 +1,24 @@
+Window.SetBackgroundTopColor(0.06, 0.08, 0.12);
+Window.SetBackgroundBottomColor(0.10, 0.20, 0.28);
+
+message = "AurionOS";
+subtitle = "Alpha Fast Track v0.1";
+
+fun refresh_callback() {
+  screen_width = Window.GetWidth();
+  screen_height = Window.GetHeight();
+
+  title = Image.Text(message, 1, 1, 1);
+  sub = Image.Text(subtitle, 0.75, 0.82, 0.90);
+
+  title_sprite = Sprite(title);
+  title_sprite.SetX(screen_width / 2 - title.GetWidth() / 2);
+  title_sprite.SetY(screen_height / 2 - 48);
+
+  sub_sprite = Sprite(sub);
+  sub_sprite.SetX(screen_width / 2 - sub.GetWidth() / 2);
+  sub_sprite.SetY(screen_height / 2 + 12);
+}
+
+Plymouth.SetRefreshFunction(refresh_callback);
+

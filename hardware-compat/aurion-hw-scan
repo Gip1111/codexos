@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+section() {
+  printf '\n== %s ==\n' "$1"
+}
+
+echo "AurionOS hardware scan - alpha read-only report"
+
+section "System"
+if command -v hostnamectl >/dev/null 2>&1; then
+  hostnamectl || true
+else
+  uname -a
+fi
+
+section "CPU"
+if command -v lscpu >/dev/null 2>&1; then
+  lscpu | sed -n '1,24p'
+else
+  grep -m1 'model name' /proc/cpuinfo || true
+fi
+
+section "Memory"
+free -h || true
+
+section "Graphics and PCI"
+if command -v lspci >/dev/null 2>&1; then
+  lspci | grep -Ei 'vga|3d|display|network|wireless|ethernet|audio' || lspci
+else
+  echo "lspci is not installed in this live environment."
+fi
+
+section "USB"
+if command -v lsusb >/dev/null 2>&1; then
+  lsusb || true
+else
+  echo "lsusb is not installed in this live environment."
+fi
+
+section "Storage"
+lsblk -o NAME,SIZE,TYPE,FSTYPE,MODEL,MOUNTPOINTS || true
+
+section "Secure Boot"
+if command -v mokutil >/dev/null 2>&1; then
+  mokutil --sb-state || true
+else
+  echo "mokutil is not installed; Secure Boot state cannot be queried from this session."
+fi
+
+cat <<'EOF'
+
+Alpha note:
+This command does not install drivers or load third-party kernel modules.
+Future proprietary driver support must preserve Ubuntu's signed boot chain
+and use MOK enrollment where required.
+EOF
+

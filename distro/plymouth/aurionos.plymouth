@@ -1,0 +1,9 @@
+[Plymouth Theme]
+Name=AurionOS
+Description=AurionOS Alpha splash placeholder
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/aurionos
+ScriptFile=/usr/share/plymouth/themes/aurionos/aurionos.script
+

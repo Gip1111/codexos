@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Aurion Assistant
+Comment=Open the AurionOS alpha assistant mock
+Exec=qterminal -e aurion-assistant
+Icon=utilities-terminal
+Terminal=false
+Categories=System;Utility;
+

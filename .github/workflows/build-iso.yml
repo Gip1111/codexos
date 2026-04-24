@@ -1,0 +1,80 @@
+name: Build AurionOS Alpha ISO
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build-iso:
+    name: Build amd64 live installer ISO
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Free runner disk space
+        shell: bash
+        run: |
+          set -euxo pipefail
+          df -h
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+          sudo docker image prune -af || true
+          df -h
+
+      - name: Install ISO build dependencies
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p iso-build/logs
+          bash iso-build/setup-builder.sh 2>&1 | tee iso-build/logs/setup-builder.log
+
+      - name: Build AurionOS ISO
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p iso-build/logs
+          : > iso-build/build.log
+          bash iso-build/build-iso.sh 2>&1 | tee iso-build/build.log
+
+      - name: Verify ISO output
+        shell: bash
+        run: |
+          set -euo pipefail
+          ISO="iso-build/output/aurion-os-0.1-alpha-amd64.iso"
+          if [ ! -s "$ISO" ]; then
+            echo "::error::Expected ISO was not produced at $ISO"
+            exit 1
+          fi
+          sha256sum "$ISO" | tee "$ISO.sha256"
+          ls -lh "$ISO" "$ISO.sha256"
+
+      - name: Upload ISO artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aurion-os-alpha-iso
+          path: |
+            iso-build/output/aurion-os-0.1-alpha-amd64.iso
+            iso-build/output/aurion-os-0.1-alpha-amd64.iso.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aurion-os-alpha-build-logs
+          path: |
+            iso-build/build.log
+            iso-build/logs/**
+          if-no-files-found: warn
+          retention-days: 14
