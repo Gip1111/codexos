@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+marker="${XDG_STATE_HOME:-$HOME/.local/state}/aurionos/welcome-shown"
+welcome="/usr/share/aurionos/welcome/index.html"
+
+[ -f "$welcome" ] || exit 0
+[ -e "$marker" ] && exit 0
+
+mkdir -p "$(dirname "$marker")"
+touch "$marker"
+
+(
+  sleep 4
+  if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "$welcome" >/dev/null 2>&1 || true
+  fi
+) &
