@@ -74,6 +74,7 @@ for tool in \
   aurion-hub \
   aurion-status \
   aurion-startlxqt \
+  aurion-session-guard \
   aurion-session-watchdog \
   aurion-apply-live-branding \
   aurion-channel \

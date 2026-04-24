@@ -66,22 +66,24 @@ Basic VM acceptance:
 4. Confirm AurionOS wallpaper or release branding is visible.
 5. Confirm the top panel says Aurion and the bottom dock shows Launcher, Aurion Experience, browser, file manager, Store, and installer.
 6. Confirm desktop shortcuts exist for Aurion Launcher, Aurion Experience, Aurion Store, and Install AurionOS.
-7. Press `Super+Space` and confirm Aurion Launcher opens.
-8. Press `Super+A` and confirm Aurion AI Sidebar opens.
-9. Run `aurion-status`.
-10. Run `aurion-shell`.
-11. Run `aurion-launcher`.
-12. Run `aurion-ai-sidebar`.
-13. Run `aurion-experience`.
-14. Run `aurion-task-assist "read email"`.
-15. Run `aurion-hub`.
-16. Run `aurion-control` and open each menu option.
-17. Run `aurion-install --explain`.
-18. Run `aurion-snapshot-plan`.
-19. Run `aurion-diagnostics`.
-20. Launch the installer.
-21. Install to a blank VM disk.
-22. Reboot into the installed system.
+7. Confirm the Aurion Experience command surface opens automatically on the first live login.
+8. Confirm there is no duplicate `Install Lubuntu` desktop shortcut.
+9. Press `Super+Space` and confirm Aurion Launcher opens.
+10. Press `Super+A` and confirm Aurion AI Sidebar opens.
+11. Run `aurion-status`.
+12. Run `aurion-shell`.
+13. Run `aurion-launcher`.
+14. Run `aurion-ai-sidebar`.
+15. Run `aurion-experience`.
+16. Run `aurion-task-assist "read email"`.
+17. Run `aurion-hub`.
+18. Run `aurion-control` and open each menu option.
+19. Run `aurion-install --explain`.
+20. Run `aurion-snapshot-plan`.
+21. Run `aurion-diagnostics`.
+22. Launch the installer.
+23. Install to a blank VM disk.
+24. Reboot into the installed system.
 
 ## USB test
 
@@ -127,6 +129,7 @@ Run:
 cat /etc/os-release
 cat /etc/aurionos-release
 aurion-status
+aurion-session-guard
 aurion-shell
 aurion-launcher
 aurion-ai-sidebar
@@ -152,6 +155,7 @@ aurion-session-watchdog --once
 Expected improvements:
 
 - `aurion-status` shows all AurionOS foundation tools as `[ok]`.
+- `aurion-session-guard` exits cleanly when it has already run for the session.
 - `aurion-session-watchdog --once` exits without errors and does not create duplicate LXQt modules.
 - `aurion-shell`, `aurion-launcher`, and `aurion-ai-sidebar` open the graphical shell alpha surface.
 - `aurion-do email`, `aurion-do store`, `aurion-do hardware`, and `aurion-do diagnostics` route common tasks through safe alpha tools.

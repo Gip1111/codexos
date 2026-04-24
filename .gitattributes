@@ -21,6 +21,7 @@ distro/session/lxqt/* text eol=lf
 distro/session/openbox/* text eol=lf
 distro/session/desktop/* text eol=lf
 distro/session/scripts/* text eol=lf
+distro/session/xsession/* text eol=lf
 distro/branding/usr/share/themes/*/openbox-3/themerc text eol=lf
 distro/branding/usr/local/bin/* text eol=lf
 ai-services/aurion-* text eol=lf

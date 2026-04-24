@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=AurionOS Session Guard
+Comment=Start AurionOS live-session recovery and first-run shell
+Exec=aurion-session-guard
+OnlyShowIn=LXQt;
+X-LXQt-Need-Tray=false

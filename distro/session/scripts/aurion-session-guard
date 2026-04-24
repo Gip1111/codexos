@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+home_dir="${HOME:-/tmp}"
+state_dir="${XDG_STATE_HOME:-$home_dir/.local/state}/aurionos"
+marker="$state_dir/session-guard-started"
+log_file="$state_dir/session-guard.log"
+
+mkdir -p "$state_dir"
+
+log() {
+  printf '%s %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$*" >> "$log_file"
+}
+
+if [ -z "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]; then
+  log "no graphical display in environment"
+  exit 0
+fi
+
+if [ -e "$marker" ]; then
+  exit 0
+fi
+
+touch "$marker"
+
+if [ -z "${XAUTHORITY:-}" ] && [ -f "$home_dir/.Xauthority" ]; then
+  export XAUTHORITY="$home_dir/.Xauthority"
+fi
+
+if [ -z "${DBUS_SESSION_BUS_ADDRESS:-}" ] && [ -n "${XDG_RUNTIME_DIR:-}" ] && [ -S "$XDG_RUNTIME_DIR/bus" ]; then
+  export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+fi
+
+(
+  sleep 3
+  log "applying live branding"
+  if command -v aurion-apply-live-branding >/dev/null 2>&1; then
+    aurion-apply-live-branding || log "aurion-apply-live-branding failed"
+  else
+    log "aurion-apply-live-branding missing"
+  fi
+
+  sleep 2
+  log "running session watchdog rescue"
+  if command -v aurion-session-watchdog >/dev/null 2>&1; then
+    aurion-session-watchdog --rescue || log "aurion-session-watchdog failed"
+  else
+    log "aurion-session-watchdog missing"
+  fi
+) >> "$log_file" 2>&1 &

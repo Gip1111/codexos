@@ -107,7 +107,9 @@ main() {
   require_file_in_squashfs usr/share/backgrounds/aurionos/aurionos-alpha.png
   require_file_in_squashfs usr/share/xsessions/aurionos-lxqt.desktop
   require_file_in_squashfs etc/xdg/autostart/aurion-live-branding.desktop
+  require_file_in_squashfs etc/xdg/autostart/aurion-session-guard.desktop
   require_file_in_squashfs etc/xdg/autostart/aurion-session-watchdog.desktop
+  require_file_in_squashfs etc/X11/Xsession.d/80aurionos-session-guard
   require_file_in_squashfs usr/share/lxqt/themes/aurionos-alpha/lxqt-panel.qss
   require_file_in_squashfs usr/share/lxqt/themes/aurionos-alpha/lxqt-runner.qss
   require_file_in_squashfs usr/share/lxqt/themes/aurionos-alpha/lxqt-notificationd.qss
@@ -151,6 +153,7 @@ main() {
 
   require_executable_in_squashfs usr/local/bin/aurion-status
   require_executable_in_squashfs usr/local/bin/aurion-apply-live-branding
+  require_executable_in_squashfs usr/local/bin/aurion-session-guard
   require_executable_in_squashfs usr/local/bin/aurion-session-watchdog
   require_executable_in_squashfs usr/local/bin/aurion-startlxqt
   require_executable_in_squashfs usr/local/bin/aurion-control
@@ -187,6 +190,10 @@ main() {
     || fail "AurionOS session does not use the guarded LXQt starter"
   grep -Fq 'DesktopNames=LXQt;AurionOS;' "$WORK_DIR/aurionos-lxqt.desktop" \
     || fail "AurionOS session does not keep LXQt in DesktopNames"
+
+  cat_squashfs_file etc/X11/Xsession.d/80aurionos-session-guard > "$WORK_DIR/xsession-guard"
+  grep -Fq 'aurion-session-guard' "$WORK_DIR/xsession-guard" \
+    || fail "Xsession guard does not launch AurionOS session recovery"
 
   cat_squashfs_file etc/skel/.config/lxqt/session.conf > "$WORK_DIR/session.conf"
   if grep -Fq '__userfile__=true' "$WORK_DIR/session.conf"; then

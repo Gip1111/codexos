@@ -221,6 +221,27 @@ apply_home_branding() {
   fi
 }
 
+cleanup_legacy_desktop_launchers() {
+  local rootfs="$1"
+  local desktop_dir file
+  local desktop_dirs=()
+
+  [ -d "$rootfs/etc/skel/Desktop" ] && desktop_dirs+=("$rootfs/etc/skel/Desktop")
+  if compgen -G "$rootfs/home/*/Desktop" > /dev/null; then
+    for desktop_dir in "$rootfs"/home/*/Desktop; do
+      [ -d "$desktop_dir" ] && desktop_dirs+=("$desktop_dir")
+    done
+  fi
+
+  [ "${#desktop_dirs[@]}" -gt 0 ] || return 0
+
+  while IFS= read -r -d '' file; do
+    if "${SUDO[@]}" grep -Eiq '(^Name=.*Lubuntu|Try or Install Lubuntu|Install Lubuntu|lubuntu)' "$file"; then
+      "${SUDO[@]}" rm -f "$file"
+    fi
+  done < <("${SUDO[@]}" find "${desktop_dirs[@]}" -maxdepth 1 -type f -name '*.desktop' -print0)
+}
+
 apply_session_selection() {
   local rootfs="$1"
   local session_source="$PROJECT_ROOT/distro/session/aurionos-lxqt.desktop"
@@ -282,8 +303,11 @@ apply_branding() {
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/branding/aurionos-release" "$rootfs/etc/aurionos-release"
 
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/autostart/aurion-live-branding.desktop" "$rootfs/etc/xdg/autostart/aurion-live-branding.desktop"
+  "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/autostart/aurion-session-guard.desktop" "$rootfs/etc/xdg/autostart/aurion-session-guard.desktop"
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/autostart/aurion-session-watchdog.desktop" "$rootfs/etc/xdg/autostart/aurion-session-watchdog.desktop"
+  "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/xsession/80aurionos-session-guard" "$rootfs/etc/X11/Xsession.d/80aurionos-session-guard"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-apply-live-branding" "$rootfs/usr/local/bin/aurion-apply-live-branding"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-session-guard" "$rootfs/usr/local/bin/aurion-session-guard"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-session-watchdog" "$rootfs/usr/local/bin/aurion-session-watchdog"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-startlxqt" "$rootfs/usr/local/bin/aurion-startlxqt"
 
@@ -297,6 +321,7 @@ apply_branding() {
   install_tool_payload "$rootfs"
   install_doc_payload "$rootfs"
   apply_home_branding "$rootfs"
+  cleanup_legacy_desktop_launchers "$rootfs"
   apply_session_selection "$rootfs"
   apply_installer_branding "$rootfs"
 

@@ -1,0 +1,6 @@
+# Start AurionOS live-session recovery before LXQt autostart can fail.
+# This file is sourced by /etc/X11/Xsession, so keep it POSIX-shell safe.
+
+if [ -n "${DISPLAY:-}" ] && [ -x /usr/local/bin/aurion-session-guard ]; then
+  /usr/local/bin/aurion-session-guard >/dev/null 2>&1 &
+fi

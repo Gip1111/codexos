@@ -9,7 +9,7 @@
 - AurionOS wallpaper
 - AurionOS LXQt session entry
 - AurionOS LXQt visual profile with branded panel theme, dark top bar, bottom dock, Openbox theme, icon set, desktop shortcuts, and keyboard shortcuts
-- Guarded LXQt starter and session watchdog to recover panel, desktop, runner, notifications, policy kit, power management, and global shortcut modules if LXQt autostart is incomplete
+- Guarded LXQt starter, Xsession guard, and session watchdog to recover panel, desktop, runner, notifications, policy kit, power management, and global shortcut modules if LXQt autostart is incomplete
 - Welcome page and first-run live branding hook
 - Aurion Shell graphical alpha surface with Launcher, AI Sidebar, Dock concept, app flow, hardware flow, and control flow
 - Aurion Experience graphical alpha shell

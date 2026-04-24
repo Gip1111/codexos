@@ -10,6 +10,20 @@ welcome="/usr/share/aurionos/experience/index.html"
 welcome_marker="${XDG_STATE_HOME:-$HOME/.local/state}/aurionos/welcome-shown"
 visual_marker="${XDG_STATE_HOME:-$HOME/.local/state}/aurionos/visual-profile-applied"
 
+cleanup_legacy_desktop_launchers() {
+  local desktop_dir="$HOME/Desktop"
+  local launcher
+
+  [ -d "$desktop_dir" ] || return 0
+
+  for launcher in "$desktop_dir"/*.desktop; do
+    [ -f "$launcher" ] || continue
+    if grep -Eiq '(^Name=.*Lubuntu|Try or Install Lubuntu|Install Lubuntu|lubuntu)' "$launcher"; then
+      rm -f "$launcher"
+    fi
+  done
+}
+
 export DESKTOP_SESSION="AurionOS"
 export XDG_SESSION_DESKTOP="AurionOS"
 case ":${XDG_CURRENT_DESKTOP:-}:" in
@@ -74,6 +88,8 @@ if [ ! -e "$visual_marker" ]; then
     done
   fi
 
+  cleanup_legacy_desktop_launchers
+
   mkdir -p "$(dirname "$visual_marker")"
   touch "$visual_marker"
 
@@ -92,6 +108,8 @@ if [ ! -e "$visual_marker" ]; then
     ) &
   fi
 fi
+
+cleanup_legacy_desktop_launchers
 
 if command -v aurion-session-watchdog >/dev/null 2>&1; then
   aurion-session-watchdog --once >/dev/null 2>&1 || true
