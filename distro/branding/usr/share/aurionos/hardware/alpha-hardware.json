@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "release": "0.1-alpha",
+  "policy": "read-only hardware classification; no driver installation in alpha",
+  "devices": [
+    {
+      "match": "Intel Corporation 3rd Gen Core processor Graphics Controller",
+      "class": "graphics",
+      "status": "supported-by-kernel",
+      "notes": "Intel iGPU should use the upstream i915 driver."
+    },
+    {
+      "match": "NVIDIA Corporation GK208M",
+      "class": "graphics",
+      "status": "nouveau-live-compatible-proprietary-driver-later",
+      "notes": "Live ISO avoids proprietary NVIDIA modules. Future driver install must use Ubuntu packages and MOK flow when needed."
+    },
+    {
+      "match": "Qualcomm Atheros AR9485",
+      "class": "wifi",
+      "status": "supported-by-kernel",
+      "notes": "ath9k family hardware is expected to work without proprietary modules."
+    },
+    {
+      "match": "Realtek Semiconductor Co., Ltd. RTL8111",
+      "class": "ethernet",
+      "status": "supported-by-kernel",
+      "notes": "Common r8169 kernel driver path."
+    }
+  ]
+}
