@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+config="/usr/share/aurionos/ai/providers/ollama-phi4-mini.json"
+
+echo "AurionOS AI provider status - alpha"
+echo
+
+if [ -r "$config" ]; then
+  echo "Provider metadata: $config"
+  grep -E '"provider"|"default_model"|"enabled_by_default"|"cloud_fallback_enabled_by_default"|"alpha_status"' "$config" | sed 's/[",]//g; s/^  //'
+else
+  echo "Provider metadata missing: $config"
+fi
+
+echo
+if command -v ollama >/dev/null 2>&1; then
+  echo "Ollama runtime: installed"
+  if ollama list 2>/dev/null | grep -q 'phi4-mini'; then
+    echo "phi4-mini: available locally"
+  else
+    echo "phi4-mini: not installed locally"
+  fi
+else
+  echo "Ollama runtime: not installed in this alpha ISO"
+  echo "This is expected for v0.1; the assistant remains a mock until the user enables local AI."
+fi
+
+echo
+echo "Cloud AI: disabled by default; must be explicit opt-in later."
