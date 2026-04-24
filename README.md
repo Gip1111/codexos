@@ -19,11 +19,31 @@ The alpha goal is a credible first ISO, not a finished distribution. Ubuntu/Lubu
 - AurionOS release identity
 - AurionOS wallpaper placeholder
 - AurionOS LXQt session entry
+- Welcome page and first-run live branding hook
+- Aurion Control Center alpha command
 - Mock AI assistant foundation
+- Ollama/phi4-mini provider metadata and status command
 - Hardware scanner CLI
+- Hardware Center alpha classification database
+- Aurion Store alpha catalog and command
 - Diagnostics CLI
 - Rollback status placeholder
+- Release channel metadata
 - Build logs artifact
+
+## Live alpha commands
+
+```bash
+aurion-status
+aurion-control
+aurion-hardware-center
+aurion-ai-status
+aurion-store
+aurion-diagnostics
+aurion-hw-scan
+aurion-channel
+aurion-rollback-status
+```
 
 ## Build from GitHub Actions
 
