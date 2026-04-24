@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "provider": "ollama",
+  "default_model": "phi4-mini",
+  "enabled_by_default": false,
+  "cloud_fallback_enabled_by_default": false,
+  "privacy_policy": "local-first; cloud providers require explicit user opt-in",
+  "intended_tasks": [
+    "diagnostics explanation",
+    "hardware compatibility explanation",
+    "settings guidance",
+    "package/app install help"
+  ],
+  "alpha_status": "metadata only; model is not downloaded into the ISO"
+}
