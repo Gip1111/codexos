@@ -128,6 +128,9 @@ main() {
   require_file_in_squashfs usr/share/aurionos/experience/index.html
   require_file_in_squashfs usr/share/aurionos/experience/styles.css
   require_file_in_squashfs usr/share/aurionos/experience/app.js
+  require_file_in_squashfs usr/share/aurionos/shell/index.html
+  require_file_in_squashfs usr/share/aurionos/shell/styles.css
+  require_file_in_squashfs usr/share/aurionos/shell/app.js
   require_file_in_squashfs usr/share/aurionos/ai/providers/ollama-phi4-mini.json
   require_file_in_squashfs usr/share/aurionos/ai/tasks/alpha-tasks.json
   require_file_in_squashfs usr/share/aurionos/hardware/alpha-hardware.json
@@ -137,15 +140,24 @@ main() {
   require_file_in_squashfs usr/share/doc/aurionos/iso-build-plan.md
   require_file_in_squashfs usr/share/doc/aurionos/visual-design.md
   require_file_in_squashfs usr/share/applications/aurion-hub.desktop
+  require_file_in_squashfs usr/share/applications/aurion-shell.desktop
+  require_file_in_squashfs usr/share/applications/aurion-launcher.desktop
+  require_file_in_squashfs usr/share/applications/aurion-ai-sidebar.desktop
   require_file_in_squashfs usr/share/applications/aurion-experience.desktop
   require_file_in_squashfs usr/share/applications/aurion-install.desktop
   require_file_in_squashfs usr/share/applications/aurion-snapshot-plan.desktop
 
   require_executable_in_squashfs usr/local/bin/aurion-status
   require_executable_in_squashfs usr/local/bin/aurion-control
+  require_executable_in_squashfs usr/local/bin/aurion-shell
+  require_executable_in_squashfs usr/local/bin/aurion-launcher
+  require_executable_in_squashfs usr/local/bin/aurion-ai-sidebar
+  require_executable_in_squashfs usr/local/bin/aurion-topbar
+  require_executable_in_squashfs usr/local/bin/aurion-dock
   require_executable_in_squashfs usr/local/bin/aurion-experience
   require_executable_in_squashfs usr/local/bin/aurion-hub
   require_executable_in_squashfs usr/local/bin/aurion-ai-status
+  require_executable_in_squashfs usr/local/bin/aurion-do
   require_executable_in_squashfs usr/local/bin/aurion-task-assist
   require_executable_in_squashfs usr/local/bin/aurion-install
   require_executable_in_squashfs usr/local/bin/aurion-appimage-integrate
@@ -156,6 +168,7 @@ main() {
   require_executable_in_squashfs usr/local/bin/aurion-diagnostics
   require_executable_in_squashfs usr/local/bin/aurion-hw-scan
   require_executable_in_squashfs usr/local/bin/aurion-assistant
+  require_executable_in_squashfs etc/skel/Desktop/aurion-launcher.desktop
   require_executable_in_squashfs etc/skel/Desktop/aurion-experience.desktop
   require_executable_in_squashfs etc/skel/Desktop/aurion-store.desktop
   require_executable_in_squashfs etc/skel/Desktop/aurion-installer.desktop
@@ -169,6 +182,10 @@ main() {
     || fail "AI provider metadata does not declare phi4-mini"
   grep -Fq '"cloud_fallback_enabled_by_default": false' "$WORK_DIR/ai-provider.json" \
     || fail "AI provider metadata does not keep cloud AI disabled by default"
+
+  cat_squashfs_file usr/share/aurionos/ai/tasks/alpha-tasks.json > "$WORK_DIR/ai-tasks.json"
+  grep -Fq '"primary_command": "aurion-do email"' "$WORK_DIR/ai-tasks.json" \
+    || fail "AI task metadata does not route email through aurion-do"
 
   log "ISO content verification passed"
 }

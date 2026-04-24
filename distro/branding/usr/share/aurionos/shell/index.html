@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aurion Shell Alpha</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="shell-frame">
+    <aside class="launcher" aria-label="Aurion launcher">
+      <div class="brand">
+        <span>A</span>
+        <div>
+          <strong>AurionOS</strong>
+          <small>Shell Alpha</small>
+        </div>
+      </div>
+      <label class="search">
+        <span>Search</span>
+        <input id="search" type="search" placeholder="email, vlc, wifi, diagnostics">
+      </label>
+      <nav id="nav">
+        <button class="is-active" type="button" data-view="desktop">Desktop</button>
+        <button type="button" data-view="launcher">Launcher</button>
+        <button type="button" data-view="assistant">AI Sidebar</button>
+        <button type="button" data-view="apps">Apps</button>
+        <button type="button" data-view="hardware">Hardware</button>
+        <button type="button" data-view="control">Control</button>
+      </nav>
+    </aside>
+
+    <main class="stage">
+      <header class="topbar" aria-label="Top bar concept">
+        <strong>Aurion</strong>
+        <div class="workspace-tabs">
+          <span class="is-active">Desktop</span>
+          <span>Work</span>
+        </div>
+        <div class="status">
+          <span>Wi-Fi</span>
+          <span>AI local</span>
+          <span>Secure Boot chain</span>
+          <span>22:10</span>
+        </div>
+      </header>
+
+      <section class="hero" data-view-panel="desktop">
+        <div>
+          <p class="eyebrow">Aurion desktop direction</p>
+          <h1>Un desktop che parte dalle cose da fare.</h1>
+          <p class="lede">Il primo schermo deve aiutare subito: aprire la posta, installare un'app, capire il Wi-Fi, controllare driver e generare diagnostica.</p>
+          <div class="prompt">
+            <input id="task" type="search" placeholder="Dimmi cosa vuoi fare">
+            <button id="ask" type="button">Ask</button>
+          </div>
+        </div>
+        <div class="desktop-preview" aria-label="Desktop preview">
+          <div class="preview-window">
+            <span></span><span></span><span></span>
+            <strong>Aurion Experience</strong>
+          </div>
+          <div class="preview-sidebar">
+            <strong>AI</strong>
+            <p>Local-first help</p>
+          </div>
+          <div class="preview-dock">
+            <i></i><i></i><i></i><i></i><i></i>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel-grid hidden" data-view-panel="launcher">
+        <div class="panel wide">
+          <p class="eyebrow">Launcher</p>
+          <h2>Search apps, settings and actions</h2>
+          <div class="app-grid" id="app-grid"></div>
+        </div>
+        <div class="panel">
+          <p class="eyebrow">Pinned</p>
+          <div class="dock-list" id="dock-list"></div>
+        </div>
+      </section>
+
+      <section class="panel-grid hidden" data-view-panel="assistant">
+        <div class="panel wide">
+          <p class="eyebrow">AI Sidebar</p>
+          <h2 id="assistant-title">Ready to help</h2>
+          <p id="assistant-text">Type a task or choose an action. The alpha returns safe commands and never installs or changes drivers silently.</p>
+          <div class="command">
+            <span>Safe command</span>
+            <code id="assistant-command">aurion-status</code>
+          </div>
+        </div>
+        <div class="panel">
+          <p class="eyebrow">Provider</p>
+          <h2>Local-first</h2>
+          <p>Ollama with phi4-mini is the target. Cloud AI stays disabled until the user opts in.</p>
+        </div>
+      </section>
+
+      <section class="panel-grid hidden" data-view-panel="apps">
+        <div class="panel wide">
+          <p class="eyebrow">Apps</p>
+          <h2>Install without terminal</h2>
+          <div class="flow">
+            <div><strong>Flatpak</strong><span>Primary store path</span></div>
+            <div><strong>.deb</strong><span>Trusted local package review</span></div>
+            <div><strong>AppImage</strong><span>Run once, integrate launcher</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <p class="eyebrow">Alpha policy</p>
+          <p>Catalog-only for safety. Real installs must require clear confirmation.</p>
+        </div>
+      </section>
+
+      <section class="panel-grid hidden" data-view-panel="hardware">
+        <div class="panel wide">
+          <p class="eyebrow">Hardware</p>
+          <h2>Compatibility first</h2>
+          <div class="hardware-grid">
+            <div><strong>GPU</strong><span>Detect and explain</span></div>
+            <div><strong>Wi-Fi</strong><span>Map chip to driver notes</span></div>
+            <div><strong>Audio</strong><span>Collect state safely</span></div>
+            <div><strong>Boot</strong><span>UEFI and Secure Boot report</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <p class="eyebrow">Rule</p>
+          <p>No DKMS or proprietary driver mutation in the live alpha.</p>
+        </div>
+      </section>
+
+      <section class="panel-grid hidden" data-view-panel="control">
+        <div class="panel wide">
+          <p class="eyebrow">Control Center</p>
+          <h2>System surfaces</h2>
+          <div class="control-list" id="control-list"></div>
+        </div>
+        <div class="panel">
+          <p class="eyebrow">Recovery</p>
+          <p>Snapshot and rollback are planned as Btrfs/Snapper/Timeshift foundations, not active destructive behavior.</p>
+        </div>
+      </section>
+
+      <footer class="dock" aria-label="Aurion dock concept">
+        <button type="button" data-view="launcher" title="Launcher">A</button>
+        <button type="button" data-command="aurion-experience" title="Experience">E</button>
+        <button type="button" data-command="aurion-do email" title="Mail">M</button>
+        <button type="button" data-view="apps" title="Store">S</button>
+        <button type="button" data-view="assistant" title="AI">AI</button>
+      </footer>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

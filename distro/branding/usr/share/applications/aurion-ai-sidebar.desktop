@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Name=Aurion Assistant
-Comment=Open the AurionOS alpha assistant sidebar
+Name=Aurion AI Sidebar
+Comment=Open local-first assistant sidebar
 Exec=aurion-ai-sidebar
 Icon=aurion-assistant
 Terminal=false

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Aurion Launcher
+Comment=Search apps, settings and actions
+Exec=aurion-launcher
+Icon=aurionos
+Terminal=false
+Categories=System;Utility;

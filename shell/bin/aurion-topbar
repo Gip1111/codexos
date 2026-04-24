@@ -1,13 +1,3 @@
 #!/usr/bin/env bash
 set -euo pipefail
-cat <<'EOF'
-Aurion TopBar alpha placeholder
-
-Target:
-- Qt6/QML panel
-- network, power, clock, notifications
-- AI status entry point
-
-Status: shipped as a foundation only in v0.1.
-EOF
-
+exec aurion-shell --page desktop "$@"

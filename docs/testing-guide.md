@@ -63,20 +63,24 @@ Basic VM acceptance:
 1. Boot the ISO in UEFI mode.
 2. Confirm the live desktop starts.
 3. Confirm AurionOS wallpaper or release branding is visible.
-4. Confirm the top panel says Aurion and the bottom dock shows Aurion Experience, browser, file manager, terminal, and installer.
-5. Confirm desktop shortcuts exist for Aurion Experience, Aurion Store, and Install AurionOS.
-6. Press `Super+Space` and confirm Aurion Experience opens.
-7. Run `aurion-status`.
-8. Run `aurion-experience`.
-9. Run `aurion-task-assist "read email"`.
-10. Run `aurion-hub`.
-11. Run `aurion-control` and open each menu option.
-12. Run `aurion-install --explain`.
-13. Run `aurion-snapshot-plan`.
-14. Run `aurion-diagnostics`.
-15. Launch the installer.
-16. Install to a blank VM disk.
-17. Reboot into the installed system.
+4. Confirm the top panel says Aurion and the bottom dock shows Launcher, Aurion Experience, browser, file manager, Store, and installer.
+5. Confirm desktop shortcuts exist for Aurion Launcher, Aurion Experience, Aurion Store, and Install AurionOS.
+6. Press `Super+Space` and confirm Aurion Launcher opens.
+7. Press `Super+A` and confirm Aurion AI Sidebar opens.
+8. Run `aurion-status`.
+9. Run `aurion-shell`.
+10. Run `aurion-launcher`.
+11. Run `aurion-ai-sidebar`.
+12. Run `aurion-experience`.
+13. Run `aurion-task-assist "read email"`.
+14. Run `aurion-hub`.
+15. Run `aurion-control` and open each menu option.
+16. Run `aurion-install --explain`.
+17. Run `aurion-snapshot-plan`.
+18. Run `aurion-diagnostics`.
+19. Launch the installer.
+20. Install to a blank VM disk.
+21. Reboot into the installed system.
 
 ## USB test
 
@@ -97,19 +101,21 @@ Hardware acceptance:
 3. Confirm the live environment starts.
 4. Confirm the AurionOS wallpaper is visible.
 5. Confirm the AurionOS top bar, bottom dock, app icons, and desktop shortcuts are visible.
-6. Press `Super+A` and confirm the assistant command opens.
-7. Run `aurion-status`.
-8. Run `aurion-hw-scan`.
-9. Run `aurion-hardware-center`.
-10. Run `aurion-ai-status`.
-11. Run `aurion-store`.
-12. Run `aurion-experience`.
-13. Run `aurion-task-assist "install vlc"`.
-14. Run `aurion-hub`.
-15. Run `aurion-install --explain`.
-16. Run `aurion-snapshot-plan`.
-17. Launch the installer and confirm the visible installer branding says AurionOS where safe.
-18. Do not install to a real disk unless the target disk can be erased.
+6. Press `Super+Space` and confirm the Launcher opens.
+7. Press `Super+A` and confirm the AI Sidebar opens.
+8. Run `aurion-status`.
+9. Run `aurion-shell`.
+10. Run `aurion-hw-scan`.
+11. Run `aurion-hardware-center`.
+12. Run `aurion-ai-status`.
+13. Run `aurion-store`.
+14. Run `aurion-experience`.
+15. Run `aurion-task-assist "install vlc"`.
+16. Run `aurion-hub`.
+17. Run `aurion-install --explain`.
+18. Run `aurion-snapshot-plan`.
+19. Launch the installer and confirm the visible installer branding says AurionOS where safe.
+20. Do not install to a real disk unless the target disk can be erased.
 
 ## Real hardware retest after platform foundation additions
 
@@ -119,6 +125,12 @@ Run:
 cat /etc/os-release
 cat /etc/aurionos-release
 aurion-status
+aurion-shell
+aurion-launcher
+aurion-ai-sidebar
+aurion-do email
+aurion-do store
+aurion-do hardware
 aurion-experience
 aurion-task-assist "read email"
 aurion-task-assist "install vlc"
@@ -137,6 +149,8 @@ aurion-hw-scan
 Expected improvements:
 
 - `aurion-status` shows all AurionOS foundation tools as `[ok]`.
+- `aurion-shell`, `aurion-launcher`, and `aurion-ai-sidebar` open the graphical shell alpha surface.
+- `aurion-do email`, `aurion-do store`, `aurion-do hardware`, and `aurion-do diagnostics` route common tasks through safe alpha tools.
 - `aurion-experience` opens the graphical alpha shell.
 - The LXQt theme is `aurionos-alpha`, Openbox theme is `AurionOS`, and desktop shortcuts use Aurion icons.
 - `aurion-task-assist` maps email/browser/install/hardware/diagnostics tasks to safe actions.

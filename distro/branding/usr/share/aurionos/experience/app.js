@@ -4,7 +4,7 @@ const actions = [
     view: "today",
     title: "Leggi email",
     body: "Apri la posta dal browser con un percorso sicuro e veloce.",
-    command: "xdg-open https://mail.google.com",
+    command: "aurion-do email",
     response: "Apro la posta nel browser. Puoi usare Gmail, Outlook o il tuo provider preferito.",
     tags: ["browser", "email"]
   },
@@ -13,7 +13,7 @@ const actions = [
     view: "today",
     title: "Vai sul web",
     body: "Apri il browser predefinito e inizia una ricerca.",
-    command: "xdg-open https://www.google.com",
+    command: "aurion-do browser",
     response: "Percorso browser pronto. Nel progetto finale Aurion potra rispettare browser preferito e privacy mode.",
     tags: ["web", "search"]
   },
@@ -22,7 +22,7 @@ const actions = [
     view: "apps",
     title: "Installa programma",
     body: "Apri Store alpha o spiega come gestire deb, flatpakref e AppImage.",
-    command: "aurion-install --explain",
+    command: "aurion-do store",
     response: "L'installazione app passa da Aurion Store. In alpha non installo pacchetti in silenzio.",
     tags: ["store", "apps"]
   },
@@ -31,7 +31,7 @@ const actions = [
     view: "apps",
     title: "Cerca VLC",
     body: "Esempio di installazione futura Flatpak-first.",
-    command: "aurion-store",
+    command: "aurion-do store",
     response: "VLC e altre app saranno installabili da Store. Ora il catalogo e' dimostrativo.",
     tags: ["media", "flatpak"]
   },
@@ -40,7 +40,7 @@ const actions = [
     view: "hardware",
     title: "Controlla hardware",
     body: "Classifica GPU, Wi-Fi, audio e rete senza modificare driver.",
-    command: "aurion-hardware-center",
+    command: "aurion-do hardware",
     response: "Avvio il controllo hardware read-only. Nessun driver viene installato dalla live alpha.",
     tags: ["drivers", "compat"]
   },
@@ -58,7 +58,7 @@ const actions = [
     view: "ai",
     title: "Diagnostica",
     body: "Genera un report utile per capire errori e stato del sistema.",
-    command: "aurion-diagnostics",
+    command: "aurion-do diagnostics",
     response: "Eseguo diagnostica read-only. Puoi condividere l'output per il debug della ISO.",
     tags: ["logs", "repair"]
   },
@@ -67,7 +67,7 @@ const actions = [
     view: "ai",
     title: "Rollback",
     body: "Verifica preparazione snapshot e strategia Btrfs futura.",
-    command: "aurion-snapshot-plan",
+    command: "aurion-do rollback",
     response: "Controllo snapshot e rollback. In alpha non creo snapshot automatici.",
     tags: ["snapshot", "btrfs"]
   },

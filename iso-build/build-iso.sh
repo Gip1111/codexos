@@ -149,6 +149,7 @@ install_tool_payload() {
 
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-assistant" "$rootfs/usr/local/bin/aurion-assistant"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-ai-status" "$rootfs/usr/local/bin/aurion-ai-status"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-do" "$rootfs/usr/local/bin/aurion-do"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-task-assist" "$rootfs/usr/local/bin/aurion-task-assist"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/app-installer/aurion-appimage-integrate" "$rootfs/usr/local/bin/aurion-appimage-integrate"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/app-installer/aurion-install" "$rootfs/usr/local/bin/aurion-install"

@@ -26,8 +26,9 @@
   </desktops>
   <keyboard>
     <chainQuitKey>C-g</chainQuitKey>
-    <keybind key="W-Space"><action name="Execute"><command>aurion-experience</command></action></keybind>
-    <keybind key="W-a"><action name="Execute"><command>qterminal -e aurion-assistant</command></action></keybind>
+    <keybind key="W-Space"><action name="Execute"><command>aurion-launcher</command></action></keybind>
+    <keybind key="W-e"><action name="Execute"><command>aurion-experience</command></action></keybind>
+    <keybind key="W-a"><action name="Execute"><command>aurion-ai-sidebar</command></action></keybind>
     <keybind key="W-s"><action name="Execute"><command>qterminal -e aurion-store</command></action></keybind>
     <keybind key="W-h"><action name="Execute"><command>qterminal -e aurion-hardware-center</command></action></keybind>
   </keyboard>

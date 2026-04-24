@@ -7,6 +7,7 @@ Alpha v0.1 ships a mock local assistant so ISO boot and install are not blocked 
 Planned provider boundary:
 
 - `aurion-assistant`: user-facing command and later UI bridge
+- `aurion-do`: safe alpha action runner for common desktop tasks
 - `aurion-task-assist`: rule-based alpha task router for common desktop actions
 - local provider: Ollama, preferred model `phi4-mini`
 - cloud providers: disabled unless the user explicitly enables one

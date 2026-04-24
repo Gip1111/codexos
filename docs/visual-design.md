@@ -8,13 +8,15 @@ AurionOS must not look like stock Lubuntu. The alpha visual profile is intention
 - Aurion Experience as the first visible graphical surface.
 - LXQt theme `aurionos-alpha`.
 - Dark top bar with Aurion menu.
-- Bottom dock with Experience, browser, file manager, terminal, installer.
+- Bottom dock with Launcher, Experience, browser, file manager, Store, installer.
 - Openbox theme `AurionOS`.
 - Branded hicolor SVG icons for AurionOS, Experience, Assistant, Store, Hardware, and Snapshot.
-- Desktop shortcuts for Experience, Store, and installer.
+- Desktop shortcuts for Launcher, Experience, Store, and installer.
+- Local Aurion Shell surface with Launcher, AI Sidebar, app install flow, hardware flow, and control flow.
 - Keyboard shortcuts:
-  - `Super+Space`: Aurion Experience
-  - `Super+A`: Aurion Assistant
+  - `Super+Space`: Aurion Launcher
+  - `Super+E`: Aurion Experience
+  - `Super+A`: Aurion AI Sidebar
   - `Super+S`: Aurion Store
   - `Super+H`: Hardware Center
 
@@ -45,6 +47,7 @@ The alpha uses LXQt configuration and local HTML surfaces. The target is a Qt6/Q
 - `/usr/share/lxqt/themes/aurionos-alpha/`
 - `/usr/share/themes/AurionOS/openbox-3/themerc`
 - `/usr/share/icons/hicolor/scalable/apps/aurion*.svg`
+- `/usr/share/aurionos/shell/`
 - `/etc/skel/.config/lxqt/`
 - `/etc/skel/.config/openbox/lxqt-rc.xml`
 - `/etc/skel/Desktop/`

@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+page_id="desktop"
+base="/usr/share/aurionos/shell/index.html"
+
+usage() {
+  cat <<'EOF'
+Aurion Shell alpha
+
+Usage:
+  aurion-shell
+  aurion-shell --page desktop|launcher|assistant|apps|hardware|control
+  aurion-shell --path
+
+This opens the graphical AurionOS alpha shell surface. It is a local, offline
+HTML interface used while the final Qt6/QML shell is still under development.
+EOF
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --page)
+      page_id="${2:-}"
+      [ -n "$page_id" ] || { echo "Missing page id" >&2; exit 2; }
+      shift 2
+      ;;
+    --path)
+      echo "$base"
+      exit 0
+      ;;
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+if [ ! -f "$base" ]; then
+  echo "Aurion Shell page is missing: $base" >&2
+  exit 1
+fi
+
+target="file://$base#$page_id"
+echo "Opening Aurion Shell: $target"
+
+if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v xdg-open >/dev/null 2>&1; then
+  xdg-open "$target" >/dev/null 2>&1 || {
+    echo "Could not open a browser automatically. Open this file manually:"
+    echo "$target"
+  }
+else
+  echo "No graphical session detected. Open this file from the desktop:"
+  echo "$target"
+fi

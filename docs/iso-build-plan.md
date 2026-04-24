@@ -8,13 +8,13 @@ ISO strategy: remaster the official Lubuntu 24.04 desktop ISO in GitHub Actions.
 
 Secure Boot strategy: preserve the signed Ubuntu boot chain. The build does not replace shim, signed GRUB, the signed Ubuntu kernel, or the live initrd. It hashes critical boot files before and after branding and fails if they change.
 
-Live session strategy: ship an `AurionOS` LXQt session entry, live-session branding, a custom LXQt visual profile, top bar, bottom dock, desktop shortcuts, keyboard shortcuts, and a welcome/task surface. LXQt remains the stable desktop foundation for v0.1. The future labwc/Qt shell is represented by lightweight command placeholders.
+Live session strategy: ship an `AurionOS` LXQt session entry, live-session branding, a custom LXQt visual profile, top bar, bottom dock, desktop shortcuts, keyboard shortcuts, and local graphical Aurion Shell/Experience surfaces. LXQt remains the stable desktop foundation for v0.1. The future labwc/Qt shell is represented by safe HTML alpha surfaces and command entry points.
 
 Installer strategy: keep the Lubuntu Calamares installer. Safe text rebranding is applied where present. No custom installer is attempted in v0.1.
 
 Branding strategy: set AurionOS release identity, issue text, MOTD, wallpaper, application launchers, session metadata, LXQt theme, Openbox theme, Aurion icons, ISO menu text, welcome page, and docs. Plymouth theme files are included but not enabled because enabling them would require boot/initrd changes that are not worth the alpha risk.
 
-AI strategy: include a provider-agnostic mock assistant, AI provider metadata, and `aurion-ai-status`. The later default local provider target is Ollama with `phi4-mini`. Cloud AI remains disabled by default and must be opt-in.
+AI strategy: include a provider-agnostic mock assistant, safe task runner, AI provider metadata, and `aurion-ai-status`. The later default local provider target is Ollama with `phi4-mini`. Cloud AI remains disabled by default and must be opt-in.
 
 Hardware strategy: include a read-only hardware scanner, diagnostics command, Hardware Center alpha command, and a small JSON classification database. No DKMS, proprietary modules, or driver mutation is performed in the live ISO.
 
@@ -25,6 +25,8 @@ Control Center strategy: include `aurion-control`, a terminal-safe grouping surf
 Hub strategy: include `aurion-hub`, a generated local HTML overview that gives the alpha a graphical system surface without adding new live ISO package dependencies. Final target is a Qt6/QML application.
 
 Experience strategy: include `aurion-experience`, a local graphical task shell that becomes the default visible first-run surface. It combines AI task routing, app install paths, browser/email actions, hardware checks, and recovery status in one place without adding runtime package risk.
+
+Shell strategy: include `aurion-shell`, `aurion-launcher`, `aurion-ai-sidebar`, `aurion-topbar`, and `aurion-dock`. These open the local offline Aurion Shell alpha page so the ISO has a visible Launcher, AI Sidebar, Dock concept, app workflow, hardware workflow, and control workflow before the native Qt6/QML shell exists.
 
 GitHub Actions strategy: build on `ubuntu-24.04`, free disk space, install ISO tools, run the build script, clearly fail if the expected ISO is absent, upload the ISO artifact, and upload logs even on failure.
 
@@ -41,6 +43,7 @@ GitHub Actions strategy: build on `ubuntu-24.04`, free disk space, install ISO t
 - Include alpha foundations for Control Center, AI provider, Hardware Center, Store, diagnostics, and release channel.
 - Include alpha foundations for app install handling, AppImage integration, Hub report, and snapshot planning.
 - Include the graphical Aurion Experience shell and task assistant routing for common desktop work.
+- Include the graphical Aurion Shell surface for launcher, AI sidebar, dock, apps, hardware, and control center flows.
 - Include first-boot desktop affordances for email/browser, app install, hardware checks, diagnostics, and AI status.
 
 ## Repository structure

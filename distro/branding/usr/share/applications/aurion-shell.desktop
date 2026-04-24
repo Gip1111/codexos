@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Aurion Shell
+Comment=Open the AurionOS alpha shell surface
+Exec=aurion-shell
+Icon=aurionos
+Terminal=false
+Categories=System;Settings;

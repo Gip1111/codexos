@@ -1,13 +1,3 @@
 #!/usr/bin/env bash
 set -euo pipefail
-cat <<'EOF'
-Aurion Launcher alpha placeholder
-
-Target:
-- searchable apps
-- settings and diagnostics actions
-- one-click app installation handoff
-
-Status: shipped as a foundation only in v0.1.
-EOF
-
+exec aurion-shell --page launcher "$@"

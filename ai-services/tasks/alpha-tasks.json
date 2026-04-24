@@ -8,7 +8,7 @@
       "title": "Read email",
       "keywords": ["email", "mail", "gmail", "outlook", "posta"],
       "intent": "Open a webmail provider in the browser.",
-      "primary_command": "xdg-open https://mail.google.com",
+      "primary_command": "aurion-do email",
       "safe": true
     },
     {
@@ -16,7 +16,7 @@
       "title": "Open the browser",
       "keywords": ["browser", "web", "internet", "firefox"],
       "intent": "Open the default browser.",
-      "primary_command": "xdg-open https://www.google.com",
+      "primary_command": "aurion-do browser",
       "safe": true
     },
     {
@@ -24,7 +24,7 @@
       "title": "Install a program",
       "keywords": ["install", "program", "app", "software", "programma", "installa"],
       "intent": "Use Aurion Store or explain local package handling.",
-      "primary_command": "aurion-store",
+      "primary_command": "aurion-do store",
       "safe": true
     },
     {
@@ -32,7 +32,7 @@
       "title": "Check hardware",
       "keywords": ["hardware", "driver", "wifi", "gpu", "nvidia", "audio"],
       "intent": "Show hardware compatibility and diagnostics.",
-      "primary_command": "aurion-hardware-center",
+      "primary_command": "aurion-do hardware",
       "safe": true
     },
     {
@@ -40,7 +40,7 @@
       "title": "Run diagnostics",
       "keywords": ["diagnostic", "problem", "errore", "fix", "repair"],
       "intent": "Collect a read-only diagnostic summary.",
-      "primary_command": "aurion-diagnostics",
+      "primary_command": "aurion-do diagnostics",
       "safe": true
     },
     {
@@ -48,7 +48,7 @@
       "title": "Check rollback",
       "keywords": ["rollback", "snapshot", "restore", "ripristino"],
       "intent": "Show snapshot and rollback readiness.",
-      "primary_command": "aurion-snapshot-plan",
+      "primary_command": "aurion-do rollback",
       "safe": true
     }
   ]

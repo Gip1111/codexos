@@ -9,10 +9,11 @@ Current alpha:
 - LXQt session remains the stable live desktop.
 - AurionOS session metadata and environment branding are applied.
 - `aurionos-alpha` LXQt theme, `AurionOS` Openbox theme, top bar, bottom dock, branded icons, desktop shortcuts, and keyboard shortcuts replace the stock Lubuntu desktop feel.
+- `aurion-shell`, `aurion-launcher`, `aurion-ai-sidebar`, `aurion-topbar`, and `aurion-dock` now open a local graphical shell surface instead of text placeholders.
 - `aurion-experience` provides the first graphical task-oriented shell surface.
 - `aurion-hub` generates a local HTML overview report.
 - `aurion-control` groups the first system surfaces.
-- Shell placeholders remain in `shell/bin/`.
+- The shell commands remain alpha HTML foundations, not native compositor components.
 
 Final target:
 
@@ -25,6 +26,7 @@ Final target:
 Current alpha:
 
 - `aurion-assistant` is a mock assistant.
+- `aurion-do` provides a safe action runner for common tasks without silent installs, driver changes, or cloud AI.
 - `aurion-task-assist` routes common natural-language tasks to safe local actions.
 - `aurion-ai-status` reports provider readiness.
 - `/usr/share/aurionos/ai/providers/ollama-phi4-mini.json` defines the local-first provider target.

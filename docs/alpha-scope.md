@@ -10,12 +10,14 @@
 - AurionOS LXQt session entry
 - AurionOS LXQt visual profile with branded panel theme, dark top bar, bottom dock, Openbox theme, icon set, desktop shortcuts, and keyboard shortcuts
 - Welcome page and first-run live branding hook
+- Aurion Shell graphical alpha surface with Launcher, AI Sidebar, Dock concept, app flow, hardware flow, and control flow
 - Aurion Experience graphical alpha shell
 - Aurion Hub generated local HTML report
 - Branded live environment defaults
 - Safer installer text rebranding where present
 - Aurion Control Center alpha command
 - Mock AI assistant
+- Safe task runner for email, browser, Store, hardware, diagnostics, AI, and rollback actions
 - Task assistant routing for browser, email, app install, hardware, diagnostics, and rollback tasks
 - Ollama/phi4-mini provider metadata and AI status command
 - Hardware scanner CLI
@@ -37,7 +39,7 @@
 - AI responses
 - AI natural language handling beyond rule-based task routing
 - Hardware compatibility explanations beyond the small alpha database
-- Advanced shell TopBar, Dock, Launcher, and AI Sidebar behavior beyond the LXQt visual profile
+- Native Qt6/QML TopBar, Dock, Launcher, and AI Sidebar behavior beyond the HTML/LXQt alpha surfaces
 - Rollback automation
 - Real app installation from Aurion Store
 - Full trusted package verification and GUI confirmation flow
@@ -91,7 +93,7 @@ AurionOS Alpha Fast Track v0.1 is accepted only when:
 - Installer launches.
 - Installed system boots.
 - `aurion-status`, `aurion-control`, `aurion-hardware-center`, `aurion-ai-status`, and `aurion-store` run in the live session.
-- `aurion-experience`, `aurion-hub`, `aurion-install --explain`, and `aurion-snapshot-plan` run in the live session.
+- `aurion-shell`, `aurion-launcher`, `aurion-ai-sidebar`, `aurion-experience`, `aurion-hub`, `aurion-install --explain`, and `aurion-snapshot-plan` run in the live session.
 - CI verifies the built ISO contains required AurionOS tools, metadata, welcome page, and catalogs.
 - Build logs are available.
 - Docs explain what works and what is deferred.

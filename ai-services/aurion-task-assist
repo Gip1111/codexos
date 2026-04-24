@@ -55,24 +55,24 @@ EOF
 
 case "$lower" in
   *email*|*mail*|*gmail*|*outlook*|*posta*)
-    respond "Read email" "Open webmail in the browser." "xdg-open https://mail.google.com" "You can choose another provider from the browser if needed."
+    respond "Read email" "Open webmail in the browser." "aurion-do email" "You can choose another provider from the browser if needed."
     ;;
   *browser*|*web*|*internet*|*firefox*)
-    respond "Open browser" "Open the default browser." "xdg-open https://www.google.com" "The final assistant should route this through the preferred browser and privacy settings."
+    respond "Open browser" "Open the default browser." "aurion-do browser" "The final assistant should route this through the preferred browser and privacy settings."
     ;;
   *install*|*installa*|*programma*|*program*|*software*|*app*)
-    respond "Install a program" "Open Aurion Store or explain a local installer file." "aurion-store" "For local files use aurion-install <file.deb|file.flatpakref|file.AppImage>."
+    respond "Install a program" "Open Aurion Store or explain a local installer file." "aurion-do store" "For local files use aurion-install <file.deb|file.flatpakref|file.AppImage>."
     ;;
   *wifi*|*hardware*|*driver*|*gpu*|*nvidia*|*audio*)
-    respond "Check hardware" "Open read-only hardware compatibility classification." "aurion-hardware-center" "No driver changes are made in the alpha live ISO."
+    respond "Check hardware" "Open read-only hardware compatibility classification." "aurion-do hardware" "No driver changes are made in the alpha live ISO."
     ;;
   *diagnostic*|*diagnostica*|*problem*|*problema*|*errore*|*fix*|*repair*)
-    respond "Run diagnostics" "Collect a read-only diagnostic summary." "aurion-diagnostics" "Share this output when debugging the ISO."
+    respond "Run diagnostics" "Collect a read-only diagnostic summary." "aurion-do diagnostics" "Share this output when debugging the ISO."
     ;;
   *rollback*|*snapshot*|*restore*|*ripristino*)
-    respond "Check rollback" "Show snapshot and rollback readiness." "aurion-snapshot-plan" "Automatic rollback is planned but not enabled in v0.1."
+    respond "Check rollback" "Show snapshot and rollback readiness." "aurion-do rollback" "Automatic rollback is planned but not enabled in v0.1."
     ;;
   *)
-    respond "General help" "Open Aurion Experience for guided actions." "aurion-experience" "The alpha assistant is rule-based; Ollama + phi4-mini is the planned local model path."
+    respond "General help" "Open Aurion Launcher for guided actions." "aurion-do launcher" "The alpha assistant is rule-based; Ollama + phi4-mini is the planned local model path."
     ;;
 esac

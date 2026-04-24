@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+Aurion Do - safe alpha task runner
+
+Usage:
+  aurion-do email
+  aurion-do browser
+  aurion-do store
+  aurion-do install
+  aurion-do hardware
+  aurion-do diagnostics
+  aurion-do ai
+  aurion-do rollback
+  aurion-do shell
+  aurion-do launcher
+
+Alpha safety:
+  - opens safe tools and pages only
+  - never installs packages silently
+  - never changes drivers
+  - never enables cloud AI
+EOF
+}
+
+has_graphics() {
+  [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]
+}
+
+open_url() {
+  local target="$1"
+  if has_graphics && command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "$target" >/dev/null 2>&1 || {
+      echo "Could not open automatically: $target"
+    }
+  else
+    echo "$target"
+  fi
+}
+
+open_terminal_tool() {
+  local tool="$1"
+  shift || true
+
+  if has_graphics && command -v qterminal >/dev/null 2>&1; then
+    qterminal -e "$tool" "$@" >/dev/null 2>&1 &
+    return 0
+  fi
+
+  "$tool" "$@"
+}
+
+[ $# -gt 0 ] || { usage; exit 0; }
+
+case "$1" in
+  --help|-h)
+    usage
+    ;;
+  email|mail|posta)
+    open_url "https://mail.google.com"
+    ;;
+  browser|web|internet)
+    open_url "https://www.google.com"
+    ;;
+  store)
+    open_terminal_tool aurion-store
+    ;;
+  install|apps|app)
+    open_terminal_tool aurion-install --explain
+    ;;
+  hardware|wifi|driver)
+    open_terminal_tool aurion-hardware-center
+    ;;
+  diagnostics|diagnose|diag)
+    open_terminal_tool aurion-diagnostics
+    ;;
+  ai|assistant)
+    if has_graphics && command -v aurion-ai-sidebar >/dev/null 2>&1; then
+      aurion-ai-sidebar
+    else
+      aurion-assistant
+    fi
+    ;;
+  rollback|snapshot)
+    open_terminal_tool aurion-snapshot-plan
+    ;;
+  shell)
+    aurion-shell
+    ;;
+  launcher)
+    aurion-launcher
+    ;;
+  *)
+    echo "Unknown safe action: $1" >&2
+    usage >&2
+    exit 2
+    ;;
+esac

@@ -21,10 +21,12 @@ The alpha goal is a credible first ISO, not a finished distribution. Ubuntu/Lubu
 - AurionOS LXQt session entry
 - AurionOS visual profile for LXQt with branded theme, top bar, bottom dock, window theme, icons, desktop shortcuts, and keyboard shortcuts
 - Welcome page and first-run live branding hook
+- Aurion Shell graphical alpha surface with Launcher, AI Sidebar, Dock concept, app flow, hardware flow, and control flow
 - Aurion Experience graphical alpha shell with task-oriented AI surface
 - Aurion Hub generated local HTML system overview
 - Aurion Control Center alpha command
 - Mock AI assistant foundation
+- Safe task runner for email, browser, Store, hardware, diagnostics, AI, and rollback actions
 - Task assistant for email, browser, app install, hardware and diagnostics flows
 - Ollama/phi4-mini provider metadata and status command
 - Hardware scanner CLI
@@ -42,6 +44,12 @@ The alpha goal is a credible first ISO, not a finished distribution. Ubuntu/Lubu
 
 ```bash
 aurion-status
+aurion-shell
+aurion-launcher
+aurion-ai-sidebar
+aurion-do email
+aurion-do store
+aurion-do hardware
 aurion-experience
 aurion-hub
 aurion-control
