@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Aurion Control Center
+Comment=Open AurionOS alpha system controls
+Exec=qterminal -e aurion-control
+Icon=preferences-system
+Terminal=false
+Categories=System;Settings;
