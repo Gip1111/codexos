@@ -8,15 +8,19 @@ ISO strategy: remaster the official Lubuntu 24.04 desktop ISO in GitHub Actions.
 
 Secure Boot strategy: preserve the signed Ubuntu boot chain. The build does not replace shim, signed GRUB, the signed Ubuntu kernel, or the live initrd. It hashes critical boot files before and after branding and fails if they change.
 
-Live session strategy: ship an `AurionOS` LXQt session entry and live-session branding. LXQt remains the default stable desktop foundation for v0.1. The future labwc/Qt shell is represented by lightweight command placeholders.
+Live session strategy: ship an `AurionOS` LXQt session entry, live-session branding, and a welcome page. LXQt remains the stable desktop foundation for v0.1. The future labwc/Qt shell is represented by lightweight command placeholders.
 
-Installer strategy: keep the Lubuntu Calamares installer. Only safe desktop launcher text is rebranded where present. No custom installer is attempted in v0.1.
+Installer strategy: keep the Lubuntu Calamares installer. Safe text rebranding is applied where present. No custom installer is attempted in v0.1.
 
-Branding strategy: set AurionOS release identity, issue text, MOTD, wallpaper, application launchers, session metadata, ISO menu text, and docs. Plymouth theme files are included but not enabled because enabling them would require boot/initrd changes that are not worth the alpha risk.
+Branding strategy: set AurionOS release identity, issue text, MOTD, wallpaper, application launchers, session metadata, ISO menu text, welcome page, and docs. Plymouth theme files are included but not enabled because enabling them would require boot/initrd changes that are not worth the alpha risk.
 
-AI strategy: include a provider-agnostic mock assistant command. The later default local provider target is Ollama with `phi4-mini`. Cloud AI remains disabled by default and must be opt-in.
+AI strategy: include a provider-agnostic mock assistant, AI provider metadata, and `aurion-ai-status`. The later default local provider target is Ollama with `phi4-mini`. Cloud AI remains disabled by default and must be opt-in.
 
-Hardware strategy: include a read-only hardware scanner and diagnostics command. No DKMS, proprietary modules, or driver mutation is performed in the live ISO.
+Hardware strategy: include a read-only hardware scanner, diagnostics command, Hardware Center alpha command, and a small JSON classification database. No DKMS, proprietary modules, or driver mutation is performed in the live ISO.
+
+App strategy: include an Aurion Store alpha command and catalog. It is list-only in v0.1 and documents the Flatpak-first, Snap-optional, `.deb`, `.flatpakref`, and AppImage integration path.
+
+Control Center strategy: include `aurion-control`, a terminal-safe grouping surface for status, hardware, AI, app catalog, diagnostics, and rollback. Final target is Qt6/QML.
 
 GitHub Actions strategy: build on `ubuntu-24.04`, free disk space, install ISO tools, run the build script, clearly fail if the expected ISO is absent, upload the ISO artifact, and upload logs even on failure.
 
@@ -26,9 +30,10 @@ GitHub Actions strategy: build on `ubuntu-24.04`, free disk space, install ISO t
 - Preserve signed boot files and fail if critical boot hashes change.
 - Produce `iso-build/output/aurion-os-0.1-alpha-amd64.iso`.
 - Upload artifact as `aurion-os-alpha-iso`.
-- Add visible AurionOS branding, wallpaper, session entry, release files, and docs.
+- Add visible AurionOS branding, wallpaper, session entry, release files, welcome, and docs.
 - Keep Calamares installer stable.
 - Include build logs as an artifact.
+- Include alpha foundations for Control Center, AI provider, Hardware Center, Store, diagnostics, and release channel.
 
 ## Repository structure
 
@@ -46,8 +51,10 @@ distro/plymouth/
 distro/session/
 shell/
 shell/bin/
+control-center/
 ai-services/
 hardware-compat/
+app-store/
 diagnostics/
 docs/
 ```
@@ -57,8 +64,14 @@ Important payload files:
 - `distro/wallpapers/aurionos-alpha.svg`
 - `distro/session/aurionos-lxqt.desktop`
 - `distro/session/scripts/aurion-apply-live-branding`
+- `distro/branding/usr/share/aurionos/welcome/index.html`
+- `control-center/aurion-control`
 - `ai-services/aurion-assistant`
+- `ai-services/aurion-ai-status`
 - `hardware-compat/aurion-hw-scan`
+- `hardware-compat/aurion-hardware-center`
+- `app-store/aurion-store`
+- `diagnostics/aurion-status`
 - `diagnostics/aurion-diagnostics`
 - `diagnostics/aurion-rollback-status`
 
@@ -91,18 +104,18 @@ xorriso
 
 - Improve Calamares branding after verifying the exact Lubuntu 24.04 Calamares branding layout.
 - Add an experimental labwc session package only after the remaster build is green.
-- Replace shell placeholders with Qt6/QML prototypes.
+- Replace shell/control/store/hardware placeholders with Qt6/QML prototypes.
 - Add VM smoke testing in CI with QEMU once the ISO artifact is reliably produced.
 
 ## Defer
 
 - Custom compositor.
 - Full custom installer.
-- App store.
+- Production app store and package installation.
 - Full settings app.
 - Complete file manager.
 - Automatic rollback.
-- Driver intelligence database.
+- Large hardware/driver intelligence database.
 - Ollama model download inside the ISO.
 
 ## Unsafe for alpha
