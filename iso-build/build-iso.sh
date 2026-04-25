@@ -149,6 +149,7 @@ install_tool_payload() {
 
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-assistant" "$rootfs/usr/local/bin/aurion-assistant"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-ai-status" "$rootfs/usr/local/bin/aurion-ai-status"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-ai-status-gui" "$rootfs/usr/local/bin/aurion-ai-status-gui"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-ai-service" "$rootfs/usr/local/bin/aurion-ai-service"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-ai-setup" "$rootfs/usr/local/bin/aurion-ai-setup"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/ai-services/aurion-do" "$rootfs/usr/local/bin/aurion-do"
@@ -273,6 +274,7 @@ apply_session_selection() {
   "${SUDO[@]}" install -Dm0644 "$session_source" "$rootfs/usr/share/xsessions/AurionOS.desktop"
   "${SUDO[@]}" install -Dm0644 "$session_source" "$rootfs/usr/share/xsessions/Lubuntu.desktop"
   "${SUDO[@]}" install -Dm0644 "$session_source" "$rootfs/usr/share/xsessions/lubuntu.desktop"
+  "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/aurionos-labwc.desktop" "$rootfs/usr/share/wayland-sessions/aurionos-labwc.desktop"
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/profile/aurionos-session.sh" "$rootfs/etc/profile.d/aurionos-session.sh"
 
   for session_file in \
@@ -333,6 +335,7 @@ apply_branding() {
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-session-guard" "$rootfs/usr/local/bin/aurion-session-guard"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-session-watchdog" "$rootfs/usr/local/bin/aurion-session-watchdog"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-startlxqt" "$rootfs/usr/local/bin/aurion-startlxqt"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-startlabwc" "$rootfs/usr/local/bin/aurion-startlabwc"
 
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/wallpapers/aurionos-alpha.svg" "$rootfs/usr/share/backgrounds/aurionos/aurionos-alpha.svg"
   rsvg-convert -w 1920 -h 1080 "$PROJECT_ROOT/distro/wallpapers/aurionos-alpha.svg" -o "$WORK_DIR/aurionos-alpha.png"

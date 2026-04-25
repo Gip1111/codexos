@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+case "${1:-}" in
+  --help|-h)
+    cat <<'EOF'
+AurionOS LabWC Preview session launcher
+
+Usage:
+  aurion-startlabwc
+  aurion-startlabwc --check
+
+This is an experimental non-default Wayland session. If labwc is unavailable,
+it falls back to the stable AurionOS LXQt session.
+EOF
+    exit 0
+    ;;
+  --check)
+    if command -v labwc >/dev/null 2>&1; then
+      echo "labwc: available"
+    else
+      echo "labwc: not installed; LXQt fallback will be used"
+    fi
+    exit 0
+    ;;
+esac
+
+export DESKTOP_SESSION="AurionOS LabWC Preview"
+export XDG_SESSION_DESKTOP="AurionOS-LabWC"
+export XDG_CURRENT_DESKTOP="AurionOS:labwc"
+export XDG_SESSION_TYPE="wayland"
+export AURIONOS_SESSION="labwc-preview"
+
+config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
+labwc_home="$config_home/labwc"
+source_dir="/usr/share/aurionos/labwc"
+
+mkdir -p "$labwc_home"
+for file in autostart environment menu.xml rc.xml; do
+  if [ -f "$source_dir/$file" ] && [ ! -f "$labwc_home/$file" ]; then
+    cp "$source_dir/$file" "$labwc_home/$file"
+  fi
+done
+
+if ! command -v labwc >/dev/null 2>&1; then
+  echo "AurionOS LabWC Preview: labwc is not installed; falling back to stable LXQt session." >&2
+  export DESKTOP_SESSION="AurionOS"
+  export XDG_SESSION_DESKTOP="AurionOS"
+  export XDG_CURRENT_DESKTOP="LXQt:AurionOS"
+  export XDG_SESSION_TYPE="x11"
+  unset AURIONOS_SESSION
+  exec /usr/local/bin/aurion-startlxqt
+fi
+
+if command -v dbus-run-session >/dev/null 2>&1; then
+  exec dbus-run-session -- labwc
+fi
+
+exec labwc

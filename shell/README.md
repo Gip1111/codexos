@@ -11,9 +11,12 @@ The intended path is:
 Current alpha commands:
 
 - `aurion-shell`
+- `aurion-qml-surface`
 - `aurion-launcher`
 - `aurion-ai-sidebar`
 - `aurion-topbar`
 - `aurion-dock`
 
-These open a local offline HTML shell at `/usr/share/aurionos/shell/index.html`. It is not the final shell, but it gives the ISO a real graphical Launcher, AI Sidebar, Dock concept, Control Center surface, and app/hardware task flow without adding risky compositor dependencies.
+These prefer the Qt/QML bridge at `/usr/share/aurionos/qml/AurionShell.qml` when a QML runtime is available and fall back to local offline HTML at `/usr/share/aurionos/shell/index.html`. It is not the final shell, but it gives the ISO a real graphical Launcher, AI Sidebar, Dock concept, Control Center surface, and app/hardware task flow without adding risky compositor dependencies.
+
+`AurionOS LabWC Preview` is also shipped as an experimental Wayland session entry. It is not the default session and falls back to LXQt if `labwc` is unavailable.

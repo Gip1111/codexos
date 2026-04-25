@@ -2,7 +2,7 @@
 Type=Application
 Name=Aurion AI Sidebar
 Comment=Open local-first assistant sidebar
-Exec=aurion-ai-sidebar
+Exec=aurion-qml-surface --page assistant
 Icon=aurion-assistant
 Terminal=false
 Categories=System;Utility;

@@ -2,7 +2,7 @@
 Type=Application
 Name=Aurion AI Status
 Comment=Check local AI provider readiness
-Exec=aurion-action aurion-action://ai-setup
+Exec=aurion-ai-status-gui
 Icon=aurion-assistant
 Terminal=false
 Categories=System;Utility;

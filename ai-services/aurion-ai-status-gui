@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if command -v aurion-qml-surface >/dev/null 2>&1; then
+  exec aurion-qml-surface --page ai-status
+fi
+
+if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v qterminal >/dev/null 2>&1; then
+  qterminal -e aurion-ai-status >/dev/null 2>&1 &
+  exit 0
+fi
+
+exec aurion-ai-status

@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+page="desktop"
+qml="/usr/share/aurionos/qml/AurionShell.qml"
+
+usage() {
+  cat <<'EOF'
+Aurion QML Surface - alpha bridge
+
+Usage:
+  aurion-qml-surface
+  aurion-qml-surface --page desktop|launcher|assistant|apps|store|hardware|diagnostics|control
+  aurion-qml-surface --path
+
+The command opens the Qt/QML shell prototype when a QML runtime is available.
+If not, it falls back to the stable graphical HTML alpha surfaces.
+EOF
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --page)
+      page="${2:-}"
+      [ -n "$page" ] || { echo "Missing page id" >&2; exit 2; }
+      shift 2
+      ;;
+    --path)
+      echo "$qml"
+      exit 0
+      ;;
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $1" >&2
+      usage >&2
+      exit 2
+      ;;
+  esac
+done
+
+open_html() {
+  local target="$1"
+  if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "$target" >/dev/null 2>&1 || {
+      echo "Could not open automatically: $target"
+    }
+  else
+    echo "$target"
+  fi
+}
+
+fallback() {
+  case "$page" in
+    store|apps)
+      open_html "file:///usr/share/aurionos/store/index.html"
+      ;;
+    hardware)
+      open_html "file:///usr/share/aurionos/hardware/index.html"
+      ;;
+    diagnostics)
+      open_html "file:///usr/share/aurionos/diagnostics/index.html"
+      ;;
+    assistant|ai|ai-status)
+      open_html "file:///usr/share/aurionos/shell/index.html#assistant"
+      ;;
+    control|settings)
+      open_html "file:///usr/share/aurionos/shell/index.html#control"
+      ;;
+    launcher)
+      open_html "file:///usr/share/aurionos/shell/index.html#launcher"
+      ;;
+    *)
+      open_html "file:///usr/share/aurionos/shell/index.html#$page"
+      ;;
+  esac
+}
+
+if [ ! -f "$qml" ]; then
+  fallback
+  exit 0
+fi
+
+if [ -z "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]; then
+  fallback
+  exit 0
+fi
+
+for runner in qml6 qmlscene-qt6 qml qmlscene; do
+  if command -v "$runner" >/dev/null 2>&1; then
+    AURION_QML_PAGE="$page" "$runner" "$qml" --aurion-page "$page" >/tmp/aurion-qml-surface.log 2>&1 &
+    pid="$!"
+    sleep 1
+    if kill -0 "$pid" >/dev/null 2>&1; then
+      exit 0
+    fi
+    echo "Aurion QML runtime failed; falling back to the stable graphical surface." >&2
+    echo "Log: /tmp/aurion-qml-surface.log" >&2
+    fallback
+    exit 0
+  fi
+done
+
+fallback

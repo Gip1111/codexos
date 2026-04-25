@@ -17,6 +17,7 @@ AurionOS must not look like stock Lubuntu. The alpha visual profile is intention
 - Branded hicolor SVG icons for AurionOS, Experience, Assistant, Store, Hardware, and Snapshot.
 - Desktop shortcuts for Launcher, Experience, Store, and installer.
 - Local Aurion Shell surface with Launcher, AI Sidebar, app install flow, hardware flow, and control flow.
+- Qt/QML shell bridge at `/usr/share/aurionos/qml/AurionShell.qml` for the native desktop direction.
 - Keyboard shortcuts:
   - `Super+Space`: Aurion Launcher
   - `Super+E`: Aurion Experience
@@ -37,7 +38,7 @@ The final desktop should feel direct and task-oriented:
 
 ## Future native shell
 
-The alpha uses LXQt configuration and local HTML surfaces. The target is a Qt6/QML shell with:
+The alpha uses LXQt configuration, a QML bridge, and local HTML fallbacks. The target is a packaged Qt6/QML shell with:
 
 - native top bar
 - native dock
@@ -47,6 +48,10 @@ The alpha uses LXQt configuration and local HTML surfaces. The target is a Qt6/Q
 - app store
 - hardware center
 - diagnostics
+
+## Experimental LabWC Session
+
+`AurionOS LabWC Preview` is installed as a non-default Wayland session entry. It is intentionally fallback-safe: if `labwc` is not present, `aurion-startlabwc` returns to the stable LXQt session instead of leaving the user at a broken desktop.
 
 ## Files
 

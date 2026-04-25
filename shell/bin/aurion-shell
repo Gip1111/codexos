@@ -46,6 +46,10 @@ if [ ! -f "$base" ]; then
   exit 1
 fi
 
+if [ "${AURION_SHELL_BACKEND:-qml}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
+  exec aurion-qml-surface --page "$page_id"
+fi
+
 target="file://$base#$page_id"
 echo "Opening Aurion Shell: $target"
 

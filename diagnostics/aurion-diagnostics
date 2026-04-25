@@ -9,6 +9,10 @@ if [ "${1:-}" = "--path" ]; then
   exit 0
 fi
 
+if [ "${1:-}" != "--cli" ] && [ "${AURION_DIAGNOSTICS_BACKEND:-qml}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
+  exec aurion-qml-surface --page diagnostics
+fi
+
 if [ "${1:-}" != "--cli" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-diagnostics-gui >/dev/null 2>&1; then
   exec aurion-diagnostics-gui "$@"
 fi

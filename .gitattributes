@@ -11,6 +11,7 @@
 *.html text eol=lf
 *.css text eol=lf
 *.js text eol=lf
+*.qml text eol=lf
 *.md text eol=lf
 *.qss text eol=lf
 *.svg text eol=lf
@@ -26,6 +27,7 @@ distro/session/scripts/* text eol=lf
 distro/session/xsession/* text eol=lf
 distro/branding/usr/share/themes/*/openbox-3/themerc text eol=lf
 distro/branding/usr/local/bin/* text eol=lf
+distro/branding/usr/share/aurionos/labwc/* text eol=lf
 ai-services/aurion-* text eol=lf
 app-store/aurion-* text eol=lf
 app-installer/aurion-* text eol=lf

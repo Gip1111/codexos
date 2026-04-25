@@ -2,7 +2,7 @@
 Type=Application
 Name=Aurion Shell
 Comment=Open the AurionOS alpha shell surface
-Exec=aurion-shell
+Exec=aurion-qml-surface --page desktop
 Icon=aurionos
 Terminal=false
 Categories=System;Settings;

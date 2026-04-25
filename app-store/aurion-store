@@ -29,6 +29,10 @@ EOF
   exit 0
 fi
 
+if [ "${1:-}" != "--cli" ] && [ "${AURION_STORE_BACKEND:-qml}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
+  exec aurion-qml-surface --page store
+fi
+
 if [ "${1:-}" != "--cli" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-store-gui >/dev/null 2>&1; then
   exec aurion-store-gui "$@"
 fi

@@ -1,0 +1,6 @@
+# AurionOS LabWC Preview autostart.
+# This session is experimental and is not the default live session.
+
+lxqt-policykit-agent >/dev/null 2>&1 &
+nm-applet >/dev/null 2>&1 &
+aurion-experience >/dev/null 2>&1 &

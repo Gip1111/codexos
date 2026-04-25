@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=AurionOS LabWC Preview
+Comment=Experimental AurionOS Wayland session with LXQt fallback
+Exec=/usr/local/bin/aurion-startlabwc
+TryExec=/usr/local/bin/aurion-startlabwc
+DesktopNames=AurionOS;labwc;wlroots;

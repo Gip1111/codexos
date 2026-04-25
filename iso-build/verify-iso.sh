@@ -106,6 +106,7 @@ main() {
   require_file_in_squashfs etc/aurionos-release
   require_file_in_squashfs usr/share/backgrounds/aurionos/aurionos-alpha.png
   require_file_in_squashfs usr/share/xsessions/aurionos-lxqt.desktop
+  require_file_in_squashfs usr/share/wayland-sessions/aurionos-labwc.desktop
   require_file_in_squashfs etc/xdg/autostart/aurion-live-branding.desktop
   require_file_in_squashfs etc/xdg/autostart/aurion-session-guard.desktop
   require_file_in_squashfs etc/xdg/autostart/aurion-session-watchdog.desktop
@@ -141,6 +142,11 @@ main() {
   require_file_in_squashfs usr/share/aurionos/diagnostics/index.html
   require_file_in_squashfs usr/share/aurionos/diagnostics/styles.css
   require_file_in_squashfs usr/share/aurionos/diagnostics/app.js
+  require_file_in_squashfs usr/share/aurionos/labwc/autostart
+  require_file_in_squashfs usr/share/aurionos/labwc/environment
+  require_file_in_squashfs usr/share/aurionos/labwc/menu.xml
+  require_file_in_squashfs usr/share/aurionos/labwc/rc.xml
+  require_file_in_squashfs usr/share/aurionos/qml/AurionShell.qml
   require_file_in_squashfs usr/share/aurionos/shell/index.html
   require_file_in_squashfs usr/share/aurionos/shell/styles.css
   require_file_in_squashfs usr/share/aurionos/shell/app.js
@@ -177,9 +183,11 @@ main() {
   require_executable_in_squashfs usr/local/bin/aurion-session-guard
   require_executable_in_squashfs usr/local/bin/aurion-session-watchdog
   require_executable_in_squashfs usr/local/bin/aurion-startlxqt
+  require_executable_in_squashfs usr/local/bin/aurion-startlabwc
   require_executable_in_squashfs usr/local/bin/aurion-control
   require_executable_in_squashfs usr/local/bin/aurion-action
   require_executable_in_squashfs usr/local/bin/aurion-shell
+  require_executable_in_squashfs usr/local/bin/aurion-qml-surface
   require_executable_in_squashfs usr/local/bin/aurion-launcher
   require_executable_in_squashfs usr/local/bin/aurion-ai-sidebar
   require_executable_in_squashfs usr/local/bin/aurion-topbar
@@ -187,6 +195,7 @@ main() {
   require_executable_in_squashfs usr/local/bin/aurion-experience
   require_executable_in_squashfs usr/local/bin/aurion-hub
   require_executable_in_squashfs usr/local/bin/aurion-ai-status
+  require_executable_in_squashfs usr/local/bin/aurion-ai-status-gui
   require_executable_in_squashfs usr/local/bin/aurion-ai-service
   require_executable_in_squashfs usr/local/bin/aurion-ai-setup
   require_executable_in_squashfs usr/local/bin/aurion-do
@@ -217,6 +226,20 @@ main() {
     || fail "AurionOS session does not use the guarded LXQt starter"
   grep -Fq 'DesktopNames=LXQt;AurionOS;' "$WORK_DIR/aurionos-lxqt.desktop" \
     || fail "AurionOS session does not keep LXQt in DesktopNames"
+
+  cat_squashfs_file usr/share/wayland-sessions/aurionos-labwc.desktop > "$WORK_DIR/aurionos-labwc.desktop"
+  grep -Fq 'Exec=/usr/local/bin/aurion-startlabwc' "$WORK_DIR/aurionos-labwc.desktop" \
+    || fail "AurionOS LabWC preview session does not use aurion-startlabwc"
+
+  cat_squashfs_file usr/local/bin/aurion-startlabwc > "$WORK_DIR/aurion-startlabwc"
+  grep -Fq 'falling back to stable LXQt session' "$WORK_DIR/aurion-startlabwc" \
+    || fail "AurionOS LabWC preview does not keep the safe LXQt fallback"
+
+  cat_squashfs_file usr/share/aurionos/qml/AurionShell.qml > "$WORK_DIR/aurion-qml-shell.qml"
+  grep -Fq 'ApplicationWindow' "$WORK_DIR/aurion-qml-shell.qml" \
+    || fail "Aurion QML shell prototype is missing an ApplicationWindow"
+  grep -Fq 'aurion-action://' "$WORK_DIR/aurion-qml-shell.qml" \
+    || fail "Aurion QML shell prototype does not route through aurion-action links"
 
   cat_squashfs_file etc/X11/Xsession.d/80aurionos-session-guard > "$WORK_DIR/xsession-guard"
   grep -Fq 'aurion-session-guard' "$WORK_DIR/xsession-guard" \

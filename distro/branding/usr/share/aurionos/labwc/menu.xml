@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openbox_menu>
+  <menu id="root-menu" label="AurionOS">
+    <item label="Aurion Experience">
+      <action name="Execute"><command>aurion-experience</command></action>
+    </item>
+    <item label="Aurion Store">
+      <action name="Execute"><command>aurion-store</command></action>
+    </item>
+    <item label="Hardware Center">
+      <action name="Execute"><command>aurion-hardware-center</command></action>
+    </item>
+    <item label="Diagnostics">
+      <action name="Execute"><command>aurion-diagnostics</command></action>
+    </item>
+    <item label="Terminal">
+      <action name="Execute"><command>qterminal</command></action>
+    </item>
+    <separator/>
+    <item label="Exit">
+      <action name="Exit"/>
+    </item>
+  </menu>
+</openbox_menu>

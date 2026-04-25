@@ -1,6 +1,28 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
+  cat <<'EOF'
+AurionOS Control Center
+
+Usage:
+  aurion-control
+  aurion-control --cli
+
+The default desktop path opens the Qt/QML alpha bridge when available and falls
+back to the stable graphical HTML surfaces. Use --cli for the terminal menu.
+EOF
+  exit 0
+fi
+
+if [ "${1:-}" != "--cli" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
+  exec aurion-qml-surface --page control
+fi
+
+if [ "${1:-}" = "--cli" ]; then
+  shift
+fi
+
 run_or_missing() {
   local tool="$1"
   shift || true

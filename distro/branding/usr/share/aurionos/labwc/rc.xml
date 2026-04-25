@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<labwc_config>
+  <theme>
+    <name>AurionOS</name>
+    <cornerRadius>8</cornerRadius>
+    <font name="Sans" size="10"/>
+  </theme>
+  <keyboard>
+    <keybind key="W-Space">
+      <action name="Execute" command="aurion-launcher"/>
+    </keybind>
+    <keybind key="W-e">
+      <action name="Execute" command="aurion-experience"/>
+    </keybind>
+    <keybind key="W-a">
+      <action name="Execute" command="aurion-ai-sidebar"/>
+    </keybind>
+    <keybind key="W-s">
+      <action name="Execute" command="aurion-store"/>
+    </keybind>
+    <keybind key="W-h">
+      <action name="Execute" command="aurion-hardware-center"/>
+    </keybind>
+  </keyboard>
+  <mouse>
+    <default/>
+  </mouse>
+</labwc_config>

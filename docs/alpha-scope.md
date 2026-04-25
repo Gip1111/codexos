@@ -9,9 +9,11 @@
 - AurionOS wallpaper
 - AurionOS LXQt session entry
 - AurionOS LXQt visual profile with branded panel theme, dark top bar, bottom dock, Openbox theme, icon set, desktop shortcuts, and keyboard shortcuts
+- AurionOS LabWC Preview session entry with safe LXQt fallback when `labwc` is not installed
 - Guarded LXQt starter, Xsession guard, and session watchdog to recover panel, desktop, runner, notifications, policy kit, power management, and global shortcut modules if LXQt autostart is incomplete
 - Welcome page and first-run live branding hook
 - Aurion Shell graphical alpha surface with Launcher, AI Sidebar, Dock concept, app flow, hardware flow, and control flow
+- Qt/QML shell bridge for the future native desktop, with HTML fallback when no QML runtime is available
 - Aurion Experience graphical alpha shell styled as the first desktop home/command center
 - Clickable Aurion Experience actions for browser, email, file manager, terminal, Store, installer, AI assistant, hardware checks, diagnostics, and rollback through the local `aurion-action://` handler
 - Aurion Hub generated local HTML report
@@ -42,7 +44,7 @@
 - AI responses when Ollama/phi4-mini is not installed locally
 - AI natural language handling beyond the optional local Ollama bridge and rule-based task routing
 - Hardware compatibility explanations beyond the small alpha database and static GUI
-- Native Qt6/QML TopBar, Dock, Launcher, and AI Sidebar behavior beyond the HTML/LXQt alpha surfaces
+- Native Qt6/QML TopBar, Dock, Launcher, and AI Sidebar behavior beyond the QML bridge and HTML/LXQt alpha surfaces
 - Rollback automation
 - Real app installation from Aurion Store
 - Full trusted package verification and GUI confirmation flow
@@ -51,8 +53,8 @@
 
 - Final logo, animation system, and complete visual identity
 - Active custom Plymouth boot splash
-- labwc Aurion session
-- Qt6/QML shell
+- labwc installed and enabled as a complete daily-driver session
+- Complete Qt6/QML shell package with guaranteed runtime dependencies
 - Full Calamares theme replacement
 - Native Qt6/QML replacements for Store, Hardware Center, Diagnostics, and AI setup
 - Bundled Ollama runtime or automatic model manager
@@ -77,8 +79,8 @@ The alpha now includes an Aurion Store graphical catalog, but it does not instal
 3. Verify live session branding.
 4. Verify installer launch and installed-system boot.
 5. Add QEMU smoke test automation.
-6. Add a labwc experimental session.
-7. Replace Control Center, Store, Hardware Center, and AI status commands with Qt6/QML applications.
+6. Install and harden labwc only after the preview session is proven safe.
+7. Replace the QML bridge with packaged Qt6/QML applications and runtime dependencies.
 8. Add optional Ollama install/enable flow for `phi4-mini`.
 
 ## Acceptance criteria
@@ -93,6 +95,7 @@ AurionOS Alpha Fast Track v0.1 is accepted only when:
 - Live session starts.
 - AurionOS branding is visible.
 - AurionOS top bar, bottom dock, desktop shortcuts, icons, and Experience command center are visible.
+- Stable session remains LXQt unless the user explicitly chooses LabWC Preview.
 - Installer launches.
 - Installed system boots.
 - `aurion-status`, `aurion-control`, `aurion-hardware-center`, `aurion-ai-status`, `aurion-ai-service`, `aurion-ai-setup`, and `aurion-store` run in the live session.

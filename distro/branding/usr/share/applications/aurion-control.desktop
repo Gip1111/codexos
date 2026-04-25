@@ -2,7 +2,7 @@
 Type=Application
 Name=Aurion Control Center
 Comment=Open AurionOS alpha system controls
-Exec=aurion-shell --page control
+Exec=aurion-control
 Icon=aurionos
 Terminal=false
 Categories=System;Settings;

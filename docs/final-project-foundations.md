@@ -7,20 +7,22 @@ AurionOS Alpha Fast Track remains a safe ISO remaster, but it now carries the fi
 Current alpha:
 
 - LXQt session remains the stable live desktop.
+- `AurionOS LabWC Preview` is available as an experimental Wayland session entry and falls back to LXQt if `labwc` is not installed.
 - AurionOS session metadata and environment branding are applied.
 - `aurionos-alpha` LXQt theme, `AurionOS` Openbox theme, top bar, bottom dock, branded icons, desktop shortcuts, and keyboard shortcuts replace the stock Lubuntu desktop feel.
 - `aurion-startlxqt`, `aurion-session-guard`, and `aurion-session-watchdog` guard the live session against a cursor-only desktop by restoring missing LXQt panel, desktop, runner, notification, policy kit, power, and shortcut modules.
-- `aurion-shell`, `aurion-launcher`, `aurion-ai-sidebar`, `aurion-topbar`, and `aurion-dock` now open a local graphical shell surface instead of text placeholders.
+- `aurion-qml-surface` adds the first Qt/QML bridge for the future native shell and falls back to the stable HTML surfaces when no QML runtime is available.
+- `aurion-shell`, `aurion-launcher`, `aurion-ai-sidebar`, `aurion-topbar`, and `aurion-dock` now prefer the QML bridge and keep the HTML surfaces as fallback.
 - `aurion-experience` provides the first graphical task-oriented shell surface.
 - `aurion-hub` generates a local HTML overview report.
 - `aurion-control` groups the first system surfaces.
-- The shell commands remain alpha HTML foundations, not native compositor components.
+- The shell commands remain alpha foundations, not native compositor components.
 
 Final target:
 
 - Qt6/QML shell components.
-- labwc-based early compositor/session path.
-- TopBar, Dock, Launcher, AI Sidebar, notifications, power/network controls.
+- labwc-based early compositor/session path hardened enough to become selectable by default later.
+- Packaged Qt6/QML TopBar, Dock, Launcher, AI Sidebar, notifications, power/network controls.
 
 ## AI Layer
 

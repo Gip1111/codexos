@@ -66,6 +66,7 @@ printf '\nAurionOS tools:\n'
 for tool in \
   aurion-control \
   aurion-shell \
+  aurion-qml-surface \
   aurion-launcher \
   aurion-ai-sidebar \
   aurion-topbar \
@@ -74,6 +75,7 @@ for tool in \
   aurion-hub \
   aurion-status \
   aurion-startlxqt \
+  aurion-startlabwc \
   aurion-session-guard \
   aurion-session-watchdog \
   aurion-apply-live-branding \
@@ -81,6 +83,7 @@ for tool in \
   aurion-channel \
   aurion-assistant \
   aurion-ai-status \
+  aurion-ai-status-gui \
   aurion-ai-service \
   aurion-ai-setup \
   aurion-do \

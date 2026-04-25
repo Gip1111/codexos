@@ -34,7 +34,7 @@ For the first run, inspect these points in order:
 2. `Build AurionOS ISO` downloads a Lubuntu 24.04 desktop amd64 ISO and verifies SHA256.
 3. The log prints `Secure Boot critical file hashes are unchanged`.
 4. `Verify ISO output` prints a SHA256 for `aurion-os-0.1-alpha-amd64.iso`.
-5. `Verify ISO contents` confirms AurionOS branding, guarded session startup, LXQt profile, wallpaper settings, tools, welcome files, AI metadata, graphical Store, graphical Hardware Center, graphical Diagnostics, hardware database, and store catalog are present inside the ISO.
+5. `Verify ISO contents` confirms AurionOS branding, guarded session startup, LXQt profile, LabWC preview entry, QML bridge, wallpaper settings, tools, welcome files, AI metadata, graphical Store, graphical Hardware Center, graphical Diagnostics, hardware database, and store catalog are present inside the ISO.
 6. `aurion-os-alpha-iso` contains both the ISO and `.sha256` file.
 
 If the run fails, download `aurion-os-alpha-build-logs` first. The most useful files are:
@@ -74,24 +74,28 @@ Basic VM acceptance:
 12. Press `Super+A` and confirm Aurion AI Sidebar opens.
 13. Run `aurion-status`.
 14. Run `aurion-shell`.
-15. Run `aurion-launcher`.
-16. Run `aurion-ai-sidebar`.
-17. Run `aurion-experience`.
-18. Run `aurion-action aurion-action://browser`.
-19. Run `aurion-task-assist "read email"`.
-20. Run `aurion-hub`.
-21. Run `aurion-control` and open each menu option.
-22. Run `aurion-store` and confirm the graphical Store opens.
-23. Run `aurion-hardware-center` and confirm the graphical Hardware Center opens.
-24. Run `aurion-diagnostics` and confirm the graphical Diagnostics surface opens.
-25. Run `aurion-ai-service "check wifi"` and confirm it uses Ollama if ready or falls back to the safe task router.
-26. Run `aurion-ai-setup --status`.
-27. Run `aurion-install --explain`.
-28. Run `aurion-snapshot-plan`.
-29. Run `aurion-diagnostics --cli`.
-30. Launch the installer.
-31. Install to a blank VM disk.
-32. Reboot into the installed system.
+15. Run `aurion-qml-surface --page desktop` and confirm either the QML shell bridge opens or the HTML shell fallback opens.
+16. Run `aurion-launcher`.
+17. Run `aurion-ai-sidebar`.
+18. Run `aurion-experience`.
+19. Run `aurion-action aurion-action://browser`.
+20. Run `aurion-task-assist "read email"`.
+21. Run `aurion-hub`.
+22. Run `aurion-control` and confirm the graphical control surface opens.
+23. Run `aurion-control --cli` and open each terminal menu option.
+24. Run `aurion-store` and confirm the graphical Store opens.
+25. Run `aurion-hardware-center` and confirm the graphical Hardware Center opens.
+26. Run `aurion-diagnostics` and confirm the graphical Diagnostics surface opens.
+27. Run `aurion-ai-status-gui`.
+28. Run `aurion-ai-service "check wifi"` and confirm it uses Ollama if ready or falls back to the safe task router.
+29. Run `aurion-ai-setup --status`.
+30. Run `aurion-startlabwc --check`; do not switch the real acceptance session away from LXQt for v0.1.
+31. Run `aurion-install --explain`.
+32. Run `aurion-snapshot-plan`.
+33. Run `aurion-diagnostics --cli`.
+34. Launch the installer.
+35. Install to a blank VM disk.
+36. Reboot into the installed system.
 
 ## USB test
 
@@ -117,19 +121,22 @@ Hardware acceptance:
 8. Press `Super+A` and confirm the AI Sidebar opens.
 9. Run `aurion-status`.
 10. Run `aurion-shell`.
-11. Run `aurion-hw-scan`.
-12. Run `aurion-hardware-center`.
-13. Run `aurion-ai-status`.
-14. Run `aurion-ai-setup --status`.
-15. Run `aurion-ai-service "check wifi"`.
-16. Run `aurion-store`.
-17. Run `aurion-experience`.
-18. Run `aurion-task-assist "install vlc"`.
-19. Run `aurion-hub`.
-20. Run `aurion-install --explain`.
-21. Run `aurion-snapshot-plan`.
-22. Launch the installer and confirm the visible installer branding says AurionOS where safe.
-23. Do not install to a real disk unless the target disk can be erased.
+11. Run `aurion-qml-surface --page desktop`.
+12. Run `aurion-hw-scan`.
+13. Run `aurion-hardware-center`.
+14. Run `aurion-ai-status`.
+15. Run `aurion-ai-status-gui`.
+16. Run `aurion-ai-setup --status`.
+17. Run `aurion-ai-service "check wifi"`.
+18. Run `aurion-store`.
+19. Run `aurion-experience`.
+20. Run `aurion-task-assist "install vlc"`.
+21. Run `aurion-hub`.
+22. Run `aurion-control --cli`.
+23. Run `aurion-install --explain`.
+24. Run `aurion-snapshot-plan`.
+25. Launch the installer and confirm the visible installer branding says AurionOS where safe.
+26. Do not install to a real disk unless the target disk can be erased.
 
 ## Real hardware retest after platform foundation additions
 
@@ -141,6 +148,7 @@ cat /etc/aurionos-release
 aurion-status
 aurion-session-guard
 aurion-shell
+aurion-qml-surface --page desktop
 aurion-launcher
 aurion-ai-sidebar
 aurion-do email
@@ -152,7 +160,9 @@ aurion-task-assist "install vlc"
 aurion-hub
 aurion-channel
 aurion-control
+aurion-control --cli
 aurion-ai-status
+aurion-ai-status-gui
 aurion-ai-service "controlla wifi"
 aurion-ai-setup --status
 aurion-hardware-center
@@ -165,6 +175,7 @@ aurion-diagnostics
 aurion-diagnostics --cli
 aurion-hw-scan
 aurion-session-watchdog --once
+aurion-startlabwc --check
 ```
 
 Expected improvements:
@@ -173,6 +184,7 @@ Expected improvements:
 - `aurion-session-guard` exits cleanly when it has already run for the session.
 - `aurion-session-watchdog --once` exits without errors and does not create duplicate LXQt modules.
 - `aurion-shell`, `aurion-launcher`, and `aurion-ai-sidebar` open the graphical shell alpha surface.
+- `aurion-qml-surface` opens the QML shell bridge when a QML runtime is installed and otherwise opens the stable HTML fallback.
 - `aurion-do email`, `aurion-do store`, `aurion-do hardware`, and `aurion-do diagnostics` route common tasks through safe alpha tools.
 - `aurion-experience` opens the graphical alpha shell.
 - The LXQt theme is `aurionos-alpha`, Openbox theme is `AurionOS`, and desktop shortcuts use Aurion icons.
@@ -185,6 +197,7 @@ Expected improvements:
 - `aurion-hardware-center` opens the graphical Hardware Center; `--cli` uses the alpha hardware database where it matches known devices.
 - `aurion-store` opens the graphical Store; `--cli` lists the alpha catalog without installing packages.
 - `aurion-diagnostics` opens the graphical Diagnostics surface; `--cli` prints the read-only report.
+- `aurion-startlabwc` exists as a fallback-safe preview launcher; LXQt remains the default accepted live session.
 - `aurion-install --explain` describes `.deb`, `.flatpakref`, and AppImage handling.
 - `aurion-snapshot-plan` reports rollback readiness without changing disks.
 - Terminal session variables report AurionOS instead of Lubuntu where the live shell allows it.
@@ -195,6 +208,8 @@ Expected improvements:
 
 - The assistant falls back to mocked/rule-based behavior unless the user has installed Ollama and pulled `phi4-mini`.
 - The labwc/Qt shell is not active.
+- LabWC Preview is not the default session and may fall back to LXQt if `labwc` is not installed.
+- The QML bridge depends on a QML runtime; without it, AurionOS intentionally uses the HTML graphical fallbacks.
 - Plymouth branding is included but not enabled.
 - Driver installation and DKMS are not part of v0.1.
 - Aurion Store is graphical but catalog-only and does not install packages yet.

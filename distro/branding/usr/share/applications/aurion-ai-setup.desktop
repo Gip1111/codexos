@@ -2,7 +2,7 @@
 Type=Application
 Name=Aurion AI Setup
 Comment=Configure optional local Ollama AI
-Exec=aurion-action aurion-action://ai-setup
+Exec=aurion-ai-status-gui
 Icon=aurion-assistant
 Terminal=false
 Categories=System;Utility;
