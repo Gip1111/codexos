@@ -11,6 +11,7 @@ AurionOS must not look like stock Lubuntu. The alpha visual profile is intention
 - LXQt theme `aurionos-alpha`.
 - Dark top bar with Aurion menu, workspace controls, and system status.
 - Bottom dock with Experience, browser, file manager, terminal, Store, installer, and AI Assistant.
+- Home buttons and dock entries use real icon assets and route through the local `aurion-action://` handler.
 - Openbox theme `AurionOS`.
 - Branded hicolor SVG icons for AurionOS, Experience, Assistant, Store, Hardware, and Snapshot.
 - Desktop shortcuts for Launcher, Experience, Store, and installer.

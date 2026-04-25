@@ -13,6 +13,7 @@
 - Welcome page and first-run live branding hook
 - Aurion Shell graphical alpha surface with Launcher, AI Sidebar, Dock concept, app flow, hardware flow, and control flow
 - Aurion Experience graphical alpha shell styled as the first desktop home/command center
+- Clickable Aurion Experience actions for browser, email, file manager, terminal, Store, installer, AI assistant, hardware checks, diagnostics, and rollback through the local `aurion-action://` handler
 - Aurion Hub generated local HTML report
 - Branded live environment defaults
 - Safer installer text rebranding where present

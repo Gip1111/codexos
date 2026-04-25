@@ -147,9 +147,16 @@ main() {
   require_file_in_squashfs usr/share/applications/aurion-shell.desktop
   require_file_in_squashfs usr/share/applications/aurion-launcher.desktop
   require_file_in_squashfs usr/share/applications/aurion-ai-sidebar.desktop
+  require_file_in_squashfs usr/share/applications/aurion-action-handler.desktop
+  require_file_in_squashfs usr/share/applications/mimeapps.list
+  require_file_in_squashfs etc/xdg/mimeapps.list
   require_file_in_squashfs usr/share/applications/aurion-experience.desktop
   require_file_in_squashfs usr/share/applications/aurion-install.desktop
   require_file_in_squashfs usr/share/applications/aurion-snapshot-plan.desktop
+  require_file_in_squashfs usr/share/icons/hicolor/scalable/apps/aurion-browser.svg
+  require_file_in_squashfs usr/share/icons/hicolor/scalable/apps/aurion-files.svg
+  require_file_in_squashfs usr/share/icons/hicolor/scalable/apps/aurion-terminal.svg
+  require_file_in_squashfs usr/share/icons/hicolor/scalable/apps/aurion-installer.svg
 
   require_executable_in_squashfs usr/local/bin/aurion-status
   require_executable_in_squashfs usr/local/bin/aurion-apply-live-branding
@@ -157,6 +164,7 @@ main() {
   require_executable_in_squashfs usr/local/bin/aurion-session-watchdog
   require_executable_in_squashfs usr/local/bin/aurion-startlxqt
   require_executable_in_squashfs usr/local/bin/aurion-control
+  require_executable_in_squashfs usr/local/bin/aurion-action
   require_executable_in_squashfs usr/local/bin/aurion-shell
   require_executable_in_squashfs usr/local/bin/aurion-launcher
   require_executable_in_squashfs usr/local/bin/aurion-ai-sidebar
@@ -217,6 +225,13 @@ main() {
     || fail "Aurion Experience home surface is missing"
   grep -Fq 'Ciao! Sono' "$WORK_DIR/aurion-experience.html" \
     || fail "Aurion Experience does not contain the new home greeting"
+  cat_squashfs_file usr/share/aurionos/experience/app.js > "$WORK_DIR/aurion-experience.js"
+  grep -Fq 'aurion-action://' "$WORK_DIR/aurion-experience.js" \
+    || fail "Aurion Experience does not expose clickable action links"
+
+  cat_squashfs_file etc/xdg/mimeapps.list > "$WORK_DIR/mimeapps.list"
+  grep -Fq 'x-scheme-handler/aurion-action=aurion-action-handler.desktop' "$WORK_DIR/mimeapps.list" \
+    || fail "Aurion action URL handler is not registered"
 
   cat_squashfs_file usr/share/aurionos/ai/providers/ollama-phi4-mini.json > "$WORK_DIR/ai-provider.json"
   grep -Fq '"default_model": "phi4-mini"' "$WORK_DIR/ai-provider.json" \

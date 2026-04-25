@@ -1,0 +1,5 @@
+[Default Applications]
+x-scheme-handler/aurion-action=aurion-action-handler.desktop
+
+[Added Associations]
+x-scheme-handler/aurion-action=aurion-action-handler.desktop;

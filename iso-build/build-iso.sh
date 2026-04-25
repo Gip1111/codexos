@@ -155,6 +155,7 @@ install_tool_payload() {
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/app-installer/aurion-install" "$rootfs/usr/local/bin/aurion-install"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/app-store/aurion-store" "$rootfs/usr/local/bin/aurion-store"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/control-center/aurion-control" "$rootfs/usr/local/bin/aurion-control"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/experience/aurion-action" "$rootfs/usr/local/bin/aurion-action"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/experience/aurion-experience" "$rootfs/usr/local/bin/aurion-experience"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hub/aurion-hub" "$rootfs/usr/local/bin/aurion-hub"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hardware-compat/aurion-hw-scan" "$rootfs/usr/local/bin/aurion-hw-scan"
@@ -172,6 +173,23 @@ install_tool_payload() {
     done
   fi
 
+}
+
+configure_action_handler() {
+  local rootfs="$1"
+  local source="$PROJECT_ROOT/distro/branding/usr/share/applications/mimeapps.list"
+  local target="$rootfs/etc/xdg/mimeapps.list"
+  local tmp="$WORK_DIR/mimeapps.list"
+
+  "${SUDO[@]}" install -d -m 0755 "$rootfs/etc/xdg"
+  if [ -f "$target" ]; then
+    "${SUDO[@]}" cat "$target" > "$tmp"
+    printf '\n' >> "$tmp"
+    cat "$source" >> "$tmp"
+  else
+    cat "$source" > "$tmp"
+  fi
+  "${SUDO[@]}" install -Dm0644 "$tmp" "$target"
 }
 
 install_home_file() {
@@ -319,6 +337,7 @@ apply_branding() {
   "${SUDO[@]}" rsync -a "$PROJECT_ROOT/distro/plymouth/" "$rootfs/usr/share/plymouth/themes/aurionos/"
 
   install_tool_payload "$rootfs"
+  configure_action_handler "$rootfs"
   install_doc_payload "$rootfs"
   apply_home_branding "$rootfs"
   cleanup_legacy_desktop_launchers "$rootfs"

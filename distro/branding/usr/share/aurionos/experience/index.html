@@ -10,7 +10,7 @@
   <div class="desktop-scene">
     <header class="system-bar" aria-label="AurionOS top bar">
       <div class="bar-brand">
-        <span class="brand-glyph">A</span>
+        <span class="brand-glyph"><img src="../../icons/hicolor/scalable/apps/aurionos.svg" alt=""></span>
         <span>Aurion</span>
       </div>
       <div class="workspace-switcher" aria-label="Desktop virtuali">
@@ -30,8 +30,8 @@
     </header>
 
     <aside class="desktop-icons" aria-label="Desktop">
-      <button class="desktop-icon" type="button">
-        <span class="icon-tile home-icon"></span>
+      <button class="desktop-icon" type="button" data-action="files">
+        <span class="icon-tile"><img src="../../icons/hicolor/scalable/apps/aurion-files.svg" alt=""></span>
         <span>Home</span>
       </button>
     </aside>
@@ -39,7 +39,7 @@
     <main class="experience-window" aria-label="Aurion Experience Command Center">
       <header class="window-titlebar">
         <div class="window-brand">
-          <span class="window-logo">A</span>
+          <span class="window-logo"><img src="../../icons/hicolor/scalable/apps/aurion-experience.svg" alt=""></span>
           <div>
             <strong>Aurion Experience</strong>
             <span>Command Center</span>
@@ -54,37 +54,37 @@
 
       <div class="window-body">
         <nav class="side-nav" aria-label="Navigazione Aurion">
-          <button class="nav-item is-active" data-view="overview" type="button">
-            <span class="nav-icon">O</span>
+          <button class="nav-item is-active" data-view="overview" data-action="experience" type="button">
+            <span class="nav-icon"><img src="../../icons/hicolor/scalable/apps/aurion-experience.svg" alt=""></span>
             <span>Panoramica</span>
           </button>
-          <button class="nav-item" data-view="system" type="button">
-            <span class="nav-icon">S</span>
+          <button class="nav-item" data-view="system" data-action="system" type="button">
+            <span class="nav-icon"><img src="../../icons/hicolor/scalable/apps/aurion-hardware.svg" alt=""></span>
             <span>Sistema</span>
           </button>
-          <button class="nav-item" data-view="network" type="button">
-            <span class="nav-icon">R</span>
+          <button class="nav-item" data-view="network" data-action="network" type="button">
+            <span class="nav-icon"><img src="../../icons/hicolor/scalable/apps/aurion-browser.svg" alt=""></span>
             <span>Rete</span>
           </button>
-          <button class="nav-item" data-view="security" type="button">
-            <span class="nav-icon">P</span>
+          <button class="nav-item" data-view="security" data-action="security" type="button">
+            <span class="nav-icon"><img src="../../icons/hicolor/scalable/apps/aurion-snapshot.svg" alt=""></span>
             <span>Sicurezza</span>
           </button>
-          <button class="nav-item" data-view="software" type="button">
-            <span class="nav-icon">A</span>
+          <button class="nav-item" data-view="software" data-action="store" type="button">
+            <span class="nav-icon"><img src="../../icons/hicolor/scalable/apps/aurion-store.svg" alt=""></span>
             <span>Software</span>
           </button>
-          <button class="nav-item" data-view="services" type="button">
-            <span class="nav-icon">V</span>
+          <button class="nav-item" data-view="services" data-action="services" type="button">
+            <span class="nav-icon"><img src="../../icons/hicolor/scalable/apps/aurion-terminal.svg" alt=""></span>
             <span>Servizi</span>
           </button>
-          <button class="nav-item" data-view="settings" type="button">
-            <span class="nav-icon">I</span>
+          <button class="nav-item" data-view="settings" data-action="settings" type="button">
+            <span class="nav-icon"><img src="../../icons/hicolor/scalable/apps/aurionos.svg" alt=""></span>
             <span>Impostazioni</span>
           </button>
 
           <div class="edition-card">
-            <span class="edition-logo">A</span>
+            <span class="edition-logo"><img src="../../icons/hicolor/scalable/apps/aurionos.svg" alt=""></span>
             <div>
               <strong>AurionOS Alpha</strong>
               <span>v0.1 fast-track</span>
@@ -131,7 +131,7 @@
               <div class="suggestion-box">
                 <strong>Attiva il backup automatico</strong>
                 <p>Proteggi i tuoi dati con backup programmati.</p>
-                <button type="button" data-task="backup automatico">Configura ora</button>
+                <button type="button" data-action="backup">Configura ora</button>
               </div>
               <div class="pager" aria-hidden="true">
                 <span class="is-active"></span>
@@ -148,7 +148,7 @@
             <h2>Assistente AI</h2>
             <p><strong>Modalita:</strong> <span>Locale (Privacy attiva)</span></p>
             <p>Nessun dato lascia il tuo dispositivo.</p>
-            <button type="button" data-task="nuova conversazione">Nuova conversazione</button>
+            <button type="button" data-action="ai">Nuova conversazione</button>
           </section>
 
           <section class="info-card status-card">
@@ -172,59 +172,59 @@
               <span>Temperatura</span>
               <strong>49 C</strong>
             </div>
-            <button type="button" data-task="dettagli sistema">Dettagli sistema</button>
+            <button type="button" data-action="system-details">Dettagli sistema</button>
           </section>
 
           <section class="info-card app-card">
             <h2>Suggerimenti installazioni</h2>
             <div class="app-suggestion">
-              <span class="app-dot obs"></span>
+              <span class="app-dot obs"><img src="../../icons/hicolor/scalable/apps/aurion-store.svg" alt=""></span>
               <div><strong>OBS Studio</strong><small>Registrazione e streaming</small></div>
-              <button type="button" data-task="installa obs">Installa</button>
+              <button type="button" data-action="install-obs">Installa</button>
             </div>
             <div class="app-suggestion">
-              <span class="app-dot gimp"></span>
+              <span class="app-dot gimp"><img src="../../icons/hicolor/scalable/apps/aurion-store.svg" alt=""></span>
               <div><strong>GIMP</strong><small>Editing immagini</small></div>
-              <button type="button" data-task="installa gimp">Installa</button>
+              <button type="button" data-action="install-gimp">Installa</button>
             </div>
             <div class="app-suggestion">
-              <span class="app-dot vlc"></span>
+              <span class="app-dot vlc"><img src="../../icons/hicolor/scalable/apps/aurion-store.svg" alt=""></span>
               <div><strong>VLC Media Player</strong><small>Lettore multimediale</small></div>
-              <button type="button" data-task="installa vlc">Installa</button>
+              <button type="button" data-action="install-vlc">Installa</button>
             </div>
-            <button class="more-apps" type="button" data-task="mostra altre app">Mostra altre app</button>
+            <button class="more-apps" type="button" data-action="more-apps">Mostra altre app</button>
           </section>
         </aside>
       </div>
     </main>
 
     <nav class="dock" aria-label="Applicazioni preferite">
-      <button class="dock-item is-active" type="button" data-task="apri aurion experience">
-        <span class="dock-icon aurion"></span>
+      <button class="dock-item is-active" type="button" data-action="experience">
+        <span class="dock-icon"><img src="../../icons/hicolor/scalable/apps/aurion-experience.svg" alt=""></span>
         <span>Aurion Experience</span>
       </button>
-      <button class="dock-item" type="button" data-task="apri browser">
-        <span class="dock-icon browser"></span>
+      <button class="dock-item" type="button" data-action="browser">
+        <span class="dock-icon"><img src="../../icons/hicolor/scalable/apps/aurion-browser.svg" alt=""></span>
         <span>Browser</span>
       </button>
-      <button class="dock-item" type="button" data-task="apri file">
-        <span class="dock-icon files"></span>
+      <button class="dock-item" type="button" data-action="files">
+        <span class="dock-icon"><img src="../../icons/hicolor/scalable/apps/aurion-files.svg" alt=""></span>
         <span>Files</span>
       </button>
-      <button class="dock-item" type="button" data-task="apri terminale">
-        <span class="dock-icon terminal"></span>
+      <button class="dock-item" type="button" data-action="terminal">
+        <span class="dock-icon"><img src="../../icons/hicolor/scalable/apps/aurion-terminal.svg" alt=""></span>
         <span>Terminal</span>
       </button>
-      <button class="dock-item" type="button" data-task="apri store">
-        <span class="dock-icon store"></span>
+      <button class="dock-item" type="button" data-action="store">
+        <span class="dock-icon"><img src="../../icons/hicolor/scalable/apps/aurion-store.svg" alt=""></span>
         <span>Store</span>
       </button>
-      <button class="dock-item" type="button" data-task="apri installer">
-        <span class="dock-icon installer"></span>
+      <button class="dock-item" type="button" data-action="installer">
+        <span class="dock-icon"><img src="../../icons/hicolor/scalable/apps/aurion-installer.svg" alt=""></span>
         <span>Installer</span>
       </button>
-      <button class="dock-item" type="button" data-task="apri assistente">
-        <span class="dock-icon ai"></span>
+      <button class="dock-item" type="button" data-action="ai">
+        <span class="dock-icon"><img src="../../icons/hicolor/scalable/apps/aurion-assistant.svg" alt=""></span>
         <span>AI Assistant</span>
       </button>
     </nav>

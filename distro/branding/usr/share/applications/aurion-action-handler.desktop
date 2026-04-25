@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Aurion Action Handler
+Comment=Handle AurionOS home actions
+Exec=/usr/local/bin/aurion-action %u
+Icon=aurionos
+Terminal=false
+NoDisplay=true
+MimeType=x-scheme-handler/aurion-action;
+Categories=System;Utility;

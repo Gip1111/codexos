@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+uri="${1:-}"
+action="$uri"
+action="${action#aurion-action://}"
+action="${action%%\?*}"
+action="${action%%/*}"
+action="${action,,}"
+
+launch() {
+  if command -v "$1" >/dev/null 2>&1; then
+    "$@" >/dev/null 2>&1 &
+    exit 0
+  fi
+}
+
+open_url() {
+  if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "$1" >/dev/null 2>&1 &
+    exit 0
+  fi
+}
+
+terminal_run() {
+  local title="$1"
+  shift
+  local command="$*"
+
+  if command -v qterminal >/dev/null 2>&1; then
+    qterminal -T "$title" -e bash -lc "$command; printf '\n'; read -r -p 'Premi Invio per chiudere...'" >/dev/null 2>&1 &
+    exit 0
+  fi
+
+  if command -v x-terminal-emulator >/dev/null 2>&1; then
+    x-terminal-emulator -e bash -lc "$command; printf '\n'; read -r -p 'Premi Invio per chiudere...'" >/dev/null 2>&1 &
+    exit 0
+  fi
+
+  bash -lc "$command"
+}
+
+case "$action" in
+  experience|home|"")
+    launch aurion-experience
+    ;;
+  browser|web)
+    open_url "https://www.google.com"
+    ;;
+  email|mail)
+    open_url "https://mail.google.com"
+    ;;
+  files|file-manager)
+    launch pcmanfm-qt "$HOME"
+    ;;
+  terminal|shell)
+    launch qterminal
+    launch x-terminal-emulator
+    ;;
+  store|apps|install-app|install-obs|install-gimp|install-vlc|more-apps)
+    terminal_run "Aurion Store" aurion-store
+    ;;
+  installer|install-os)
+    launch calamares
+    ;;
+  ai|assistant|conversation)
+    launch aurion-ai-sidebar
+    ;;
+  wifi|hardware|network)
+    terminal_run "Aurion Hardware" aurion-hardware-center
+    ;;
+  diagnostics|system-details|status)
+    terminal_run "Aurion Diagnostics" aurion-status
+    ;;
+  backup)
+    terminal_run "Aurion Rollback" aurion-snapshot-plan
+    ;;
+  settings|security|services|system|software)
+    launch aurion-shell --page control
+    ;;
+  *)
+    terminal_run "Aurion Task" aurion-task-assist "$action"
+    ;;
+esac

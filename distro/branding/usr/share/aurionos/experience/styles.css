@@ -113,6 +113,20 @@ button {
   font-weight: 900;
 }
 
+.brand-glyph img,
+.window-logo img,
+.edition-logo img,
+.nav-icon img,
+.quick-icon img,
+.dock-icon img,
+.app-dot img,
+.icon-tile img {
+  width: 72%;
+  height: 72%;
+  display: block;
+  object-fit: contain;
+}
+
 .brand-glyph {
   width: 22px;
   height: 22px;
@@ -200,17 +214,6 @@ button {
   border: 1px solid rgba(69, 224, 213, 0.32);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.32);
   position: relative;
-}
-
-.home-icon::before {
-  content: "";
-  position: absolute;
-  left: 12px;
-  top: 12px;
-  width: 20px;
-  height: 18px;
-  background: linear-gradient(180deg, #b9fff8, #49c6c7);
-  clip-path: polygon(50% 0, 100% 42%, 82% 42%, 82% 100%, 18% 100%, 18% 42%, 0 42%);
 }
 
 .desktop-icon span:last-child {
@@ -848,45 +851,11 @@ h2 {
   font-size: 18px;
 }
 
-.dock-icon::before,
-.quick-icon::before {
-  content: attr(data-letter);
-}
-
 .dock-icon.aurion,
 .quick-icon.aurion {
   background: linear-gradient(145deg, #2b261a, #111517);
   color: var(--gold);
   border: 1px solid rgba(241, 188, 85, 0.4);
-}
-
-.dock-icon.aurion::before {
-  content: "A";
-}
-
-.dock-icon.browser::before {
-  content: "W";
-}
-
-.dock-icon.files::before {
-  content: "F";
-}
-
-.dock-icon.terminal::before {
-  content: ">";
-}
-
-.dock-icon.store::before {
-  content: "S";
-}
-
-.dock-icon.installer::before {
-  content: "D";
-}
-
-.dock-icon.ai::before {
-  content: "AI";
-  font-size: 13px;
 }
 
 .dock-item span:last-child {

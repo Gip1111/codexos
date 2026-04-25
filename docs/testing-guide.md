@@ -68,22 +68,25 @@ Basic VM acceptance:
 6. Confirm desktop shortcuts exist for Aurion Launcher, Aurion Experience, Aurion Store, and Install AurionOS.
 7. Confirm the Aurion Experience command surface opens automatically on the first live login and visually matches `docs/aurionos-home-target.svg` in direction: dark desktop, central command center, AI/status right panel, and bottom dock.
 8. Confirm there is no duplicate `Install Lubuntu` desktop shortcut.
-9. Press `Super+Space` and confirm Aurion Launcher opens.
-10. Press `Super+A` and confirm Aurion AI Sidebar opens.
-11. Run `aurion-status`.
-12. Run `aurion-shell`.
-13. Run `aurion-launcher`.
-14. Run `aurion-ai-sidebar`.
-15. Run `aurion-experience`.
-16. Run `aurion-task-assist "read email"`.
-17. Run `aurion-hub`.
-18. Run `aurion-control` and open each menu option.
-19. Run `aurion-install --explain`.
-20. Run `aurion-snapshot-plan`.
-21. Run `aurion-diagnostics`.
-22. Launch the installer.
-23. Install to a blank VM disk.
-24. Reboot into the installed system.
+9. Click Browser, Files, Terminal, Store, Installer, and AI Assistant in the Aurion dock and confirm each opens the matching app or alpha surface.
+10. Click Leggi email, Installa app, Controlla Wi-Fi, Diagnosi, Dettagli sistema, and an app Install button and confirm each routes through `aurion-action://`.
+11. Press `Super+Space` and confirm Aurion Launcher opens.
+12. Press `Super+A` and confirm Aurion AI Sidebar opens.
+13. Run `aurion-status`.
+14. Run `aurion-shell`.
+15. Run `aurion-launcher`.
+16. Run `aurion-ai-sidebar`.
+17. Run `aurion-experience`.
+18. Run `aurion-action aurion-action://browser`.
+19. Run `aurion-task-assist "read email"`.
+20. Run `aurion-hub`.
+21. Run `aurion-control` and open each menu option.
+22. Run `aurion-install --explain`.
+23. Run `aurion-snapshot-plan`.
+24. Run `aurion-diagnostics`.
+25. Launch the installer.
+26. Install to a blank VM disk.
+27. Reboot into the installed system.
 
 ## USB test
 
