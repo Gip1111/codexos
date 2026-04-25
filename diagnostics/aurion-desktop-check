@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+line() {
+  printf '%-26s %s\n' "$1" "$2"
+}
+
+check_file() {
+  local label="$1"
+  local path="$2"
+  if [ -e "$path" ]; then
+    line "$label" "ok: $path"
+  else
+    line "$label" "missing: $path"
+  fi
+}
+
+check_command() {
+  local label="$1"
+  local command="$2"
+  if command -v "$command" >/dev/null 2>&1; then
+    line "$label" "ok: $(command -v "$command")"
+  else
+    line "$label" "missing"
+  fi
+}
+
+echo "AurionOS desktop integration check"
+echo
+
+check_command "QML surface" aurion-qml-surface
+check_command "Experience launcher" aurion-experience
+check_command "Action dispatcher" aurion-action
+check_command "Web fallback opener" aurion-webapp-open
+check_command "First-run launcher" aurion-first-run
+
+echo
+check_file "Native home QML" /usr/share/aurionos/qml/AurionExperience.qml
+check_file "QML runtime metadata" /usr/share/aurionos/qml/runtime.conf
+check_file "HTML fallback" /usr/share/aurionos/experience/index.html
+check_file "LXQt panel profile" "$HOME/.config/lxqt/panel.conf"
+check_file "First-run autostart" /etc/xdg/autostart/aurion-first-run.desktop
+
+echo
+if [ -r /usr/share/aurionos/qml/runtime.conf ]; then
+  cat /usr/share/aurionos/qml/runtime.conf
+else
+  for runner in qml6 qmlscene-qt6 qml qmlscene; do
+    if command -v "$runner" >/dev/null 2>&1; then
+      line "Detected QML runner" "$runner"
+      break
+    fi
+  done
+fi
+
+echo
+echo "Expected home path:"
+echo "  aurion-experience -> aurion-qml-surface --page experience"
+echo "Fallback path:"
+echo "  ~/AurionOSWeb/usr/share/aurionos/experience/index.html"

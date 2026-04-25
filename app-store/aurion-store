@@ -4,6 +4,9 @@ set -euo pipefail
 catalog="/usr/share/aurionos/store/alpha-catalog.json"
 
 if [ "${1:-}" = "--path" ]; then
+  if [ "${AURION_STORE_BACKEND:-qml}" != "html" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
+    exec aurion-qml-surface --page store --path
+  fi
   if command -v aurion-store-gui >/dev/null 2>&1; then
     exec aurion-store-gui --path
   fi

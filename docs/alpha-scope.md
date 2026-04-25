@@ -14,6 +14,7 @@
 - Welcome page and first-run live branding hook
 - Aurion Shell graphical alpha surface with Launcher, AI Sidebar, Dock concept, app flow, hardware flow, and control flow
 - Native QML Aurion Experience home surface, plus Qt/QML shell bridge and HTML fallback
+- Integrated QML Store, Hardware, Diagnostics, AI, and Control pages inside Aurion Experience
 - Aurion Experience graphical alpha shell styled as the first desktop home/command center
 - Clickable Aurion Experience actions for browser, email, file manager, terminal, Store, installer, AI assistant, hardware checks, diagnostics, and rollback through the local `aurion-action://` handler
 - Aurion Hub generated local HTML report
@@ -44,7 +45,7 @@
 - AI responses when Ollama/phi4-mini is not installed locally
 - AI natural language handling beyond the optional local Ollama bridge and rule-based task routing
 - Hardware compatibility explanations beyond the small alpha database and static GUI
-- Native Qt6/QML TopBar, Dock, Launcher, and AI Sidebar behavior beyond the QML bridge and HTML/LXQt alpha surfaces
+- Native Qt6/QML TopBar, Dock, Launcher, and AI Sidebar behavior beyond the QML bridge and LXQt alpha panels
 - Rollback automation
 - Real app installation from Aurion Store
 - Full trusted package verification and GUI confirmation flow
@@ -54,10 +55,10 @@
 - Final logo, animation system, and complete visual identity
 - Active custom Plymouth boot splash
 - labwc installed and enabled as a complete daily-driver session
-- Complete Qt6/QML shell package with guaranteed runtime dependencies
+- Complete Qt6/QML shell package beyond the alpha QML command center
 - Full Calamares theme replacement
-- Native Qt6/QML replacements for Store, Hardware Center, Diagnostics, and AI setup
-- Bundled Ollama runtime or automatic model manager
+- Production Qt6/QML replacements for Store, Hardware Center, Diagnostics, and AI setup
+- Bundled Ollama runtime or unattended model manager
 - Production App Store backend and installers
 - Btrfs snapshot automation
 
@@ -80,8 +81,8 @@ The alpha now includes an Aurion Store graphical catalog, but it does not instal
 4. Verify installer launch and installed-system boot.
 5. Add QEMU smoke test automation.
 6. Install and harden labwc only after the preview session is proven safe.
-7. Replace the QML bridge with packaged Qt6/QML applications and runtime dependencies.
-8. Add optional Ollama install/enable flow for `phi4-mini`.
+7. Replace the QML bridge with packaged Qt6/QML applications and a full shell runtime.
+8. Harden the optional Ollama install/enable flow for `phi4-mini`.
 
 ## Acceptance criteria
 

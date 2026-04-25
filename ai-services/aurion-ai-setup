@@ -10,10 +10,11 @@ Aurion AI Setup - optional local AI
 Usage:
   aurion-ai-setup --status
   aurion-ai-setup --instructions
+  aurion-ai-setup --install-ollama
   aurion-ai-setup --pull-model
 
-This tool does not install Ollama automatically. It can pull $model only when
-Ollama is already installed and the user confirms the download.
+This tool never enables cloud AI. It installs or downloads local AI components
+only after an explicit confirmation.
 EOF
 }
 
@@ -73,6 +74,39 @@ pull_model() {
   esac
 }
 
+install_ollama() {
+  if command -v ollama >/dev/null 2>&1; then
+    echo "Ollama is already installed: $(command -v ollama)"
+    exit 0
+  fi
+
+  if ! command -v curl >/dev/null 2>&1; then
+    echo "curl is required to install Ollama. Install curl first or use the official Linux download page." >&2
+    exit 2
+  fi
+
+  cat <<EOF
+AurionOS can install the optional local Ollama runtime.
+
+This will download and run the official Ollama Linux installer from:
+  https://ollama.com/install.sh
+
+No cloud AI provider will be enabled. After install, use:
+  aurion-ai-setup --pull-model
+EOF
+
+  printf 'Install Ollama runtime now? [y/N] '
+  IFS= read -r answer || answer=""
+  case "$answer" in
+    y|Y|yes|YES)
+      curl -fsSL https://ollama.com/install.sh | sh
+      ;;
+    *)
+      echo "Cancelled. Ollama was not installed."
+      ;;
+  esac
+}
+
 case "${1:-}" in
   --help|-h|"")
     usage
@@ -82,6 +116,9 @@ case "${1:-}" in
     ;;
   --instructions)
     instructions
+    ;;
+  --install-ollama)
+    install_ollama
     ;;
   --pull-model)
     pull_model

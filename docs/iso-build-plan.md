@@ -24,9 +24,9 @@ Control Center strategy: include `aurion-control`, a terminal-safe grouping surf
 
 Hub strategy: include `aurion-hub`, a generated local HTML overview that gives the alpha a graphical system surface without adding new live ISO package dependencies. Final target is a Qt6/QML application.
 
-Experience strategy: include `aurion-experience`, a local graphical task shell that becomes the default visible first-run surface. It combines AI task routing, app install paths, browser/email actions, hardware checks, and recovery status in one place without adding runtime package risk.
+Experience strategy: include `aurion-experience`, a native QML task shell that becomes the default visible first-run surface. It combines AI task routing, app install paths, browser/email actions, hardware checks, diagnostics, and recovery status in one integrated window. HTML surfaces remain fallback only.
 
-Shell strategy: include `aurion-shell`, `aurion-launcher`, `aurion-ai-sidebar`, `aurion-topbar`, and `aurion-dock`. These open the local offline Aurion Shell alpha page so the ISO has a visible Launcher, AI Sidebar, Dock concept, app workflow, hardware workflow, and control workflow before the native Qt6/QML shell exists.
+Shell strategy: include `aurion-shell`, `aurion-launcher`, `aurion-ai-sidebar`, `aurion-topbar`, and `aurion-dock`. These prefer the native QML command center where possible and keep local offline HTML surfaces as stable fallback.
 
 GitHub Actions strategy: build on `ubuntu-24.04`, free disk space, install ISO tools, run the build script, clearly fail if the expected ISO is absent, upload the ISO artifact, and upload logs even on failure.
 
@@ -130,7 +130,7 @@ xorriso
 
 - Improve Calamares branding after verifying the exact Lubuntu 24.04 Calamares branding layout.
 - Add an experimental labwc session package only after the remaster build is green.
-- Replace shell/control/store/hardware placeholders with Qt6/QML prototypes.
+- Replace the QML bridge with packaged Qt6/QML applications and full shell components.
 - Add VM smoke testing in CI with QEMU once the ISO artifact is reliably produced.
 
 ## Defer

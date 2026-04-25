@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-marker="${XDG_STATE_HOME:-$HOME/.local/state}/aurionos/welcome-shown"
+marker="${XDG_STATE_HOME:-$HOME/.local/state}/aurionos/home-shown"
 welcome="/usr/share/aurionos/welcome/index.html"
 
-[ -f "$welcome" ] || exit 0
 [ -e "$marker" ] && exit 0
 
 mkdir -p "$(dirname "$marker")"
 touch "$marker"
 
 (
-  sleep 4
+  sleep 3
+  if command -v aurion-experience >/dev/null 2>&1; then
+    aurion-experience >/tmp/aurion-first-run.log 2>&1 || true
+    exit 0
+  fi
+
+  [ -f "$welcome" ] || exit 0
   if command -v xdg-open >/dev/null 2>&1; then
     xdg-open "$welcome" >/dev/null 2>&1 || true
   fi

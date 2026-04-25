@@ -21,13 +21,13 @@ The alpha goal is a credible first ISO, not a finished distribution. Ubuntu/Lubu
 - AurionOS LXQt session entry
 - AurionOS visual profile for LXQt with branded theme, top bar, bottom dock, window theme, icons, desktop shortcuts, and keyboard shortcuts
 - Experimental AurionOS LabWC Preview Wayland session with automatic fallback to the stable LXQt session if `labwc` is not installed
-- Aurion Experience home surface styled as the first task-oriented desktop command center
-- Snap-safe Aurion webapp opener that materializes graphical surfaces in `~/AurionOSWeb` before opening them in Firefox
-- Clickable home actions through the local `aurion-action://` handler for browser, email, files, terminal, Store, installer, AI, hardware, diagnostics, and rollback
+- Native QML Aurion Experience command center as the first task-oriented desktop home
+- Integrated native QML pages for Store, Hardware, Diagnostics, AI, and Control; Firefox/HTML is only the fallback path
+- Clickable home actions through the local `aurion-action://` dispatcher for browser, email, files, terminal, installer, AI setup, diagnostics, and rollback
 - Guarded LXQt session starter, Xsession guard, and live-session watchdog to recover the desktop if panel or wallpaper modules do not autostart
 - Welcome page and first-run live branding hook
 - Aurion Shell graphical alpha surface with Launcher, AI Sidebar, Dock concept, app flow, hardware flow, and control flow
-- Native QML Aurion Experience home surface that avoids browser chrome, plus QML shell bridge and HTML fallback
+- Native QML Aurion Experience home surface that avoids browser chrome, plus QML shell bridge, QML runtime metadata, and HTML fallback
 - Aurion Experience graphical alpha shell with task-oriented AI surface
 - Aurion Hub generated local HTML system overview
 - Aurion Control Center alpha command
@@ -63,6 +63,7 @@ aurion-experience
 aurion-hub
 aurion-action aurion-action://browser
 aurion-webapp-open --path /usr/share/aurionos/experience/index.html
+aurion-desktop-check
 aurion-control
 aurion-task-assist "read email"
 aurion-hardware-center
@@ -70,6 +71,7 @@ aurion-ai-status
 aurion-ai-status-gui
 aurion-ai-service "check wifi"
 aurion-ai-setup --status
+aurion-ai-setup --install-ollama
 aurion-store
 aurion-store --cli
 aurion-install --explain
@@ -82,7 +84,7 @@ aurion-rollback-status
 aurion-startlabwc --check
 ```
 
-The guarded session path is `aurion-startlxqt`, with `aurion-session-guard` also launched from `/etc/X11/Xsession.d`. If a live boot shows only a mouse cursor, the ISO is failing the session acceptance test: the expected desktop is wallpaper, top bar, dock, desktop shortcuts, and the Aurion Experience command surface. The build verifier checks that the guarded starter, Xsession guard, watchdog, LXQt profile, and PCManFM-Qt wallpaper configuration are present in the ISO.
+The guarded session path is `aurion-startlxqt`, with `aurion-session-guard` also launched from `/etc/X11/Xsession.d`. If a live boot shows only a mouse cursor, the ISO is failing the session acceptance test: the expected desktop is wallpaper, top bar, dock, desktop shortcuts, and the native Aurion Experience command surface. The build verifier checks that the guarded starter, first-run launcher, Xsession guard, watchdog, LXQt profile, QML runtime, and PCManFM-Qt wallpaper configuration are present in the ISO.
 
 ## Build from GitHub Actions
 

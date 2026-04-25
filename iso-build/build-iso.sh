@@ -167,6 +167,7 @@ install_tool_payload() {
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hardware-compat/aurion-hardware-center" "$rootfs/usr/local/bin/aurion-hardware-center"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hardware-compat/aurion-hardware-gui" "$rootfs/usr/local/bin/aurion-hardware-gui"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/diagnostics/aurion-channel" "$rootfs/usr/local/bin/aurion-channel"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/diagnostics/aurion-desktop-check" "$rootfs/usr/local/bin/aurion-desktop-check"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/diagnostics/aurion-diagnostics" "$rootfs/usr/local/bin/aurion-diagnostics"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/diagnostics/aurion-diagnostics-gui" "$rootfs/usr/local/bin/aurion-diagnostics-gui"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/diagnostics/aurion-rollback-status" "$rootfs/usr/local/bin/aurion-rollback-status"
@@ -226,16 +227,24 @@ install_alpha_runtime_packages() {
   }
 
   local install_status=0
+  local qml_runner=""
   set +e
   "${SUDO[@]}" chroot "$rootfs" apt-get update \
     && "${SUDO[@]}" chroot "$rootfs" env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "${packages[@]}" \
     && "${SUDO[@]}" chroot "$rootfs" apt-get clean \
     && "${SUDO[@]}" rm -rf "$rootfs/var/lib/apt/lists/"*
   install_status=$?
+  if [ "$install_status" -eq 0 ]; then
+    qml_runner="$("${SUDO[@]}" chroot "$rootfs" sh -c 'command -v qmlscene || command -v qml || command -v qmlscene-qt6 || command -v qml6' 2>/dev/null || true)"
+    [ -n "$qml_runner" ] || install_status=1
+  fi
   set -e
 
   cleanup_chroot_mounts
   [ "$install_status" -eq 0 ] || fail "Failed to install QML runtime packages into live filesystem"
+
+  "${SUDO[@]}" install -d -m 0755 "$rootfs/usr/share/aurionos/qml"
+  printf 'AURION_QML_RUNNER=%s\n' "$qml_runner" | "${SUDO[@]}" tee "$rootfs/usr/share/aurionos/qml/runtime.conf" >/dev/null
 }
 
 configure_action_handler() {
@@ -385,10 +394,12 @@ apply_branding() {
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/branding/aurionos-release" "$rootfs/etc/aurionos-release"
 
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/autostart/aurion-live-branding.desktop" "$rootfs/etc/xdg/autostart/aurion-live-branding.desktop"
+  "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/autostart/aurion-first-run.desktop" "$rootfs/etc/xdg/autostart/aurion-first-run.desktop"
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/autostart/aurion-session-guard.desktop" "$rootfs/etc/xdg/autostart/aurion-session-guard.desktop"
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/autostart/aurion-session-watchdog.desktop" "$rootfs/etc/xdg/autostart/aurion-session-watchdog.desktop"
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/xsession/80aurionos-session-guard" "$rootfs/etc/X11/Xsession.d/80aurionos-session-guard"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-apply-live-branding" "$rootfs/usr/local/bin/aurion-apply-live-branding"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-first-run" "$rootfs/usr/local/bin/aurion-first-run"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-session-guard" "$rootfs/usr/local/bin/aurion-session-guard"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-session-watchdog" "$rootfs/usr/local/bin/aurion-session-watchdog"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/distro/session/scripts/aurion-startlxqt" "$rootfs/usr/local/bin/aurion-startlxqt"

@@ -98,6 +98,15 @@ case "$action" in
   ai-setup)
     terminal_run "Aurion AI Setup" aurion-ai-setup --status
     ;;
+  ai-instructions)
+    terminal_run "Aurion AI Instructions" aurion-ai-setup --instructions
+    ;;
+  ai-install-ollama)
+    terminal_run "Aurion AI Runtime" aurion-ai-setup --install-ollama
+    ;;
+  ai-pull-model)
+    terminal_run "Aurion AI Model" aurion-ai-setup --pull-model
+    ;;
   wifi|hardware|network)
     launch aurion-hardware-center
     terminal_run "Aurion Hardware" aurion-hardware-center --cli
@@ -111,6 +120,9 @@ case "$action" in
     ;;
   diagnostics-report)
     terminal_run "Aurion Diagnostics Report" aurion-diagnostics --cli
+    ;;
+  desktop-check)
+    terminal_run "Aurion Desktop Check" aurion-desktop-check
     ;;
   system-details|status|status-report)
     terminal_run "Aurion Status" aurion-status

@@ -4,6 +4,9 @@ set -euo pipefail
 page="/usr/share/aurionos/experience/index.html"
 
 if [ "${1:-}" = "--path" ]; then
+  if [ "${AURION_EXPERIENCE_BACKEND:-qml}" != "html" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
+    exec aurion-qml-surface --page experience --path
+  fi
   if command -v aurion-webapp-open >/dev/null 2>&1; then
     exec aurion-webapp-open --path "$page"
   fi

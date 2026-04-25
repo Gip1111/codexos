@@ -4,6 +4,9 @@ set -euo pipefail
 db="/usr/share/aurionos/hardware/alpha-hardware.json"
 
 if [ "${1:-}" = "--path" ]; then
+  if [ "${AURION_HARDWARE_BACKEND:-qml}" != "html" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
+    exec aurion-qml-surface --page hardware --path
+  fi
   if command -v aurion-hardware-gui >/dev/null 2>&1; then
     exec aurion-hardware-gui --path
   fi

@@ -11,8 +11,10 @@ Current alpha:
 - AurionOS session metadata and environment branding are applied.
 - `aurionos-alpha` LXQt theme, `AurionOS` Openbox theme, top bar, bottom dock, branded icons, desktop shortcuts, and keyboard shortcuts replace the stock Lubuntu desktop feel.
 - `aurion-startlxqt`, `aurion-session-guard`, and `aurion-session-watchdog` guard the live session against a cursor-only desktop by restoring missing LXQt panel, desktop, runner, notification, policy kit, power, and shortcut modules.
-- `aurion-qml-surface` adds the first Qt/QML bridge for the future native shell and falls back to the stable HTML surfaces when needed.
-- `aurion-experience` now prefers the native QML home surface to avoid browser chrome and Firefox Snap file limitations.
+- `aurion-qml-surface` now targets the native Aurion Experience QML command center first and falls back to the stable HTML surfaces only when the QML runtime is unavailable.
+- `aurion-experience` now opens the native QML home surface to avoid browser chrome and Firefox Snap file limitations.
+- Store, Hardware, Diagnostics, AI, and Control are integrated as internal QML pages rather than separate browser pages.
+- `aurion-desktop-check` validates QML runtime metadata, first-run routing, desktop launchers, and fallback paths from the live session.
 - `aurion-shell`, `aurion-launcher`, `aurion-ai-sidebar`, `aurion-topbar`, and `aurion-dock` now prefer the QML bridge and keep the HTML surfaces as fallback.
 - `aurion-experience` provides the first graphical task-oriented shell surface.
 - `aurion-hub` generates a local HTML overview report.
@@ -31,7 +33,7 @@ Current alpha:
 
 - `aurion-assistant` is a mock assistant.
 - `aurion-ai-service` can use local Ollama with `phi4-mini` when the user has installed and pulled the model.
-- `aurion-ai-setup` explains the optional local setup path and can pull the model only after confirmation.
+- `aurion-ai-setup` explains the optional local setup path, can install Ollama only after confirmation, and can pull the model only after confirmation.
 - `aurion-do` provides a safe action runner for common tasks without silent installs, driver changes, or cloud AI.
 - `aurion-task-assist` routes common natural-language tasks to safe local actions.
 - `aurion-ai-status` reports provider readiness.

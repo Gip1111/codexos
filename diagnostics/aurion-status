@@ -82,6 +82,7 @@ for tool in \
   aurion-action \
   aurion-webapp-open \
   aurion-channel \
+  aurion-desktop-check \
   aurion-assistant \
   aurion-ai-status \
   aurion-ai-status-gui \

@@ -108,6 +108,7 @@ main() {
   require_file_in_squashfs usr/share/xsessions/aurionos-lxqt.desktop
   require_file_in_squashfs usr/share/wayland-sessions/aurionos-labwc.desktop
   require_file_in_squashfs etc/xdg/autostart/aurion-live-branding.desktop
+  require_file_in_squashfs etc/xdg/autostart/aurion-first-run.desktop
   require_file_in_squashfs etc/xdg/autostart/aurion-session-guard.desktop
   require_file_in_squashfs etc/xdg/autostart/aurion-session-watchdog.desktop
   require_file_in_squashfs etc/X11/Xsession.d/80aurionos-session-guard
@@ -148,6 +149,7 @@ main() {
   require_file_in_squashfs usr/share/aurionos/labwc/rc.xml
   require_file_in_squashfs usr/share/aurionos/qml/AurionShell.qml
   require_file_in_squashfs usr/share/aurionos/qml/AurionExperience.qml
+  require_file_in_squashfs usr/share/aurionos/qml/runtime.conf
   require_file_in_squashfs usr/share/aurionos/shell/index.html
   require_file_in_squashfs usr/share/aurionos/shell/styles.css
   require_file_in_squashfs usr/share/aurionos/shell/app.js
@@ -181,6 +183,7 @@ main() {
 
   require_executable_in_squashfs usr/local/bin/aurion-status
   require_executable_in_squashfs usr/local/bin/aurion-apply-live-branding
+  require_executable_in_squashfs usr/local/bin/aurion-first-run
   require_executable_in_squashfs usr/local/bin/aurion-session-guard
   require_executable_in_squashfs usr/local/bin/aurion-session-watchdog
   require_executable_in_squashfs usr/local/bin/aurion-startlxqt
@@ -210,6 +213,7 @@ main() {
   require_executable_in_squashfs usr/local/bin/aurion-store-gui
   require_executable_in_squashfs usr/local/bin/aurion-snapshot-plan
   require_executable_in_squashfs usr/local/bin/aurion-channel
+  require_executable_in_squashfs usr/local/bin/aurion-desktop-check
   require_executable_in_squashfs usr/local/bin/aurion-diagnostics
   require_executable_in_squashfs usr/local/bin/aurion-diagnostics-gui
   require_executable_in_squashfs usr/local/bin/aurion-hw-scan
@@ -250,6 +254,24 @@ main() {
     || fail "Aurion QML Experience should avoid browser window chrome"
   grep -Fq 'Ciao! Sono' "$WORK_DIR/aurion-qml-experience.qml" \
     || fail "Aurion QML Experience does not contain the home greeting"
+  grep -Fq 'activePage' "$WORK_DIR/aurion-qml-experience.qml" \
+    || fail "Aurion QML Experience does not switch internal pages"
+  grep -Fq 'storePage' "$WORK_DIR/aurion-qml-experience.qml" \
+    || fail "Aurion QML Experience does not include the native Store page"
+  grep -Fq 'hardwarePage' "$WORK_DIR/aurion-qml-experience.qml" \
+    || fail "Aurion QML Experience does not include the native Hardware page"
+  grep -Fq 'diagnosticsPage' "$WORK_DIR/aurion-qml-experience.qml" \
+    || fail "Aurion QML Experience does not include the native Diagnostics page"
+  grep -Fq 'ai-install-ollama' "$WORK_DIR/aurion-qml-experience.qml" \
+    || fail "Aurion QML Experience does not expose the optional local AI runtime flow"
+
+  cat_squashfs_file usr/share/aurionos/qml/runtime.conf > "$WORK_DIR/qml-runtime.conf"
+  grep -Fq 'AURION_QML_RUNNER=' "$WORK_DIR/qml-runtime.conf" \
+    || fail "Aurion QML runtime metadata does not record a runner"
+
+  cat_squashfs_file usr/local/bin/aurion-first-run > "$WORK_DIR/aurion-first-run"
+  grep -Fq 'aurion-experience' "$WORK_DIR/aurion-first-run" \
+    || fail "Aurion first-run should open the native Experience surface before HTML fallback"
 
   cat_squashfs_file etc/X11/Xsession.d/80aurionos-session-guard > "$WORK_DIR/xsession-guard"
   grep -Fq 'aurion-session-guard' "$WORK_DIR/xsession-guard" \
@@ -328,6 +350,16 @@ main() {
     || fail "Aurion AI service does not use the local Ollama model path"
   grep -Fq 'fallback "$query"' "$WORK_DIR/aurion-ai-service" \
     || fail "Aurion AI service does not keep the safe alpha fallback"
+
+  cat_squashfs_file usr/local/bin/aurion-ai-setup > "$WORK_DIR/aurion-ai-setup"
+  grep -Fq -- '--install-ollama' "$WORK_DIR/aurion-ai-setup" \
+    || fail "Aurion AI setup does not expose the optional local Ollama install flow"
+
+  cat_squashfs_file usr/local/bin/aurion-action > "$WORK_DIR/aurion-action"
+  grep -Fq 'ai-install-ollama' "$WORK_DIR/aurion-action" \
+    || fail "Aurion action dispatcher does not route the optional Ollama install flow"
+  grep -Fq 'desktop-check' "$WORK_DIR/aurion-action" \
+    || fail "Aurion action dispatcher does not route desktop integration diagnostics"
 
   cat_squashfs_file usr/share/aurionos/ai/tasks/alpha-tasks.json > "$WORK_DIR/ai-tasks.json"
   grep -Fq '"primary_command": "aurion-do email"' "$WORK_DIR/ai-tasks.json" \
