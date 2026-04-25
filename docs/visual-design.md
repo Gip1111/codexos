@@ -6,6 +6,7 @@ AurionOS must not look like stock Lubuntu. The alpha visual profile is intention
 
 - Dark AurionOS wallpaper with teal/gold motion lines, no large centered Lubuntu-style identity block.
 - Native PyQt Aurion Experience as the first visible graphical home surface.
+- Aurion DE alpha layer with native TopBar, Dock, Launcher, Settings, Files, Notifications, and Login Preview.
 - Home target preview: `docs/aurionos-home-target.svg`.
 - Rendered current preview: `docs/aurionos-home-preview.png`.
 - LXQt theme `aurionos-alpha`.
@@ -19,6 +20,9 @@ AurionOS must not look like stock Lubuntu. The alpha visual profile is intention
 - Desktop shortcuts for Launcher, Experience, Store, and installer.
 - Local Aurion Shell surface with Launcher, AI Sidebar, app install flow, hardware flow, and control flow.
 - Native PyQt home at `/usr/local/bin/aurion-native-home`, used by `aurion-experience`, `aurion-store`, `aurion-hardware-center`, `aurion-diagnostics`, and `aurion-ai-sidebar`.
+- Native desktop-environment hub at `/usr/local/bin/aurion-de-shell`.
+- Native Preview session at `/usr/share/xsessions/aurionos-native.desktop`.
+- SDDM theme preview at `/usr/share/sddm/themes/aurionos-alpha`.
 - Qt/QML shell bridge at `/usr/share/aurionos/qml/AurionShell.qml` for the later QML direction and as secondary fallback.
 - Keyboard shortcuts:
   - `Super+Space`: Aurion Launcher
@@ -40,7 +44,7 @@ The final desktop should feel direct and task-oriented:
 
 ## Future native shell
 
-The alpha uses LXQt configuration, a native PyQt command center, a QML bridge, and local HTML fallbacks. The target is a packaged Qt6/QML shell with:
+The alpha uses LXQt configuration, a native PyQt command center, a native DE alpha layer, a QML bridge, and local HTML fallbacks. The target is a packaged Qt6/QML shell with:
 
 - native top bar
 - native dock

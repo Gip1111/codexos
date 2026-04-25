@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Aurion Settings
+Comment=Open AurionOS settings
+Exec=aurion-settings
+Icon=aurionos
+Terminal=false
+Categories=Settings;System;

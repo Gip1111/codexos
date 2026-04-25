@@ -1,0 +1,56 @@
+Source: aurion-desktop-environment
+Section: x11
+Priority: optional
+Maintainer: AurionOS Team <dev@aurionos.invalid>
+Standards-Version: 4.6.2
+Build-Depends: debhelper-compat (= 13)
+Rules-Requires-Root: no
+
+Package: aurion-desktop-environment
+Architecture: all
+Depends:
+ aurion-shell,
+ aurion-settings,
+ aurion-files,
+ aurion-notifications,
+ aurion-session,
+ aurion-sddm-theme,
+ ${misc:Depends}
+Description: AurionOS desktop environment alpha meta package
+ Native AurionOS desktop-environment layer for the alpha ISO.
+
+Package: aurion-shell
+Architecture: all
+Depends: python3, python3-pyqt5, ${misc:Depends}
+Description: AurionOS shell alpha components
+ Native topbar, dock, launcher, and desktop hub.
+
+Package: aurion-settings
+Architecture: all
+Depends: python3, python3-pyqt5, ${misc:Depends}
+Description: AurionOS settings alpha
+ Settings and control-center surfaces.
+
+Package: aurion-files
+Architecture: all
+Depends: python3, python3-pyqt5, xdg-utils, ${misc:Depends}
+Description: AurionOS file manager alpha
+ Lightweight native file manager surface with PCManFM fallback.
+
+Package: aurion-notifications
+Architecture: all
+Depends: python3, python3-pyqt5, libnotify-bin, ${misc:Depends}
+Description: AurionOS notification center alpha
+ Native notification center and notifier bridge.
+
+Package: aurion-session
+Architecture: all
+Depends: openbox | labwc, pcmanfm-qt, ${misc:Depends}
+Description: AurionOS session alpha
+ Native preview session and window-manager bridge.
+
+Package: aurion-sddm-theme
+Architecture: all
+Depends: sddm, qml-module-qtquick-controls2, ${misc:Depends}
+Description: AurionOS SDDM theme alpha
+ Login screen theme assets for AurionOS.

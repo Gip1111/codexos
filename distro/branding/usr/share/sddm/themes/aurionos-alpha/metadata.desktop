@@ -1,0 +1,13 @@
+[SddmGreeterTheme]
+Name=AurionOS Alpha
+Description=AurionOS Alpha login theme preview
+Author=AurionOS
+Copyright=2026 AurionOS
+License=GPL-3.0-or-later
+Type=sddm-theme
+Version=0.1
+Website=https://github.com/Gip1111/codexos
+MainScript=Main.qml
+ConfigFile=theme.conf
+Theme-Id=aurionos-alpha
+Theme-API=2.0

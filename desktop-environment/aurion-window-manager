@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+status() {
+  echo "Aurion Window Manager bridge"
+  if pgrep -x labwc >/dev/null 2>&1; then
+    echo "active: labwc"
+  elif pgrep -x openbox >/dev/null 2>&1; then
+    echo "active: openbox"
+  else
+    echo "active: unknown"
+  fi
+
+  if command -v labwc >/dev/null 2>&1; then
+    echo "labwc: available"
+  else
+    echo "labwc: not installed; native preview uses openbox fallback"
+  fi
+  command -v openbox >/dev/null 2>&1 && echo "openbox: available"
+}
+
+case "${1:-}" in
+  --status|--check|"")
+    status
+    ;;
+  --start)
+    if command -v labwc >/dev/null 2>&1 && [ "${XDG_SESSION_TYPE:-}" = "wayland" ]; then
+      exec labwc
+    fi
+    if command -v openbox >/dev/null 2>&1; then
+      exec openbox
+    fi
+    echo "No supported AurionOS window manager fallback is installed." >&2
+    exit 2
+    ;;
+  *)
+    echo "Usage: aurion-window-manager [--status|--check|--start]" >&2
+    exit 2
+    ;;
+esac

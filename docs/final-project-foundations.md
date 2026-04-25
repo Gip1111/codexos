@@ -8,6 +8,12 @@ Current alpha:
 
 - LXQt session remains the stable live desktop.
 - `AurionOS LabWC Preview` is available as an experimental Wayland session entry and falls back to LXQt if `labwc` is not installed.
+- `AurionOS Native Preview` is available as an experimental X session entry that starts the Aurion window-manager bridge, native topbar, native dock, and native home surface.
+- `aurion-window-manager` reports/starts the current labwc/openbox bridge while preserving Openbox fallback.
+- `aurion-de-shell` implements native alpha TopBar, Dock, Launcher, Settings, Files, Notifications, Login Preview, and a Desktop Environment hub.
+- `aurion-settings`, `aurion-files`, `aurion-notifications`, `aurion-notify`, and `aurion-login-preview` are first-class commands, not browser pages.
+- An SDDM theme is installed at `/usr/share/sddm/themes/aurionos-alpha` but is not forced as the live login default yet.
+- Packaging metadata for future `.deb` split packages lives under `packaging/aurion-desktop-environment/`.
 - AurionOS session metadata and environment branding are applied.
 - `aurionos-alpha` LXQt theme, `AurionOS` Openbox theme, top bar, bottom dock, branded icons, desktop shortcuts, and keyboard shortcuts replace the stock Lubuntu desktop feel.
 - `aurion-startlxqt`, `aurion-session-guard`, and `aurion-session-watchdog` guard the live session against a cursor-only desktop by restoring missing LXQt panel, desktop, runner, notification, policy kit, power, and shortcut modules.

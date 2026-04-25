@@ -30,6 +30,12 @@ echo
 
 check_command "QML surface" aurion-qml-surface
 check_command "Native home" aurion-native-home
+check_command "Aurion DE shell" aurion-de-shell
+check_command "Window manager" aurion-window-manager
+check_command "Native session" aurion-startdesktop
+check_command "Settings" aurion-settings
+check_command "Files" aurion-files
+check_command "Notifications" aurion-notifications
 check_command "Experience launcher" aurion-experience
 check_command "Action dispatcher" aurion-action
 check_command "Web fallback opener" aurion-webapp-open
@@ -41,6 +47,8 @@ check_file "QML runtime metadata" /usr/share/aurionos/qml/runtime.conf
 check_file "HTML fallback" /usr/share/aurionos/experience/index.html
 check_file "LXQt panel profile" "$HOME/.config/lxqt/panel.conf"
 check_file "First-run autostart" /etc/xdg/autostart/aurion-first-run.desktop
+check_file "Native session entry" /usr/share/xsessions/aurionos-native.desktop
+check_file "SDDM theme" /usr/share/sddm/themes/aurionos-alpha/Main.qml
 
 echo
 if [ -r /usr/share/aurionos/qml/runtime.conf ]; then

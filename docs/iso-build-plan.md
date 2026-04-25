@@ -8,7 +8,7 @@ ISO strategy: remaster the official Lubuntu 24.04 desktop ISO in GitHub Actions.
 
 Secure Boot strategy: preserve the signed Ubuntu boot chain. The build does not replace shim, signed GRUB, the signed Ubuntu kernel, or the live initrd. It hashes critical boot files before and after branding and fails if they change.
 
-Live session strategy: ship an `AurionOS` LXQt session entry, live-session branding, a guarded `aurion-startlxqt` wrapper, an Xsession guard, a session watchdog, a custom LXQt visual profile, top bar, bottom dock, desktop shortcuts, keyboard shortcuts, and local graphical Aurion Shell/Experience surfaces. LXQt remains the stable desktop foundation for v0.1. The future labwc/Qt shell is represented by safe HTML alpha surfaces and command entry points.
+Live session strategy: ship an `AurionOS` LXQt session entry, live-session branding, a guarded `aurion-startlxqt` wrapper, an Xsession guard, a session watchdog, a custom LXQt visual profile, top bar, bottom dock, desktop shortcuts, keyboard shortcuts, and local graphical Aurion Shell/Experience surfaces. LXQt remains the stable desktop foundation for v0.1. The native Aurion DE is shipped as `AurionOS Native Preview`; labwc remains a separate fallback-safe preview path.
 
 Installer strategy: keep the Lubuntu Calamares installer. Safe text rebranding is applied where present. No custom installer is attempted in v0.1.
 
@@ -28,6 +28,8 @@ Experience strategy: include `aurion-experience`, a native PyQt task shell that 
 
 Shell strategy: include `aurion-shell`, `aurion-launcher`, `aurion-ai-sidebar`, `aurion-topbar`, and `aurion-dock`. These prefer the native PyQt command center where possible, keep the QML bridge as a secondary path, and keep local offline HTML surfaces as stable fallback.
 
+Desktop Environment strategy: include `aurion-de-shell` plus wrappers for window manager, native topbar, dock, launcher, settings, files, notifications, login preview, and Native Preview session. Keep LXQt as the accepted default session until the native layer passes real-hardware testing.
+
 GitHub Actions strategy: build on `ubuntu-24.04`, free disk space, install ISO tools, run the build script, clearly fail if the expected ISO is absent, upload the ISO artifact, and upload logs even on failure.
 
 ## Must do today
@@ -45,6 +47,7 @@ GitHub Actions strategy: build on `ubuntu-24.04`, free disk space, install ISO t
 - Include alpha foundations for app install handling, AppImage integration, Hub report, and snapshot planning.
 - Include the graphical Aurion Experience shell and task assistant routing for common desktop work.
 - Include the graphical Aurion Shell surface for launcher, AI sidebar, dock, apps, hardware, and control center flows.
+- Include the Aurion Desktop Environment alpha layer for all ten DE blocks.
 - Include first-boot desktop affordances for email/browser, app install, hardware checks, diagnostics, and AI status.
 
 ## Repository structure
@@ -63,6 +66,7 @@ distro/plymouth/
 distro/session/
 shell/
 shell/bin/
+desktop-environment/
 control-center/
 ai-services/
 hardware-compat/
@@ -71,6 +75,7 @@ app-installer/
 hub/
 rollback/
 diagnostics/
+packaging/
 docs/
 ```
 
@@ -95,6 +100,15 @@ Important payload files:
 - `app-installer/aurion-appimage-integrate`
 - `hub/aurion-hub`
 - `experience/aurion-experience`
+- `experience/aurion-native-home`
+- `desktop-environment/aurion-de-shell`
+- `desktop-environment/aurion-window-manager`
+- `desktop-environment/aurion-startdesktop`
+- `desktop-environment/aurion-settings`
+- `desktop-environment/aurion-files`
+- `desktop-environment/aurion-notifications`
+- `desktop-environment/aurion-login-preview`
+- `distro/session/aurionos-native.desktop`
 - `ai-services/aurion-task-assist`
 - `rollback/aurion-snapshot-plan`
 - `diagnostics/aurion-status`

@@ -1,6 +1,6 @@
 # AurionOS Control Center Foundation
 
-The alpha control center opens the QML shell bridge when a desktop session is available and keeps a terminal-safe launcher through `aurion-control --cli`. It groups the OS features expected in the final product:
+The alpha control center opens `aurion-settings` when a desktop session is available and keeps a terminal-safe launcher through `aurion-control --cli`. It groups the OS features expected in the final product:
 
 - system status
 - hardware compatibility

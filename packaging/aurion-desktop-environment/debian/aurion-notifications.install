@@ -1,0 +1,3 @@
+desktop-environment/aurion-notifications usr/bin/
+desktop-environment/aurion-notify usr/bin/
+distro/branding/usr/share/applications/aurion-notifications.desktop usr/share/applications/

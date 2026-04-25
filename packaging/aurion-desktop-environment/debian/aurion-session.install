@@ -1,0 +1,3 @@
+desktop-environment/aurion-window-manager usr/bin/
+desktop-environment/aurion-startdesktop usr/bin/
+distro/session/aurionos-native.desktop usr/share/xsessions/

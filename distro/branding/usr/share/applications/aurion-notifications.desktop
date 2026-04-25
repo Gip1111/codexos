@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Aurion Notifications
+Comment=Open the AurionOS notification center
+Exec=aurion-notifications
+Icon=aurion-assistant
+Terminal=false
+Categories=System;Utility;

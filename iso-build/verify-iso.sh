@@ -106,6 +106,7 @@ main() {
   require_file_in_squashfs etc/aurionos-release
   require_file_in_squashfs usr/share/backgrounds/aurionos/aurionos-alpha.png
   require_file_in_squashfs usr/share/xsessions/aurionos-lxqt.desktop
+  require_file_in_squashfs usr/share/xsessions/aurionos-native.desktop
   require_file_in_squashfs usr/share/wayland-sessions/aurionos-labwc.desktop
   require_file_in_squashfs etc/xdg/autostart/aurion-live-branding.desktop
   require_file_in_squashfs etc/xdg/autostart/aurion-first-run.desktop
@@ -159,8 +160,11 @@ main() {
   require_file_in_squashfs usr/share/aurionos/store/alpha-catalog.json
   require_file_in_squashfs usr/share/aurionos/release/channel.conf
   require_file_in_squashfs usr/share/doc/aurionos/final-project-foundations.md
+  require_file_in_squashfs usr/share/doc/aurionos/desktop-environment.md
+  require_file_in_squashfs usr/share/doc/aurionos/desktop-packaging.md
   require_file_in_squashfs usr/share/doc/aurionos/iso-build-plan.md
   require_file_in_squashfs usr/share/doc/aurionos/visual-design.md
+  require_file_in_squashfs usr/share/applications/aurion-desktop-shell.desktop
   require_file_in_squashfs usr/share/applications/aurion-hub.desktop
   require_file_in_squashfs usr/share/applications/aurion-shell.desktop
   require_file_in_squashfs usr/share/applications/aurion-launcher.desktop
@@ -171,6 +175,9 @@ main() {
   require_file_in_squashfs usr/share/applications/aurion-ai-sidebar.desktop
   require_file_in_squashfs usr/share/applications/aurion-ai-setup.desktop
   require_file_in_squashfs usr/share/applications/aurion-action-handler.desktop
+  require_file_in_squashfs usr/share/applications/aurion-settings.desktop
+  require_file_in_squashfs usr/share/applications/aurion-notifications.desktop
+  require_file_in_squashfs usr/share/applications/aurion-login-preview.desktop
   require_file_in_squashfs usr/share/applications/mimeapps.list
   require_file_in_squashfs etc/xdg/mimeapps.list
   require_file_in_squashfs usr/share/applications/aurion-experience.desktop
@@ -180,6 +187,9 @@ main() {
   require_file_in_squashfs usr/share/icons/hicolor/scalable/apps/aurion-files.svg
   require_file_in_squashfs usr/share/icons/hicolor/scalable/apps/aurion-terminal.svg
   require_file_in_squashfs usr/share/icons/hicolor/scalable/apps/aurion-installer.svg
+  require_file_in_squashfs usr/share/sddm/themes/aurionos-alpha/Main.qml
+  require_file_in_squashfs usr/share/sddm/themes/aurionos-alpha/theme.conf
+  require_file_in_squashfs usr/share/sddm/themes/aurionos-alpha/metadata.desktop
 
   require_executable_in_squashfs usr/local/bin/aurion-status
   require_executable_in_squashfs usr/local/bin/aurion-apply-live-branding
@@ -188,9 +198,17 @@ main() {
   require_executable_in_squashfs usr/local/bin/aurion-session-watchdog
   require_executable_in_squashfs usr/local/bin/aurion-startlxqt
   require_executable_in_squashfs usr/local/bin/aurion-startlabwc
+  require_executable_in_squashfs usr/local/bin/aurion-startdesktop
+  require_executable_in_squashfs usr/local/bin/aurion-window-manager
   require_executable_in_squashfs usr/local/bin/aurion-control
   require_executable_in_squashfs usr/local/bin/aurion-action
+  require_executable_in_squashfs usr/local/bin/aurion-de-shell
   require_executable_in_squashfs usr/local/bin/aurion-native-home
+  require_executable_in_squashfs usr/local/bin/aurion-settings
+  require_executable_in_squashfs usr/local/bin/aurion-files
+  require_executable_in_squashfs usr/local/bin/aurion-notifications
+  require_executable_in_squashfs usr/local/bin/aurion-notify
+  require_executable_in_squashfs usr/local/bin/aurion-login-preview
   require_executable_in_squashfs usr/local/bin/aurion-webapp-open
   require_executable_in_squashfs usr/local/bin/aurion-shell
   require_executable_in_squashfs usr/local/bin/aurion-qml-surface
@@ -237,6 +255,10 @@ main() {
   cat_squashfs_file usr/share/wayland-sessions/aurionos-labwc.desktop > "$WORK_DIR/aurionos-labwc.desktop"
   grep -Fq 'Exec=/usr/local/bin/aurion-startlabwc' "$WORK_DIR/aurionos-labwc.desktop" \
     || fail "AurionOS LabWC preview session does not use aurion-startlabwc"
+
+  cat_squashfs_file usr/share/xsessions/aurionos-native.desktop > "$WORK_DIR/aurionos-native.desktop"
+  grep -Fq 'Exec=/usr/local/bin/aurion-startdesktop' "$WORK_DIR/aurionos-native.desktop" \
+    || fail "AurionOS Native Preview session does not use aurion-startdesktop"
 
   cat_squashfs_file usr/local/bin/aurion-startlabwc > "$WORK_DIR/aurion-startlabwc"
   grep -Fq 'falling back to stable LXQt session' "$WORK_DIR/aurion-startlabwc" \
@@ -339,6 +361,32 @@ main() {
     || fail "Aurion native home does not include the integrated Hardware page"
   grep -Fq 'def build_diagnostics_page' "$WORK_DIR/aurion-native-home" \
     || fail "Aurion native home does not include the integrated Diagnostics page"
+
+  cat_squashfs_file usr/local/bin/aurion-de-shell > "$WORK_DIR/aurion-de-shell"
+  grep -Fq 'class TopBar' "$WORK_DIR/aurion-de-shell" \
+    || fail "Aurion DE shell does not implement the native topbar"
+  grep -Fq 'class Dock' "$WORK_DIR/aurion-de-shell" \
+    || fail "Aurion DE shell does not implement the native dock"
+  grep -Fq 'class Launcher' "$WORK_DIR/aurion-de-shell" \
+    || fail "Aurion DE shell does not implement the native launcher"
+  grep -Fq 'class Settings' "$WORK_DIR/aurion-de-shell" \
+    || fail "Aurion DE shell does not implement settings"
+  grep -Fq 'class Files' "$WORK_DIR/aurion-de-shell" \
+    || fail "Aurion DE shell does not implement the file manager"
+  grep -Fq 'class Notifications' "$WORK_DIR/aurion-de-shell" \
+    || fail "Aurion DE shell does not implement notifications"
+  grep -Fq 'class LoginPreview' "$WORK_DIR/aurion-de-shell" \
+    || fail "Aurion DE shell does not implement the login preview"
+
+  cat_squashfs_file usr/local/bin/aurion-startdesktop > "$WORK_DIR/aurion-startdesktop"
+  grep -Fq 'aurion-de-shell --mode topbar' "$WORK_DIR/aurion-startdesktop" \
+    || fail "Aurion native session does not start the native topbar"
+  grep -Fq 'aurion-de-shell --mode dock' "$WORK_DIR/aurion-startdesktop" \
+    || fail "Aurion native session does not start the native dock"
+
+  cat_squashfs_file usr/local/bin/aurion-window-manager > "$WORK_DIR/aurion-window-manager"
+  grep -Fq 'openbox' "$WORK_DIR/aurion-window-manager" \
+    || fail "Aurion window manager bridge does not keep the Openbox fallback"
 
   cat_squashfs_file usr/share/aurionos/store/app.js > "$WORK_DIR/aurion-store.js"
   grep -Fq 'aurion-action://' "$WORK_DIR/aurion-store.js" \

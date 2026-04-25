@@ -52,6 +52,7 @@ case "$action" in
     open_url "https://mail.google.com"
     ;;
   files|file-manager)
+    launch aurion-files
     launch pcmanfm-qt "$HOME"
     ;;
   terminal|shell)
@@ -130,7 +131,11 @@ case "$action" in
   backup)
     terminal_run "Aurion Rollback" aurion-snapshot-plan
     ;;
+  notifications)
+    launch aurion-notifications
+    ;;
   settings|security|services|system|software)
+    launch aurion-settings
     launch aurion-shell --page control
     ;;
   *)

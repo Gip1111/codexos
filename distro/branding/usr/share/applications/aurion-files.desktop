@@ -2,7 +2,7 @@
 Type=Application
 Name=Files
 Comment=Open the file manager
-Exec=aurion-action aurion-action://files
+Exec=aurion-files
 Icon=aurion-files
 Terminal=false
 Categories=System;FileManager;

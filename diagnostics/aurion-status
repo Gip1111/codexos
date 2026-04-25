@@ -76,6 +76,14 @@ for tool in \
   aurion-status \
   aurion-startlxqt \
   aurion-startlabwc \
+  aurion-startdesktop \
+  aurion-window-manager \
+  aurion-de-shell \
+  aurion-settings \
+  aurion-files \
+  aurion-notifications \
+  aurion-notify \
+  aurion-login-preview \
   aurion-session-guard \
   aurion-session-watchdog \
   aurion-apply-live-branding \

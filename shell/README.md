@@ -4,12 +4,14 @@ AurionOS Alpha v0.1 keeps the Lubuntu LXQt session as the stable live desktop an
 
 The intended path is:
 
-- labwc based experimental session after the first ISO proves boot and install flow
-- Qt6/QML top bar, dock, launcher, and AI sidebar
 - stable LXQt fallback until the Aurion shell can survive real live media testing
+- native PyQt alpha layer for the first complete DE blocks
+- Qt6/QML top bar, dock, launcher, and AI sidebar after packaging hardening
+- labwc based experimental session after the native layer is proven
 
 Current alpha commands:
 
+- `aurion-de-shell --mode desktop`
 - `aurion-shell`
 - `aurion-qml-surface`
 - `aurion-launcher`
@@ -17,6 +19,6 @@ Current alpha commands:
 - `aurion-topbar`
 - `aurion-dock`
 
-These prefer the Qt/QML bridge at `/usr/share/aurionos/qml/AurionShell.qml` when a QML runtime is available and fall back to local offline HTML at `/usr/share/aurionos/shell/index.html`. It is not the final shell, but it gives the ISO a real graphical Launcher, AI Sidebar, Dock concept, Control Center surface, and app/hardware task flow without adding risky compositor dependencies.
+`aurion-launcher`, `aurion-topbar`, and `aurion-dock` now open native PyQt alpha components. `aurion-qml-surface` remains a secondary bridge at `/usr/share/aurionos/qml/AurionShell.qml`; local offline HTML remains the final fallback.
 
 `AurionOS LabWC Preview` is also shipped as an experimental Wayland session entry. It is not the default session and falls back to LXQt if `labwc` is unavailable.

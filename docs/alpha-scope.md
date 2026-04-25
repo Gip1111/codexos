@@ -10,6 +10,16 @@
 - AurionOS LXQt session entry
 - AurionOS LXQt visual profile with branded panel theme, dark top bar, bottom dock, Openbox theme, icon set, desktop shortcuts, and keyboard shortcuts
 - AurionOS LabWC Preview session entry with safe LXQt fallback when `labwc` is not installed
+- AurionOS Native Preview session entry with native topbar, dock, home surface, and Openbox fallback
+- Aurion window-manager bridge
+- Native Aurion TopBar alpha
+- Native Aurion Dock alpha
+- Native Aurion Launcher alpha
+- Native Aurion Settings alpha
+- Native Aurion Files alpha
+- Native Aurion Notifications alpha
+- Aurion SDDM login theme preview
+- Aurion desktop packaging manifest
 - Guarded LXQt starter, Xsession guard, and session watchdog to recover panel, desktop, runner, notifications, policy kit, power management, and global shortcut modules if LXQt autostart is incomplete
 - Welcome page and first-run live branding hook
 - Aurion Shell graphical alpha surface with Launcher, AI Sidebar, Dock concept, app flow, hardware flow, and control flow
@@ -61,6 +71,9 @@
 - Bundled Ollama runtime or unattended model manager
 - Production App Store backend and installers
 - Btrfs snapshot automation
+- Making the Native Preview session the default before real-hardware soak testing
+- Full notification daemon replacement with DBus ownership
+- Full compositor replacement beyond labwc/openbox bridge
 
 ## App installation direction
 

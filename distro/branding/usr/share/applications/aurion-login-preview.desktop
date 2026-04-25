@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Aurion Login Preview
+Comment=Preview the AurionOS login screen design
+Exec=aurion-login-preview
+Icon=aurionos
+Terminal=false
+Categories=System;Settings;

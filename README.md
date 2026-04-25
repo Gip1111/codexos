@@ -23,6 +23,7 @@ The alpha goal is a credible first ISO, not a finished distribution. Ubuntu/Lubu
 - Experimental AurionOS LabWC Preview Wayland session with automatic fallback to the stable LXQt session if `labwc` is not installed
 - Native PyQt Aurion Experience command center as the first task-oriented desktop home
 - Integrated native desktop pages for Store, Hardware, Diagnostics, AI, and Control; QML/Firefox/HTML are fallback paths
+- Aurion Desktop Environment alpha layer: window-manager bridge, native TopBar, Dock, Launcher, Settings, Files, Notifications, SDDM login theme preview, Native Preview session, and packaging manifest
 - Clickable home actions through the local `aurion-action://` dispatcher for browser, email, files, terminal, installer, AI setup, diagnostics, and rollback
 - Guarded LXQt session starter, Xsession guard, and live-session watchdog to recover the desktop if panel or wallpaper modules do not autostart
 - Welcome page and first-run live branding hook
@@ -53,6 +54,16 @@ The alpha goal is a credible first ISO, not a finished distribution. Ubuntu/Lubu
 aurion-status
 aurion-shell
 aurion-native-home
+aurion-de-shell --mode desktop
+aurion-topbar
+aurion-dock
+aurion-launcher
+aurion-settings
+aurion-files
+aurion-notifications
+aurion-login-preview
+aurion-startdesktop --check
+aurion-window-manager --status
 aurion-qml-surface
 aurion-qml-surface --page experience
 aurion-launcher

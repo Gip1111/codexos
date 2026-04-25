@@ -1,0 +1,464 @@
+#!/usr/bin/env python3
+import argparse
+import os
+import shlex
+import shutil
+import subprocess
+import sys
+from datetime import datetime
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+ICON_DIR = "/usr/share/icons/hicolor/scalable/apps"
+NOTIFICATION_LOG = os.path.expanduser("~/.local/share/aurionos/notifications.log")
+
+
+def icon(name):
+    path = os.path.join(ICON_DIR, name)
+    if os.path.exists(path):
+        return QtGui.QIcon(path)
+    themed = QtGui.QIcon.fromTheme(os.path.splitext(name)[0])
+    if not themed.isNull():
+        return themed
+    return QtGui.QIcon.fromTheme("applications-system")
+
+
+def run_command(command):
+    try:
+        subprocess.Popen(command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except OSError as exc:
+        QtWidgets.QMessageBox.warning(None, "AurionOS", f"Cannot launch {' '.join(command)}:\n{exc}")
+
+
+def run_action(action):
+    run_command(["aurion-action", f"aurion-action://{action}"])
+
+
+def run_terminal(title, command):
+    quoted = " ".join(shlex.quote(part) for part in command)
+    shell_command = f"{quoted}; printf '\\n'; read -r -p 'Premi Invio per chiudere...'"
+    if shutil.which("qterminal"):
+        run_command(["qterminal", "-T", title, "-e", "bash", "-lc", shell_command])
+    elif shutil.which("x-terminal-emulator"):
+        run_command(["x-terminal-emulator", "-e", "bash", "-lc", shell_command])
+    else:
+        run_command(command)
+
+
+class AButton(QtWidgets.QPushButton):
+    def __init__(self, text, icon_name=None, accent=False):
+        super().__init__(text)
+        if icon_name:
+            self.setIcon(icon(icon_name))
+            self.setIconSize(QtCore.QSize(28, 28))
+        self.setCursor(QtCore.Qt.PointingHandCursor)
+        self.setProperty("accent", accent)
+        self.setMinimumHeight(34)
+
+
+class Tile(QtWidgets.QPushButton):
+    def __init__(self, title, body, icon_name, callback):
+        super().__init__(f"{title}\n{body}")
+        self.setIcon(icon(icon_name))
+        self.setIconSize(QtCore.QSize(34, 34))
+        self.setCursor(QtCore.Qt.PointingHandCursor)
+        self.setMinimumHeight(96)
+        self.setProperty("tile", True)
+        self.clicked.connect(callback)
+
+
+class ShellWindow(QtWidgets.QWidget):
+    def __init__(self, title="AurionOS"):
+        super().__init__()
+        self.setWindowTitle(title)
+        self.setWindowIcon(icon("aurionos.svg"))
+        self.setStyleSheet(STYLE)
+
+    def center(self, width, height):
+        screen = QtWidgets.QApplication.primaryScreen().availableGeometry()
+        self.setGeometry(
+            screen.x() + (screen.width() - width) // 2,
+            screen.y() + (screen.height() - height) // 2,
+            width,
+            height,
+        )
+
+
+class TopBar(ShellWindow):
+    def __init__(self):
+        super().__init__("Aurion TopBar")
+        self.setWindowFlags(QtCore.Qt.Tool | QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
+        screen = QtWidgets.QApplication.primaryScreen().availableGeometry()
+        self.setGeometry(screen.x(), screen.y(), screen.width(), 38)
+        layout = QtWidgets.QHBoxLayout(self)
+        layout.setContentsMargins(10, 4, 10, 4)
+        layout.setSpacing(8)
+        layout.addWidget(AButton("Aurion", "aurionos.svg"))
+        layout.addStretch(1)
+        for index in range(1, 5):
+            button = AButton(str(index), accent=index == 1)
+            button.setFixedWidth(36)
+            layout.addWidget(button)
+        layout.addStretch(1)
+        for label, action in (("Wi-Fi", "hardware"), ("Audio", "settings"), ("Notifiche", "notifications")):
+            button = AButton(label)
+            button.clicked.connect(lambda _=False, a=action: route_mode(a))
+            layout.addWidget(button)
+        self.clock = QtWidgets.QLabel()
+        self.clock.setProperty("muted", True)
+        layout.addWidget(self.clock)
+        power = AButton("Power")
+        power.clicked.connect(lambda: run_action("system-details"))
+        layout.addWidget(power)
+        self.timer = QtCore.QTimer(self)
+        self.timer.timeout.connect(self.update_clock)
+        self.timer.start(1000)
+        self.update_clock()
+
+    def update_clock(self):
+        self.clock.setText(datetime.now().strftime("%H:%M"))
+
+
+class Dock(ShellWindow):
+    def __init__(self):
+        super().__init__("Aurion Dock")
+        self.setWindowFlags(QtCore.Qt.Tool | QtCore.Qt.FramelessWindowHint | QtCore.Qt.WindowStaysOnTopHint)
+        screen = QtWidgets.QApplication.primaryScreen().availableGeometry()
+        width = min(760, screen.width() - 80)
+        self.setGeometry(screen.x() + (screen.width() - width) // 2, screen.y() + screen.height() - 86, width, 72)
+        layout = QtWidgets.QHBoxLayout(self)
+        layout.setContentsMargins(14, 8, 14, 8)
+        layout.setSpacing(10)
+        apps = [
+            ("Experience", "aurion-experience.svg", lambda: run_command(["aurion-experience"])),
+            ("Launcher", "aurionos.svg", lambda: route_mode("launcher")),
+            ("Browser", "aurion-browser.svg", lambda: run_action("browser")),
+            ("Files", "aurion-files.svg", lambda: run_command(["aurion-files"])),
+            ("Terminal", "aurion-terminal.svg", lambda: run_action("terminal")),
+            ("Store", "aurion-store.svg", lambda: run_command(["aurion-store"])),
+            ("Settings", "aurionos.svg", lambda: run_command(["aurion-settings"])),
+            ("AI", "aurion-assistant.svg", lambda: run_command(["aurion-ai-sidebar"])),
+        ]
+        for title, icon_name, callback in apps:
+            button = AButton(title, icon_name)
+            button.setMinimumWidth(82)
+            button.clicked.connect(callback)
+            layout.addWidget(button)
+
+
+class Launcher(ShellWindow):
+    def __init__(self):
+        super().__init__("Aurion Launcher")
+        self.center(720, 540)
+        layout = QtWidgets.QVBoxLayout(self)
+        layout.setContentsMargins(18, 18, 18, 18)
+        title = QtWidgets.QLabel("Aurion Launcher")
+        title.setProperty("pageTitle", True)
+        layout.addWidget(title)
+        self.search = QtWidgets.QLineEdit()
+        self.search.setPlaceholderText("Cerca app, impostazioni o azioni")
+        layout.addWidget(self.search)
+        grid = QtWidgets.QGridLayout()
+        grid.setSpacing(12)
+        actions = [
+            ("Experience", "Home e AI", "aurion-experience.svg", lambda: run_command(["aurion-experience"])),
+            ("Store", "Installa app", "aurion-store.svg", lambda: run_command(["aurion-store"])),
+            ("Files", "Gestisci file", "aurion-files.svg", lambda: run_command(["aurion-files"])),
+            ("Settings", "Controlli sistema", "aurionos.svg", lambda: run_command(["aurion-settings"])),
+            ("Hardware", "Compatibilita", "aurion-hardware.svg", lambda: run_command(["aurion-hardware-center"])),
+            ("Diagnostics", "Report sistema", "aurion-terminal.svg", lambda: run_command(["aurion-diagnostics"])),
+            ("Notifications", "Centro notifiche", "aurion-assistant.svg", lambda: run_command(["aurion-notifications"])),
+            ("Terminal", "Shell", "aurion-terminal.svg", lambda: run_action("terminal")),
+            ("Installer", "Installa AurionOS", "aurion-installer.svg", lambda: run_action("installer")),
+        ]
+        for index, item in enumerate(actions):
+            grid.addWidget(Tile(*item), index // 3, index % 3)
+        layout.addLayout(grid)
+
+
+class Settings(ShellWindow):
+    def __init__(self):
+        super().__init__("Aurion Settings")
+        self.center(900, 620)
+        layout = QtWidgets.QHBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        sidebar = QtWidgets.QFrame()
+        sidebar.setObjectName("sidebar")
+        sidebar.setFixedWidth(190)
+        side_layout = QtWidgets.QVBoxLayout(sidebar)
+        side_layout.setContentsMargins(12, 12, 12, 12)
+        for name in ("Sistema", "Rete", "Display", "Audio", "Aspetto", "AI", "Rollback"):
+            side_layout.addWidget(AButton(name))
+        side_layout.addStretch(1)
+        layout.addWidget(sidebar)
+        content = QtWidgets.QVBoxLayout()
+        content.setContentsMargins(24, 24, 24, 24)
+        title = QtWidgets.QLabel("Aurion Settings")
+        title.setProperty("pageTitle", True)
+        content.addWidget(title)
+        text = QtWidgets.QLabel("Centro impostazioni alpha: usa strumenti stabili della base, ma presenta i flussi come AurionOS.")
+        text.setWordWrap(True)
+        text.setProperty("muted", True)
+        content.addWidget(text)
+        grid = QtWidgets.QGridLayout()
+        grid.setSpacing(12)
+        tiles = [
+            Tile("Display", "Apri impostazioni schermo", "aurionos.svg", lambda: run_command(["lxqt-config-monitor"])),
+            Tile("Rete", "Controlla Wi-Fi e driver", "aurion-hardware.svg", lambda: run_command(["aurion-hardware-center"])),
+            Tile("Audio", "Mixer e output", "aurionos.svg", lambda: run_command(["pavucontrol"]) if shutil.which("pavucontrol") else run_action("settings")),
+            Tile("Tema", "Profilo AurionOS", "aurionos.svg", lambda: run_action("settings")),
+            Tile("AI locale", "Ollama e phi4-mini", "aurion-assistant.svg", lambda: run_command(["aurion-ai-status-gui"])),
+            Tile("Rollback", "Snapshot readiness", "aurion-snapshot.svg", lambda: run_terminal("Aurion Rollback", ["aurion-snapshot-plan"])),
+        ]
+        for index, tile in enumerate(tiles):
+            grid.addWidget(tile, index // 2, index % 2)
+        content.addLayout(grid)
+        content.addStretch(1)
+        layout.addLayout(content, 1)
+
+
+class Files(ShellWindow):
+    def __init__(self):
+        super().__init__("Aurion Files")
+        self.center(900, 620)
+        self.current = os.path.expanduser("~")
+        layout = QtWidgets.QVBoxLayout(self)
+        layout.setContentsMargins(18, 18, 18, 18)
+        header = QtWidgets.QHBoxLayout()
+        self.path_label = QtWidgets.QLabel()
+        self.path_label.setProperty("pageTitle", True)
+        header.addWidget(self.path_label, 1)
+        for label, callback in (("Home", self.go_home), ("Su", self.go_up), ("PCManFM", lambda: run_action("files"))):
+            button = AButton(label)
+            button.clicked.connect(callback)
+            header.addWidget(button)
+        layout.addLayout(header)
+        self.listing = QtWidgets.QListWidget()
+        self.listing.itemDoubleClicked.connect(self.open_item)
+        layout.addWidget(self.listing, 1)
+        self.load_path(self.current)
+
+    def load_path(self, path):
+        self.current = path
+        self.path_label.setText(os.path.basename(path) or path)
+        self.listing.clear()
+        try:
+            entries = sorted(os.scandir(path), key=lambda e: (not e.is_dir(), e.name.lower()))
+        except OSError as exc:
+            QtWidgets.QMessageBox.warning(self, "Aurion Files", str(exc))
+            return
+        for entry in entries:
+            item = QtWidgets.QListWidgetItem(entry.name)
+            item.setData(QtCore.Qt.UserRole, entry.path)
+            item.setIcon(QtGui.QIcon.fromTheme("folder" if entry.is_dir() else "text-x-generic"))
+            self.listing.addItem(item)
+
+    def open_item(self, item):
+        path = item.data(QtCore.Qt.UserRole)
+        if os.path.isdir(path):
+            self.load_path(path)
+        else:
+            run_command(["xdg-open", path])
+
+    def go_home(self):
+        self.load_path(os.path.expanduser("~"))
+
+    def go_up(self):
+        self.load_path(os.path.dirname(self.current))
+
+
+class Notifications(ShellWindow):
+    def __init__(self):
+        super().__init__("Aurion Notifications")
+        self.center(520, 620)
+        layout = QtWidgets.QVBoxLayout(self)
+        layout.setContentsMargins(18, 18, 18, 18)
+        title = QtWidgets.QLabel("Centro notifiche")
+        title.setProperty("pageTitle", True)
+        layout.addWidget(title)
+        self.listing = QtWidgets.QListWidget()
+        layout.addWidget(self.listing, 1)
+        row = QtWidgets.QHBoxLayout()
+        refresh = AButton("Aggiorna")
+        refresh.clicked.connect(self.load)
+        clear = AButton("Svuota")
+        clear.clicked.connect(self.clear)
+        sample = AButton("Prova notifica", accent=True)
+        sample.clicked.connect(lambda: run_command(["aurion-notify", "AurionOS", "Centro notifiche attivo"]))
+        row.addWidget(refresh)
+        row.addWidget(clear)
+        row.addWidget(sample)
+        layout.addLayout(row)
+        self.load()
+
+    def load(self):
+        self.listing.clear()
+        if os.path.exists(NOTIFICATION_LOG):
+            with open(NOTIFICATION_LOG, "r", encoding="utf-8", errors="replace") as handle:
+                for line in handle.readlines()[-80:]:
+                    self.listing.addItem(line.strip())
+        if self.listing.count() == 0:
+            self.listing.addItem("Nessuna notifica recente.")
+
+    def clear(self):
+        os.makedirs(os.path.dirname(NOTIFICATION_LOG), exist_ok=True)
+        open(NOTIFICATION_LOG, "w", encoding="utf-8").close()
+        self.load()
+
+
+class LoginPreview(ShellWindow):
+    def __init__(self):
+        super().__init__("Aurion Login Preview")
+        self.center(760, 430)
+        layout = QtWidgets.QVBoxLayout(self)
+        layout.setContentsMargins(34, 30, 34, 30)
+        logo = QtWidgets.QLabel("AurionOS")
+        logo.setProperty("heroTitle", True)
+        layout.addWidget(logo)
+        layout.addWidget(QtWidgets.QLabel("SDDM theme preview. The ISO installs the theme but does not force it over the stable live login path."))
+        user = QtWidgets.QLineEdit()
+        user.setText("aurionos")
+        password = QtWidgets.QLineEdit()
+        password.setPlaceholderText("Password")
+        password.setEchoMode(QtWidgets.QLineEdit.Password)
+        layout.addWidget(user)
+        layout.addWidget(password)
+        layout.addWidget(AButton("Accedi", accent=True))
+
+
+class DesktopHub(ShellWindow):
+    def __init__(self):
+        super().__init__("Aurion Desktop Environment")
+        self.center(1060, 680)
+        layout = QtWidgets.QVBoxLayout(self)
+        layout.setContentsMargins(24, 24, 24, 24)
+        title = QtWidgets.QLabel("Aurion Desktop Environment Alpha")
+        title.setProperty("pageTitle", True)
+        layout.addWidget(title)
+        subtitle = QtWidgets.QLabel("Layer completo: window manager bridge, topbar, dock, launcher, settings, files, notifications, login preview, session, packaging.")
+        subtitle.setWordWrap(True)
+        subtitle.setProperty("muted", True)
+        layout.addWidget(subtitle)
+        grid = QtWidgets.QGridLayout()
+        grid.setSpacing(12)
+        tiles = [
+            Tile("Window Manager", "labwc/openbox bridge", "aurionos.svg", lambda: run_terminal("Aurion Window Manager", ["aurion-window-manager", "--status"])),
+            Tile("TopBar", "Barra superiore nativa", "aurionos.svg", lambda: route_mode("topbar")),
+            Tile("Dock", "Dock nativo", "aurionos.svg", lambda: route_mode("dock")),
+            Tile("Launcher", "Menu e ricerca", "aurionos.svg", lambda: route_mode("launcher")),
+            Tile("Settings", "Impostazioni", "aurionos.svg", lambda: route_mode("settings")),
+            Tile("Files", "File manager Aurion", "aurion-files.svg", lambda: route_mode("files")),
+            Tile("Notifications", "Centro notifiche", "aurion-assistant.svg", lambda: route_mode("notifications")),
+            Tile("Login", "Preview SDDM", "aurionos.svg", lambda: route_mode("login")),
+            Tile("Session", "Native Preview", "aurionos.svg", lambda: run_terminal("Aurion Native Session", ["aurion-startdesktop", "--check"])),
+            Tile("Packaging", "Manifest DE", "aurion-store.svg", lambda: run_terminal("Aurion Desktop Check", ["aurion-desktop-check"])),
+        ]
+        for index, tile in enumerate(tiles):
+            grid.addWidget(tile, index // 5, index % 5)
+        layout.addLayout(grid)
+
+
+def route_mode(mode):
+    wrappers = {
+        "settings": ["aurion-settings"],
+        "files": ["aurion-files"],
+        "notifications": ["aurion-notifications"],
+        "launcher": ["aurion-launcher"],
+        "topbar": ["aurion-de-shell", "--mode", "topbar"],
+        "dock": ["aurion-de-shell", "--mode", "dock"],
+        "login": ["aurion-login-preview"],
+        "hardware": ["aurion-hardware-center"],
+    }
+    run_command(wrappers.get(mode, ["aurion-de-shell", "--mode", mode]))
+
+
+STYLE = """
+QWidget {
+  background: #081014;
+  color: #eef8f8;
+  font-size: 12px;
+}
+QFrame#sidebar {
+  background: #0b1216;
+  border-right: 1px solid #273740;
+}
+QLabel[pageTitle="true"] {
+  font-size: 28px;
+  font-weight: 800;
+}
+QLabel[heroTitle="true"] {
+  font-size: 34px;
+  font-weight: 800;
+}
+QLabel[muted="true"] {
+  color: #9dadb5;
+}
+QPushButton {
+  background: #121b20;
+  color: #eef8f8;
+  border: 1px solid #273740;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+QPushButton:hover {
+  background: #1b2a30;
+  border-color: #35d0cf;
+}
+QPushButton[accent="true"] {
+  background: #f2bf63;
+  color: #071115;
+  border-color: #f2bf63;
+  font-weight: 700;
+}
+QPushButton[tile="true"] {
+  background: #151f25;
+  text-align: left;
+  padding: 13px;
+  min-width: 145px;
+}
+QLineEdit, QListWidget {
+  background: #10181d;
+  color: #eef8f8;
+  border: 1px solid #273740;
+  border-radius: 8px;
+  padding: 8px;
+}
+"""
+
+
+def build_window(mode):
+    if mode == "topbar":
+        return TopBar()
+    if mode == "dock":
+        return Dock()
+    if mode == "launcher":
+        return Launcher()
+    if mode == "settings":
+        return Settings()
+    if mode == "files":
+        return Files()
+    if mode == "notifications":
+        return Notifications()
+    if mode == "login":
+        return LoginPreview()
+    return DesktopHub()
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Aurion Desktop Environment alpha shell")
+    parser.add_argument("--mode", default="desktop", choices=["desktop", "topbar", "dock", "launcher", "settings", "files", "notifications", "login"])
+    parser.add_argument("--path", action="store_true")
+    args = parser.parse_args()
+    if args.path:
+        print(os.path.realpath(__file__))
+        return 0
+    app = QtWidgets.QApplication(sys.argv)
+    app.setApplicationName("Aurion Desktop Environment")
+    window = build_window(args.mode)
+    window.show()
+    return app.exec_()
+
+
+if __name__ == "__main__":
+    sys.exit(main())

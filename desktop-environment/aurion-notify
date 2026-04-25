@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+title="${1:-AurionOS}"
+body="${2:-Notification}"
+log_dir="${XDG_DATA_HOME:-$HOME/.local/share}/aurionos"
+mkdir -p "$log_dir"
+printf '%s | %s | %s\n' "$(date '+%Y-%m-%d %H:%M:%S')" "$title" "$body" >> "$log_dir/notifications.log"
+
+if command -v notify-send >/dev/null 2>&1; then
+  notify-send "$title" "$body" || true
+fi

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=AurionOS Native Preview
+Comment=Experimental native Aurion desktop layer with LXQt/Openbox fallback
+Exec=/usr/local/bin/aurion-startdesktop
+TryExec=/usr/local/bin/aurion-startdesktop
+DesktopNames=AurionOS;Native;

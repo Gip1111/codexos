@@ -138,6 +138,8 @@ install_doc_payload() {
   "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/docs/secure-boot-strategy.md" "$doc_dir/secure-boot-strategy.md"
   "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/docs/testing-guide.md" "$doc_dir/testing-guide.md"
   "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/docs/visual-design.md" "$doc_dir/visual-design.md"
+  "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/desktop-environment/README.md" "$doc_dir/desktop-environment.md"
+  "${SUDO[@]}" install -m 0644 "$PROJECT_ROOT/packaging/aurion-desktop-environment/README.md" "$doc_dir/desktop-packaging.md"
 }
 
 install_tool_payload() {
@@ -174,6 +176,13 @@ install_tool_payload() {
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/diagnostics/aurion-rollback-status" "$rootfs/usr/local/bin/aurion-rollback-status"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/diagnostics/aurion-status" "$rootfs/usr/local/bin/aurion-status"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/rollback/aurion-snapshot-plan" "$rootfs/usr/local/bin/aurion-snapshot-plan"
+
+  if compgen -G "$PROJECT_ROOT/desktop-environment/aurion-*" > /dev/null; then
+    for tool in "$PROJECT_ROOT"/desktop-environment/aurion-*; do
+      [ -f "$tool" ] || continue
+      "${SUDO[@]}" install -Dm0755 "$tool" "$rootfs/usr/local/bin/$(basename "$tool")"
+    done
+  fi
 
   if compgen -G "$PROJECT_ROOT/shell/bin/*" > /dev/null; then
     for tool in "$PROJECT_ROOT"/shell/bin/*; do
@@ -349,6 +358,7 @@ apply_session_selection() {
   "${SUDO[@]}" install -Dm0644 "$session_source" "$rootfs/usr/share/xsessions/AurionOS.desktop"
   "${SUDO[@]}" install -Dm0644 "$session_source" "$rootfs/usr/share/xsessions/Lubuntu.desktop"
   "${SUDO[@]}" install -Dm0644 "$session_source" "$rootfs/usr/share/xsessions/lubuntu.desktop"
+  "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/aurionos-native.desktop" "$rootfs/usr/share/xsessions/aurionos-native.desktop"
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/aurionos-labwc.desktop" "$rootfs/usr/share/wayland-sessions/aurionos-labwc.desktop"
   "${SUDO[@]}" install -Dm0644 "$PROJECT_ROOT/distro/session/profile/aurionos-session.sh" "$rootfs/etc/profile.d/aurionos-session.sh"
 

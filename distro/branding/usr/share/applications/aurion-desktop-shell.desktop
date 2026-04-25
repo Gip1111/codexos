@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Name=Aurion Shell
-Comment=Open the AurionOS alpha shell surface
+Name=Aurion Desktop
+Comment=Open the AurionOS desktop-environment alpha hub
 Exec=aurion-de-shell --mode desktop
 Icon=aurionos
 Terminal=false
