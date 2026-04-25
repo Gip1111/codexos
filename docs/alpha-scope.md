@@ -13,7 +13,7 @@
 - Guarded LXQt starter, Xsession guard, and session watchdog to recover panel, desktop, runner, notifications, policy kit, power management, and global shortcut modules if LXQt autostart is incomplete
 - Welcome page and first-run live branding hook
 - Aurion Shell graphical alpha surface with Launcher, AI Sidebar, Dock concept, app flow, hardware flow, and control flow
-- Qt/QML shell bridge for the future native desktop, with HTML fallback when no QML runtime is available
+- Native QML Aurion Experience home surface, plus Qt/QML shell bridge and HTML fallback
 - Aurion Experience graphical alpha shell styled as the first desktop home/command center
 - Clickable Aurion Experience actions for browser, email, file manager, terminal, Store, installer, AI assistant, hardware checks, diagnostics, and rollback through the local `aurion-action://` handler
 - Aurion Hub generated local HTML report

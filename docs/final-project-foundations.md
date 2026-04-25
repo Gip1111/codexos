@@ -11,7 +11,8 @@ Current alpha:
 - AurionOS session metadata and environment branding are applied.
 - `aurionos-alpha` LXQt theme, `AurionOS` Openbox theme, top bar, bottom dock, branded icons, desktop shortcuts, and keyboard shortcuts replace the stock Lubuntu desktop feel.
 - `aurion-startlxqt`, `aurion-session-guard`, and `aurion-session-watchdog` guard the live session against a cursor-only desktop by restoring missing LXQt panel, desktop, runner, notification, policy kit, power, and shortcut modules.
-- `aurion-qml-surface` adds the first Qt/QML bridge for the future native shell and falls back to the stable HTML surfaces when no QML runtime is available.
+- `aurion-qml-surface` adds the first Qt/QML bridge for the future native shell and falls back to the stable HTML surfaces when needed.
+- `aurion-experience` now prefers the native QML home surface to avoid browser chrome and Firefox Snap file limitations.
 - `aurion-shell`, `aurion-launcher`, `aurion-ai-sidebar`, `aurion-topbar`, and `aurion-dock` now prefer the QML bridge and keep the HTML surfaces as fallback.
 - `aurion-experience` provides the first graphical task-oriented shell surface.
 - `aurion-hub` generates a local HTML overview report.

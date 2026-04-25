@@ -62,7 +62,7 @@ require_builder_tools() {
   local missing=()
   local tool
 
-  for tool in awk basename chmod curl diff du find grep install mksquashfs realpath rsvg-convert rsync sed sha256sum sort stat tee unsquashfs xargs xorriso; do
+  for tool in awk basename chmod chroot cp curl diff du find grep install mksquashfs mount realpath rsvg-convert rsync sed sha256sum sort stat tee umount unsquashfs xargs xorriso; do
     if ! command -v "$tool" >/dev/null 2>&1; then
       missing+=("$tool")
     fi
@@ -180,6 +180,62 @@ install_tool_payload() {
     done
   fi
 
+}
+
+install_alpha_runtime_packages() {
+  local rootfs="$1"
+  local packages=(
+    qmlscene
+    qml-module-qtquick2
+    qml-module-qtquick-controls2
+    qml-module-qtquick-layouts
+    qml-module-qtquick-window2
+  )
+
+  if [ "${AURION_INSTALL_QML_RUNTIME:-1}" != "1" ]; then
+    log "Skipping QML runtime package installation"
+    return 0
+  fi
+
+  log "Installing user-space QML runtime packages into live filesystem"
+
+  local resolv_backup="$WORK_DIR/resolv.conf.rootfs"
+  local had_resolv=0
+  if [ -e "$rootfs/etc/resolv.conf" ]; then
+    had_resolv=1
+    "${SUDO[@]}" cp -L "$rootfs/etc/resolv.conf" "$resolv_backup" 2>/dev/null || true
+  fi
+  "${SUDO[@]}" cp -L /etc/resolv.conf "$rootfs/etc/resolv.conf"
+
+  "${SUDO[@]}" install -d -m 0755 "$rootfs/dev" "$rootfs/dev/pts" "$rootfs/proc" "$rootfs/sys"
+  "${SUDO[@]}" mount --bind /dev "$rootfs/dev"
+  "${SUDO[@]}" mount -t devpts devpts "$rootfs/dev/pts"
+  "${SUDO[@]}" mount -t proc proc "$rootfs/proc"
+  "${SUDO[@]}" mount -t sysfs sysfs "$rootfs/sys"
+
+  cleanup_chroot_mounts() {
+    "${SUDO[@]}" umount -lf "$rootfs/dev/pts" 2>/dev/null || true
+    "${SUDO[@]}" umount -lf "$rootfs/dev" 2>/dev/null || true
+    "${SUDO[@]}" umount -lf "$rootfs/proc" 2>/dev/null || true
+    "${SUDO[@]}" umount -lf "$rootfs/sys" 2>/dev/null || true
+    if [ "$had_resolv" -eq 1 ] && [ -f "$resolv_backup" ]; then
+      "${SUDO[@]}" cp "$resolv_backup" "$rootfs/etc/resolv.conf"
+    else
+      "${SUDO[@]}" rm -f "$rootfs/etc/resolv.conf"
+    fi
+  }
+
+  local install_status=0
+  set +e
+  "${SUDO[@]}" chroot "$rootfs" apt-get update \
+    && "${SUDO[@]}" chroot "$rootfs" env DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends "${packages[@]}" \
+    && "${SUDO[@]}" chroot "$rootfs" apt-get clean \
+    && "${SUDO[@]}" rm -rf "$rootfs/var/lib/apt/lists/"*
+  install_status=$?
+  set -e
+
+  cleanup_chroot_mounts
+  [ "$install_status" -eq 0 ] || fail "Failed to install QML runtime packages into live filesystem"
 }
 
 configure_action_handler() {
@@ -496,6 +552,7 @@ main() {
   log "Extracting live filesystem"
   "${SUDO[@]}" unsquashfs -d "$rootfs" "$iso_root/casper/filesystem.squashfs" 2>&1 | tee "$LOG_DIR/unsquashfs.log"
 
+  install_alpha_runtime_packages "$rootfs"
   apply_branding "$iso_root" "$rootfs"
   run_hooks "$rootfs" "$iso_root"
   rebuild_squashfs "$iso_root" "$rootfs"

@@ -16,4 +16,8 @@ if [ ! -f "$page" ]; then
   exit 1
 fi
 
+if [ "${AURION_EXPERIENCE_BACKEND:-qml}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
+  exec aurion-qml-surface --page experience
+fi
+
 exec aurion-webapp-open AurionExperience "$page"

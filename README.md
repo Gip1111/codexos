@@ -27,7 +27,7 @@ The alpha goal is a credible first ISO, not a finished distribution. Ubuntu/Lubu
 - Guarded LXQt session starter, Xsession guard, and live-session watchdog to recover the desktop if panel or wallpaper modules do not autostart
 - Welcome page and first-run live branding hook
 - Aurion Shell graphical alpha surface with Launcher, AI Sidebar, Dock concept, app flow, hardware flow, and control flow
-- Qt/QML shell bridge for the future native desktop, with HTML fallback when no QML runtime is available
+- Native QML Aurion Experience home surface that avoids browser chrome, plus QML shell bridge and HTML fallback
 - Aurion Experience graphical alpha shell with task-oriented AI surface
 - Aurion Hub generated local HTML system overview
 - Aurion Control Center alpha command
@@ -53,6 +53,7 @@ The alpha goal is a credible first ISO, not a finished distribution. Ubuntu/Lubu
 aurion-status
 aurion-shell
 aurion-qml-surface
+aurion-qml-surface --page experience
 aurion-launcher
 aurion-ai-sidebar
 aurion-do email

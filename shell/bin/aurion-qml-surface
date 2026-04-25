@@ -69,6 +69,9 @@ open_html() {
 
 fallback() {
   case "$page" in
+    experience|home|desktop)
+      open_html "file:///usr/share/aurionos/experience/index.html"
+      ;;
     store|apps)
       open_html "file:///usr/share/aurionos/store/index.html"
       ;;
@@ -87,11 +90,15 @@ fallback() {
     launcher)
       open_html "file:///usr/share/aurionos/shell/index.html#launcher"
       ;;
-    *)
-      open_html "file:///usr/share/aurionos/shell/index.html#$page"
-      ;;
+    *) open_html "file:///usr/share/aurionos/shell/index.html#$page" ;;
   esac
 }
+
+case "$page" in
+  experience|home|desktop)
+    qml="/usr/share/aurionos/qml/AurionExperience.qml"
+    ;;
+esac
 
 if [ ! -f "$qml" ]; then
   fallback

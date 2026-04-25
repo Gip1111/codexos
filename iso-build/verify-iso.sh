@@ -147,6 +147,7 @@ main() {
   require_file_in_squashfs usr/share/aurionos/labwc/menu.xml
   require_file_in_squashfs usr/share/aurionos/labwc/rc.xml
   require_file_in_squashfs usr/share/aurionos/qml/AurionShell.qml
+  require_file_in_squashfs usr/share/aurionos/qml/AurionExperience.qml
   require_file_in_squashfs usr/share/aurionos/shell/index.html
   require_file_in_squashfs usr/share/aurionos/shell/styles.css
   require_file_in_squashfs usr/share/aurionos/shell/app.js
@@ -242,6 +243,14 @@ main() {
   grep -Fq 'aurion-action://' "$WORK_DIR/aurion-qml-shell.qml" \
     || fail "Aurion QML shell prototype does not route through aurion-action links"
 
+  cat_squashfs_file usr/share/aurionos/qml/AurionExperience.qml > "$WORK_DIR/aurion-qml-experience.qml"
+  grep -Fq 'Aurion Experience' "$WORK_DIR/aurion-qml-experience.qml" \
+    || fail "Aurion QML Experience surface is missing its branded title"
+  grep -Fq 'FramelessWindowHint' "$WORK_DIR/aurion-qml-experience.qml" \
+    || fail "Aurion QML Experience should avoid browser window chrome"
+  grep -Fq 'Ciao! Sono' "$WORK_DIR/aurion-qml-experience.qml" \
+    || fail "Aurion QML Experience does not contain the home greeting"
+
   cat_squashfs_file etc/X11/Xsession.d/80aurionos-session-guard > "$WORK_DIR/xsession-guard"
   grep -Fq 'aurion-session-guard' "$WORK_DIR/xsession-guard" \
     || fail "Xsession guard does not launch AurionOS session recovery"
@@ -285,6 +294,8 @@ main() {
   cat_squashfs_file usr/local/bin/aurion-experience > "$WORK_DIR/aurion-experience-bin"
   grep -Fq 'aurion-webapp-open' "$WORK_DIR/aurion-experience-bin" \
     || fail "Aurion Experience does not use the Snap-safe webapp opener"
+  grep -Fq 'aurion-qml-surface --page experience' "$WORK_DIR/aurion-experience-bin" \
+    || fail "Aurion Experience does not prefer the native QML home surface"
 
   cat_squashfs_file usr/local/bin/aurion-webapp-open > "$WORK_DIR/aurion-webapp-open"
   grep -Fq 'AurionOSWeb' "$WORK_DIR/aurion-webapp-open" \
