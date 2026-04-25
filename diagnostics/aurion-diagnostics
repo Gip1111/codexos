@@ -2,6 +2,9 @@
 set -euo pipefail
 
 if [ "${1:-}" = "--path" ]; then
+  if [ "${AURION_DIAGNOSTICS_BACKEND:-native}" != "html" ] && command -v aurion-native-home >/dev/null 2>&1; then
+    exec aurion-native-home --page diagnostics --path
+  fi
   if [ "${AURION_DIAGNOSTICS_BACKEND:-qml}" != "html" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
     exec aurion-qml-surface --page diagnostics --path
   fi
@@ -12,7 +15,11 @@ if [ "${1:-}" = "--path" ]; then
   exit 0
 fi
 
-if [ "${1:-}" != "--cli" ] && [ "${AURION_DIAGNOSTICS_BACKEND:-qml}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
+if [ "${1:-}" != "--cli" ] && [ "${AURION_DIAGNOSTICS_BACKEND:-native}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-native-home >/dev/null 2>&1; then
+  exec aurion-native-home --page diagnostics
+fi
+
+if [ "${1:-}" != "--cli" ] && [ "${AURION_DIAGNOSTICS_BACKEND:-native}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
   exec aurion-qml-surface --page diagnostics
 fi
 

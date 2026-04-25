@@ -29,6 +29,7 @@ echo "AurionOS desktop integration check"
 echo
 
 check_command "QML surface" aurion-qml-surface
+check_command "Native home" aurion-native-home
 check_command "Experience launcher" aurion-experience
 check_command "Action dispatcher" aurion-action
 check_command "Web fallback opener" aurion-webapp-open
@@ -44,6 +45,8 @@ check_file "First-run autostart" /etc/xdg/autostart/aurion-first-run.desktop
 echo
 if [ -r /usr/share/aurionos/qml/runtime.conf ]; then
   cat /usr/share/aurionos/qml/runtime.conf
+elif python3 -c 'from PyQt5 import QtWidgets' >/dev/null 2>&1; then
+  line "Detected native UI" "PyQt5"
 else
   for runner in qml6 qmlscene-qt6 qml qmlscene; do
     if command -v "$runner" >/dev/null 2>&1; then
@@ -55,6 +58,8 @@ fi
 
 echo
 echo "Expected home path:"
-echo "  aurion-experience -> aurion-qml-surface --page experience"
+echo "  aurion-experience -> aurion-native-home --page experience"
+echo "Secondary path:"
+echo "  aurion-qml-surface --page experience"
 echo "Fallback path:"
 echo "  ~/AurionOSWeb/usr/share/aurionos/experience/index.html"

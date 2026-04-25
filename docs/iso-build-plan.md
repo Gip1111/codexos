@@ -24,9 +24,9 @@ Control Center strategy: include `aurion-control`, a terminal-safe grouping surf
 
 Hub strategy: include `aurion-hub`, a generated local HTML overview that gives the alpha a graphical system surface without adding new live ISO package dependencies. Final target is a Qt6/QML application.
 
-Experience strategy: include `aurion-experience`, a native QML task shell that becomes the default visible first-run surface. It combines AI task routing, app install paths, browser/email actions, hardware checks, diagnostics, and recovery status in one integrated window. HTML surfaces remain fallback only.
+Experience strategy: include `aurion-experience`, a native PyQt task shell that becomes the default visible first-run surface. It combines AI task routing, app install paths, browser/email actions, hardware checks, diagnostics, and recovery status in one integrated window. QML and HTML surfaces remain fallback only.
 
-Shell strategy: include `aurion-shell`, `aurion-launcher`, `aurion-ai-sidebar`, `aurion-topbar`, and `aurion-dock`. These prefer the native QML command center where possible and keep local offline HTML surfaces as stable fallback.
+Shell strategy: include `aurion-shell`, `aurion-launcher`, `aurion-ai-sidebar`, `aurion-topbar`, and `aurion-dock`. These prefer the native PyQt command center where possible, keep the QML bridge as a secondary path, and keep local offline HTML surfaces as stable fallback.
 
 GitHub Actions strategy: build on `ubuntu-24.04`, free disk space, install ISO tools, run the build script, clearly fail if the expected ISO is absent, upload the ISO artifact, and upload logs even on failure.
 

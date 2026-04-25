@@ -190,6 +190,7 @@ main() {
   require_executable_in_squashfs usr/local/bin/aurion-startlabwc
   require_executable_in_squashfs usr/local/bin/aurion-control
   require_executable_in_squashfs usr/local/bin/aurion-action
+  require_executable_in_squashfs usr/local/bin/aurion-native-home
   require_executable_in_squashfs usr/local/bin/aurion-webapp-open
   require_executable_in_squashfs usr/local/bin/aurion-shell
   require_executable_in_squashfs usr/local/bin/aurion-qml-surface
@@ -266,6 +267,10 @@ main() {
     || fail "Aurion QML Experience does not expose the optional local AI runtime flow"
 
   cat_squashfs_file usr/share/aurionos/qml/runtime.conf > "$WORK_DIR/qml-runtime.conf"
+  grep -Fq 'AURION_NATIVE_UI=pyqt5' "$WORK_DIR/qml-runtime.conf" \
+    || fail "Aurion native PyQt desktop metadata is missing"
+  grep -Fq 'AURION_NATIVE_RUNNER=' "$WORK_DIR/qml-runtime.conf" \
+    || fail "Aurion native runtime metadata does not record a runner"
   grep -Fq 'AURION_QML_RUNNER=' "$WORK_DIR/qml-runtime.conf" \
     || fail "Aurion QML runtime metadata does not record a runner"
 
@@ -314,6 +319,8 @@ main() {
     || fail "Aurion Experience does not expose clickable action links"
 
   cat_squashfs_file usr/local/bin/aurion-experience > "$WORK_DIR/aurion-experience-bin"
+  grep -Fq 'aurion-native-home --page experience' "$WORK_DIR/aurion-experience-bin" \
+    || fail "Aurion Experience does not prefer the native PyQt home surface"
   grep -Fq 'aurion-webapp-open' "$WORK_DIR/aurion-experience-bin" \
     || fail "Aurion Experience does not use the Snap-safe webapp opener"
   grep -Fq 'aurion-qml-surface --page experience' "$WORK_DIR/aurion-experience-bin" \
@@ -323,17 +330,36 @@ main() {
   grep -Fq 'AurionOSWeb' "$WORK_DIR/aurion-webapp-open" \
     || fail "Aurion webapp opener does not materialize surfaces in a user-visible home path"
 
+  cat_squashfs_file usr/local/bin/aurion-native-home > "$WORK_DIR/aurion-native-home"
+  grep -Fq 'from PyQt5 import QtCore, QtGui, QtWidgets' "$WORK_DIR/aurion-native-home" \
+    || fail "Aurion native home is not implemented as a PyQt desktop app"
+  grep -Fq 'def build_store_page' "$WORK_DIR/aurion-native-home" \
+    || fail "Aurion native home does not include the integrated Store page"
+  grep -Fq 'def build_hardware_page' "$WORK_DIR/aurion-native-home" \
+    || fail "Aurion native home does not include the integrated Hardware page"
+  grep -Fq 'def build_diagnostics_page' "$WORK_DIR/aurion-native-home" \
+    || fail "Aurion native home does not include the integrated Diagnostics page"
+
   cat_squashfs_file usr/share/aurionos/store/app.js > "$WORK_DIR/aurion-store.js"
   grep -Fq 'aurion-action://' "$WORK_DIR/aurion-store.js" \
     || fail "Aurion Store does not expose clickable action links"
+  cat_squashfs_file usr/local/bin/aurion-store > "$WORK_DIR/aurion-store-bin"
+  grep -Fq 'aurion-native-home --page store' "$WORK_DIR/aurion-store-bin" \
+    || fail "Aurion Store does not prefer the native integrated page"
 
   cat_squashfs_file usr/share/aurionos/hardware/app.js > "$WORK_DIR/aurion-hardware.js"
   grep -Fq 'aurion-action://' "$WORK_DIR/aurion-hardware.js" \
     || fail "Aurion Hardware Center does not expose clickable action links"
+  cat_squashfs_file usr/local/bin/aurion-hardware-center > "$WORK_DIR/aurion-hardware-bin"
+  grep -Fq 'aurion-native-home --page hardware' "$WORK_DIR/aurion-hardware-bin" \
+    || fail "Aurion Hardware Center does not prefer the native integrated page"
 
   cat_squashfs_file usr/share/aurionos/diagnostics/app.js > "$WORK_DIR/aurion-diagnostics.js"
   grep -Fq 'aurion-action://' "$WORK_DIR/aurion-diagnostics.js" \
     || fail "Aurion Diagnostics does not expose clickable action links"
+  cat_squashfs_file usr/local/bin/aurion-diagnostics > "$WORK_DIR/aurion-diagnostics-bin"
+  grep -Fq 'aurion-native-home --page diagnostics' "$WORK_DIR/aurion-diagnostics-bin" \
+    || fail "Aurion Diagnostics does not prefer the native integrated page"
 
   cat_squashfs_file etc/xdg/mimeapps.list > "$WORK_DIR/mimeapps.list"
   grep -Fq 'x-scheme-handler/aurion-action=aurion-action-handler.desktop' "$WORK_DIR/mimeapps.list" \

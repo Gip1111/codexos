@@ -4,6 +4,9 @@ set -euo pipefail
 catalog="/usr/share/aurionos/store/alpha-catalog.json"
 
 if [ "${1:-}" = "--path" ]; then
+  if [ "${AURION_STORE_BACKEND:-native}" != "html" ] && command -v aurion-native-home >/dev/null 2>&1; then
+    exec aurion-native-home --page store --path
+  fi
   if [ "${AURION_STORE_BACKEND:-qml}" != "html" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
     exec aurion-qml-surface --page store --path
   fi
@@ -32,7 +35,11 @@ EOF
   exit 0
 fi
 
-if [ "${1:-}" != "--cli" ] && [ "${AURION_STORE_BACKEND:-qml}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
+if [ "${1:-}" != "--cli" ] && [ "${AURION_STORE_BACKEND:-native}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-native-home >/dev/null 2>&1; then
+  exec aurion-native-home --page store
+fi
+
+if [ "${1:-}" != "--cli" ] && [ "${AURION_STORE_BACKEND:-native}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
   exec aurion-qml-surface --page store
 fi
 

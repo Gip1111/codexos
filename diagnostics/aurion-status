@@ -80,6 +80,7 @@ for tool in \
   aurion-session-watchdog \
   aurion-apply-live-branding \
   aurion-action \
+  aurion-native-home \
   aurion-webapp-open \
   aurion-channel \
   aurion-desktop-check \

@@ -161,6 +161,7 @@ install_tool_payload() {
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/control-center/aurion-control" "$rootfs/usr/local/bin/aurion-control"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/experience/aurion-action" "$rootfs/usr/local/bin/aurion-action"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/experience/aurion-experience" "$rootfs/usr/local/bin/aurion-experience"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/experience/aurion-native-home" "$rootfs/usr/local/bin/aurion-native-home"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/experience/aurion-webapp-open" "$rootfs/usr/local/bin/aurion-webapp-open"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hub/aurion-hub" "$rootfs/usr/local/bin/aurion-hub"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hardware-compat/aurion-hw-scan" "$rootfs/usr/local/bin/aurion-hw-scan"
@@ -186,6 +187,8 @@ install_tool_payload() {
 install_alpha_runtime_packages() {
   local rootfs="$1"
   local packages=(
+    python3-pyqt5
+    python3-pyqt5.qtsvg
     qmlscene
     qml-module-qtquick2
     qml-module-qtquick-controls2
@@ -198,7 +201,7 @@ install_alpha_runtime_packages() {
     return 0
   fi
 
-  log "Installing user-space QML runtime packages into live filesystem"
+  log "Installing user-space native UI and QML fallback runtime packages into live filesystem"
 
   local resolv_backup="$WORK_DIR/resolv.conf.rootfs"
   local had_resolv=0
@@ -227,6 +230,7 @@ install_alpha_runtime_packages() {
   }
 
   local install_status=0
+  local native_runner=""
   local qml_runner=""
   set +e
   "${SUDO[@]}" chroot "$rootfs" apt-get update \
@@ -235,16 +239,21 @@ install_alpha_runtime_packages() {
     && "${SUDO[@]}" rm -rf "$rootfs/var/lib/apt/lists/"*
   install_status=$?
   if [ "$install_status" -eq 0 ]; then
+    native_runner="$("${SUDO[@]}" chroot "$rootfs" sh -c 'python3 -c "from PyQt5 import QtWidgets" >/dev/null 2>&1 && command -v python3' 2>/dev/null || true)"
+    [ -n "$native_runner" ] || install_status=1
     qml_runner="$("${SUDO[@]}" chroot "$rootfs" sh -c 'command -v qmlscene || command -v qml || command -v qmlscene-qt6 || command -v qml6' 2>/dev/null || true)"
-    [ -n "$qml_runner" ] || install_status=1
   fi
   set -e
 
   cleanup_chroot_mounts
-  [ "$install_status" -eq 0 ] || fail "Failed to install QML runtime packages into live filesystem"
+  [ "$install_status" -eq 0 ] || fail "Failed to install native UI runtime packages into live filesystem"
 
   "${SUDO[@]}" install -d -m 0755 "$rootfs/usr/share/aurionos/qml"
-  printf 'AURION_QML_RUNNER=%s\n' "$qml_runner" | "${SUDO[@]}" tee "$rootfs/usr/share/aurionos/qml/runtime.conf" >/dev/null
+  {
+    printf 'AURION_NATIVE_UI=pyqt5\n'
+    printf 'AURION_NATIVE_RUNNER=%s\n' "$native_runner"
+    printf 'AURION_QML_RUNNER=%s\n' "$qml_runner"
+  } | "${SUDO[@]}" tee "$rootfs/usr/share/aurionos/qml/runtime.conf" >/dev/null
 }
 
 configure_action_handler() {

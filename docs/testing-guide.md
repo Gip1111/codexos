@@ -34,7 +34,7 @@ For the first run, inspect these points in order:
 2. `Build AurionOS ISO` downloads a Lubuntu 24.04 desktop amd64 ISO and verifies SHA256.
 3. The log prints `Secure Boot critical file hashes are unchanged`.
 4. `Verify ISO output` prints a SHA256 for `aurion-os-0.1-alpha-amd64.iso`.
-5. `Verify ISO contents` confirms AurionOS branding, guarded session startup, LXQt profile, LabWC preview entry, native QML Experience pages, QML runtime metadata, wallpaper settings, tools, first-run launcher, AI metadata, graphical Store, graphical Hardware Center, graphical Diagnostics, hardware database, and store catalog are present inside the ISO.
+5. `Verify ISO contents` confirms AurionOS branding, guarded session startup, LXQt profile, LabWC preview entry, native PyQt Experience app, QML fallback metadata, wallpaper settings, tools, first-run launcher, AI metadata, graphical Store, graphical Hardware Center, graphical Diagnostics, hardware database, and store catalog are present inside the ISO.
 6. `aurion-os-alpha-iso` contains both the ISO and `.sha256` file.
 
 If the run fails, download `aurion-os-alpha-build-logs` first. The most useful files are:
@@ -67,7 +67,7 @@ Basic VM acceptance:
 5. Confirm the top panel says Aurion and the bottom dock shows Launcher, Aurion Experience, browser, file manager, Store, and installer.
 6. Confirm desktop shortcuts exist for Aurion Launcher, Aurion Experience, Aurion Store, and Install AurionOS.
 7. Confirm the Aurion Experience command surface opens automatically on the first live login and visually matches `docs/aurionos-home-target.svg` in direction: dark desktop, central command center, AI/status right panel, and bottom dock.
-8. Confirm the preferred home is a native QML Aurion window without Firefox address/tab chrome. If Firefox opens, that means the fallback path was used; run `aurion-desktop-check` and inspect `/tmp/aurion-qml-surface.log`.
+8. Confirm the preferred home is a native Aurion window without Firefox address/tab chrome. If Firefox opens, that means both native and QML paths failed; run `aurion-desktop-check` and inspect `/tmp/aurion-qml-surface.log`.
 9. Confirm there is no duplicate `Install Lubuntu` desktop shortcut.
 10. Click Browser, Files, Terminal, Store, Installer, and AI Assistant in the Aurion dock and confirm each opens the matching app or alpha surface.
 11. Click Leggi email, Installa app, Controlla Wi-Fi, Diagnosi, Dettagli sistema, and an app Install button. Store, Hardware, Diagnostics, AI, and Control should switch inside the native Aurion window; external OS actions should route through `aurion-action://`.
@@ -76,8 +76,8 @@ Basic VM acceptance:
 14. Run `aurion-status`.
 15. Run `aurion-webapp-open --path /usr/share/aurionos/experience/index.html` and confirm it prints a path under `AurionOSWeb`.
 16. Run `aurion-shell`.
-17. Run `aurion-qml-surface --page experience` and confirm the native QML Aurion home opens.
-18. Run `aurion-qml-surface --page desktop` and confirm either the QML shell bridge opens or the HTML shell fallback opens.
+17. Run `aurion-native-home --page experience` and confirm the native Aurion home opens without Firefox.
+18. Run `aurion-qml-surface --page experience` and confirm either the QML shell bridge opens or the HTML shell fallback opens.
 19. Run `aurion-launcher`.
 20. Run `aurion-ai-sidebar`.
 21. Run `aurion-experience`.
@@ -153,6 +153,7 @@ cat /etc/aurionos-release
 aurion-status
 aurion-session-guard
 aurion-shell
+aurion-native-home --page experience
 aurion-qml-surface --page desktop
 aurion-qml-surface --page experience
 aurion-webapp-open --path /usr/share/aurionos/experience/index.html
@@ -193,7 +194,8 @@ Expected improvements:
 - `aurion-session-guard` exits cleanly when it has already run for the session.
 - `aurion-session-watchdog --once` exits without errors and does not create duplicate LXQt modules.
 - `aurion-shell`, `aurion-launcher`, and `aurion-ai-sidebar` open the graphical shell alpha surface.
-- `aurion-qml-surface --page experience`, `--page store`, `--page hardware`, `--page diagnostics`, and `--page ai` open the native QML command center without browser chrome; fallback uses the stable HTML surface.
+- `aurion-native-home --page experience`, `--page store`, `--page hardware`, `--page diagnostics`, and `--page ai` open the native command center without browser chrome.
+- `aurion-qml-surface` is now a secondary QML bridge; fallback uses the stable HTML surface.
 - `aurion-webapp-open` materializes web surfaces under `~/AurionOSWeb` so Firefox Snap can load them on the live desktop.
 - `aurion-do email`, `aurion-do store`, `aurion-do hardware`, and `aurion-do diagnostics` route common tasks through safe alpha tools.
 - `aurion-experience` opens the graphical alpha shell.
@@ -220,7 +222,7 @@ Expected improvements:
 - The assistant falls back to mocked/rule-based behavior unless the user has installed Ollama and pulled `phi4-mini`.
 - The labwc/Qt shell is not active.
 - LabWC Preview is not the default session and may fall back to LXQt if `labwc` is not installed.
-- The QML command center depends on a QML runtime; without it, AurionOS intentionally uses the HTML graphical fallbacks.
+- The primary command center depends on PyQt5; QML is secondary and HTML is the final fallback.
 - Plymouth branding is included but not enabled.
 - Driver installation and DKMS are not part of v0.1.
 - Aurion Store is graphical but catalog-only and does not install packages yet.

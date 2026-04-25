@@ -13,8 +13,9 @@ Usage:
   aurion-shell --page desktop|launcher|assistant|apps|hardware|control
   aurion-shell --path
 
-This opens the graphical AurionOS alpha shell surface. It is a local, offline
-HTML interface used while the final Qt6/QML shell is still under development.
+This opens the graphical AurionOS alpha shell surface. The default path is a
+native Qt desktop app, with QML and HTML fallbacks while the final shell is
+under development.
 EOF
 }
 
@@ -26,6 +27,12 @@ while [ $# -gt 0 ]; do
       shift 2
       ;;
     --path)
+      if [ "${AURION_SHELL_BACKEND:-native}" != "html" ] && command -v aurion-native-home >/dev/null 2>&1; then
+        exec aurion-native-home --page "$page_id" --path
+      fi
+      if [ "${AURION_SHELL_BACKEND:-native}" != "html" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
+        exec aurion-qml-surface --page "$page_id" --path
+      fi
       echo "$base"
       exit 0
       ;;
@@ -46,7 +53,11 @@ if [ ! -f "$base" ]; then
   exit 1
 fi
 
-if [ "${AURION_SHELL_BACKEND:-qml}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
+if [ "${AURION_SHELL_BACKEND:-native}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-native-home >/dev/null 2>&1; then
+  exec aurion-native-home --page "$page_id"
+fi
+
+if [ "${AURION_SHELL_BACKEND:-native}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
   exec aurion-qml-surface --page "$page_id"
 fi
 

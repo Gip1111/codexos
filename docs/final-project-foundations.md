@@ -11,10 +11,11 @@ Current alpha:
 - AurionOS session metadata and environment branding are applied.
 - `aurionos-alpha` LXQt theme, `AurionOS` Openbox theme, top bar, bottom dock, branded icons, desktop shortcuts, and keyboard shortcuts replace the stock Lubuntu desktop feel.
 - `aurion-startlxqt`, `aurion-session-guard`, and `aurion-session-watchdog` guard the live session against a cursor-only desktop by restoring missing LXQt panel, desktop, runner, notification, policy kit, power, and shortcut modules.
-- `aurion-qml-surface` now targets the native Aurion Experience QML command center first and falls back to the stable HTML surfaces only when the QML runtime is unavailable.
-- `aurion-experience` now opens the native QML home surface to avoid browser chrome and Firefox Snap file limitations.
-- Store, Hardware, Diagnostics, AI, and Control are integrated as internal QML pages rather than separate browser pages.
-- `aurion-desktop-check` validates QML runtime metadata, first-run routing, desktop launchers, and fallback paths from the live session.
+- `aurion-native-home` is the primary desktop home. It is a native PyQt app, so the normal path no longer depends on Firefox or the QML scene runner.
+- `aurion-qml-surface` remains as the secondary Qt/QML bridge and falls back to the stable HTML surfaces when needed.
+- `aurion-experience` now opens the native PyQt home surface to avoid browser chrome and Firefox Snap file limitations.
+- Store, Hardware, Diagnostics, AI, and Control are integrated as internal native pages rather than separate browser pages.
+- `aurion-desktop-check` validates native runtime metadata, QML fallback metadata, first-run routing, desktop launchers, and fallback paths from the live session.
 - `aurion-shell`, `aurion-launcher`, `aurion-ai-sidebar`, `aurion-topbar`, and `aurion-dock` now prefer the QML bridge and keep the HTML surfaces as fallback.
 - `aurion-experience` provides the first graphical task-oriented shell surface.
 - `aurion-hub` generates a local HTML overview report.

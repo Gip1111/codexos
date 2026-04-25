@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if command -v aurion-native-home >/dev/null 2>&1; then
+  exec aurion-native-home --page ai
+fi
+
 if command -v aurion-qml-surface >/dev/null 2>&1; then
   exec aurion-qml-surface --page ai-status
 fi

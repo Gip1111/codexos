@@ -4,6 +4,9 @@ set -euo pipefail
 page="/usr/share/aurionos/experience/index.html"
 
 if [ "${1:-}" = "--path" ]; then
+  if [ "${AURION_EXPERIENCE_BACKEND:-native}" != "html" ] && command -v aurion-native-home >/dev/null 2>&1; then
+    exec aurion-native-home --page experience --path
+  fi
   if [ "${AURION_EXPERIENCE_BACKEND:-qml}" != "html" ] && command -v aurion-qml-surface >/dev/null 2>&1; then
     exec aurion-qml-surface --page experience --path
   fi
@@ -17,6 +20,10 @@ fi
 if [ ! -f "$page" ]; then
   echo "Aurion Experience page is missing: $page" >&2
   exit 1
+fi
+
+if [ "${AURION_EXPERIENCE_BACKEND:-native}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-native-home >/dev/null 2>&1; then
+  exec aurion-native-home --page experience
 fi
 
 if [ "${AURION_EXPERIENCE_BACKEND:-qml}" != "html" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-qml-surface >/dev/null 2>&1; then

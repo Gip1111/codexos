@@ -13,8 +13,8 @@
 - Guarded LXQt starter, Xsession guard, and session watchdog to recover panel, desktop, runner, notifications, policy kit, power management, and global shortcut modules if LXQt autostart is incomplete
 - Welcome page and first-run live branding hook
 - Aurion Shell graphical alpha surface with Launcher, AI Sidebar, Dock concept, app flow, hardware flow, and control flow
-- Native QML Aurion Experience home surface, plus Qt/QML shell bridge and HTML fallback
-- Integrated QML Store, Hardware, Diagnostics, AI, and Control pages inside Aurion Experience
+- Native PyQt Aurion Experience home surface, plus Qt/QML shell bridge and HTML fallback
+- Integrated native Store, Hardware, Diagnostics, AI, and Control pages inside Aurion Experience
 - Aurion Experience graphical alpha shell styled as the first desktop home/command center
 - Clickable Aurion Experience actions for browser, email, file manager, terminal, Store, installer, AI assistant, hardware checks, diagnostics, and rollback through the local `aurion-action://` handler
 - Aurion Hub generated local HTML report
@@ -45,7 +45,7 @@
 - AI responses when Ollama/phi4-mini is not installed locally
 - AI natural language handling beyond the optional local Ollama bridge and rule-based task routing
 - Hardware compatibility explanations beyond the small alpha database and static GUI
-- Native Qt6/QML TopBar, Dock, Launcher, and AI Sidebar behavior beyond the QML bridge and LXQt alpha panels
+- Native Qt6/QML TopBar, Dock, Launcher, and AI Sidebar behavior beyond the PyQt command center, QML bridge, and LXQt alpha panels
 - Rollback automation
 - Real app installation from Aurion Store
 - Full trusted package verification and GUI confirmation flow
@@ -55,7 +55,7 @@
 - Final logo, animation system, and complete visual identity
 - Active custom Plymouth boot splash
 - labwc installed and enabled as a complete daily-driver session
-- Complete Qt6/QML shell package beyond the alpha QML command center
+- Complete Qt6/QML shell package beyond the alpha PyQt command center
 - Full Calamares theme replacement
 - Production Qt6/QML replacements for Store, Hardware Center, Diagnostics, and AI setup
 - Bundled Ollama runtime or unattended model manager

@@ -1,0 +1,555 @@
+#!/usr/bin/env python3
+import os
+import subprocess
+import sys
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+
+ICON_DIR = "/usr/share/icons/hicolor/scalable/apps"
+
+
+def app_icon(name):
+    path = os.path.join(ICON_DIR, name)
+    if os.path.exists(path):
+        return QtGui.QIcon(path)
+    return QtGui.QIcon.fromTheme("applications-system")
+
+
+class AurionButton(QtWidgets.QPushButton):
+    def __init__(self, text, parent=None, accent=False):
+        super().__init__(text, parent)
+        self.setCursor(QtCore.Qt.PointingHandCursor)
+        self.setProperty("accent", accent)
+        self.setMinimumHeight(34)
+
+
+class Tile(QtWidgets.QPushButton):
+    def __init__(self, title, body, icon_name, callback):
+        super().__init__(f"{title}\n{body}")
+        self.setIcon(app_icon(icon_name))
+        self.setIconSize(QtCore.QSize(32, 32))
+        self.setCursor(QtCore.Qt.PointingHandCursor)
+        self.setMinimumHeight(104)
+        self.clicked.connect(callback)
+        self.setProperty("tile", True)
+
+
+class InfoCard(QtWidgets.QFrame):
+    def __init__(self, title, body, button_text=None, callback=None):
+        super().__init__()
+        self.setProperty("card", True)
+        layout = QtWidgets.QVBoxLayout(self)
+        layout.setContentsMargins(14, 12, 14, 12)
+        layout.setSpacing(8)
+
+        title_label = QtWidgets.QLabel(title)
+        title_label.setProperty("cardTitle", True)
+        layout.addWidget(title_label)
+
+        body_label = QtWidgets.QLabel(body)
+        body_label.setWordWrap(True)
+        body_label.setProperty("muted", True)
+        layout.addWidget(body_label)
+        layout.addStretch(1)
+
+        if button_text:
+            button = AurionButton(button_text, accent=False)
+            if callback:
+                button.clicked.connect(callback)
+            layout.addWidget(button)
+
+
+class AurionHome(QtWidgets.QMainWindow):
+    def __init__(self, page):
+        super().__init__()
+        self.drag_pos = None
+        self.active_page = "home"
+        self.setWindowTitle("Aurion Experience")
+        self.setWindowIcon(app_icon("aurion-experience.svg"))
+        self.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.FramelessWindowHint)
+        self.resize(1180, 720)
+        self.setMinimumSize(980, 620)
+
+        root = QtWidgets.QFrame()
+        root.setObjectName("root")
+        self.setCentralWidget(root)
+        outer = QtWidgets.QVBoxLayout(root)
+        outer.setContentsMargins(0, 0, 0, 0)
+        outer.setSpacing(0)
+
+        self.header = self.build_header()
+        outer.addWidget(self.header)
+
+        body = QtWidgets.QHBoxLayout()
+        body.setContentsMargins(0, 0, 0, 0)
+        body.setSpacing(0)
+        outer.addLayout(body, 1)
+
+        self.sidebar = self.build_sidebar()
+        body.addWidget(self.sidebar)
+
+        self.stack = QtWidgets.QStackedWidget()
+        body.addWidget(self.stack, 1)
+
+        self.pages = {
+            "home": self.build_home_page(),
+            "store": self.build_store_page(),
+            "hardware": self.build_hardware_page(),
+            "diagnostics": self.build_diagnostics_page(),
+            "ai": self.build_ai_page(),
+            "control": self.build_control_page(),
+        }
+        for widget in self.pages.values():
+            self.stack.addWidget(widget)
+
+        self.set_page(page)
+        self.apply_style()
+
+    def build_header(self):
+        frame = QtWidgets.QFrame()
+        frame.setObjectName("header")
+        frame.setFixedHeight(52)
+        layout = QtWidgets.QHBoxLayout(frame)
+        layout.setContentsMargins(16, 8, 14, 8)
+        layout.setSpacing(12)
+
+        logo = QtWidgets.QLabel()
+        logo.setPixmap(app_icon("aurion-experience.svg").pixmap(34, 34))
+        layout.addWidget(logo)
+
+        title_box = QtWidgets.QVBoxLayout()
+        title = QtWidgets.QLabel("Aurion Experience")
+        title.setProperty("title", True)
+        subtitle = QtWidgets.QLabel("Native Command Center")
+        subtitle.setProperty("gold", True)
+        title_box.addWidget(title)
+        title_box.addWidget(subtitle)
+        layout.addLayout(title_box)
+        layout.addStretch(1)
+
+        for label, page in (("1", "home"), ("2", "store"), ("3", "hardware"), ("4", "ai")):
+            button = AurionButton(label)
+            button.setFixedWidth(38)
+            button.clicked.connect(lambda _=False, p=page: self.set_page(p))
+            layout.addWidget(button)
+
+        layout.addSpacing(12)
+        minimize = AurionButton("-")
+        minimize.setFixedWidth(38)
+        minimize.clicked.connect(self.showMinimized)
+        close = AurionButton("x")
+        close.setFixedWidth(38)
+        close.clicked.connect(self.close)
+        layout.addWidget(minimize)
+        layout.addWidget(close)
+        return frame
+
+    def build_sidebar(self):
+        frame = QtWidgets.QFrame()
+        frame.setObjectName("sidebar")
+        frame.setFixedWidth(164)
+        layout = QtWidgets.QVBoxLayout(frame)
+        layout.setContentsMargins(12, 12, 12, 12)
+        layout.setSpacing(8)
+
+        for title, page in (
+            ("Panoramica", "home"),
+            ("Sistema", "control"),
+            ("Rete", "hardware"),
+            ("Sicurezza", "diagnostics"),
+            ("Software", "store"),
+            ("Servizi", "control"),
+            ("AI", "ai"),
+        ):
+            button = AurionButton(title)
+            button.setProperty("nav", True)
+            button.clicked.connect(lambda _=False, p=page: self.set_page(p))
+            layout.addWidget(button)
+
+        layout.addStretch(1)
+        card = InfoCard("AurionOS Alpha", "v0.1 native desktop")
+        layout.addWidget(card)
+        return frame
+
+    def shell(self, page_layout):
+        widget = QtWidgets.QWidget()
+        layout = QtWidgets.QHBoxLayout(widget)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+
+        content = QtWidgets.QWidget()
+        content_layout = QtWidgets.QVBoxLayout(content)
+        content_layout.setContentsMargins(24, 22, 24, 20)
+        content_layout.setSpacing(14)
+        page_layout(content_layout)
+        layout.addWidget(content, 1)
+        layout.addWidget(self.right_rail())
+        return widget
+
+    def right_rail(self):
+        rail = QtWidgets.QFrame()
+        rail.setObjectName("rightRail")
+        rail.setFixedWidth(255)
+        layout = QtWidgets.QVBoxLayout(rail)
+        layout.setContentsMargins(10, 12, 10, 12)
+        layout.setSpacing(10)
+        layout.addWidget(InfoCard("Assistente AI", "Modalita: Locale\nNessun dato lascia il dispositivo.", "Apri", lambda: self.set_page("ai")))
+        layout.addWidget(InfoCard("Stato sistema", "CPU 12%\nRAM 27%\nDisco 36%\nTemperatura 49 C", "Dettagli", lambda: self.run_action("status-report")))
+        layout.addWidget(InfoCard("Suggerimenti", "OBS Studio, GIMP e VLC sono pronti nel catalogo alpha.", "Store", lambda: self.set_page("store")))
+        layout.addStretch(1)
+        return rail
+
+    def page_title(self, layout, title, subtitle):
+        label = QtWidgets.QLabel(title)
+        label.setProperty("pageTitle", True)
+        layout.addWidget(label)
+        sub = QtWidgets.QLabel(subtitle)
+        sub.setProperty("muted", True)
+        layout.addWidget(sub)
+
+    def tile_grid(self, layout, tiles, columns=3):
+        grid = QtWidgets.QGridLayout()
+        grid.setSpacing(12)
+        for index, tile in enumerate(tiles):
+            grid.addWidget(tile, index // columns, index % columns)
+        layout.addLayout(grid)
+
+    def build_home_page(self):
+        def fill(layout):
+            hero = QtWidgets.QHBoxLayout()
+            text_box = QtWidgets.QVBoxLayout()
+            title = QtWidgets.QLabel("Ciao! Sono <span style='color:#f2bf63'>Aurion.</span>")
+            title.setProperty("heroTitle", True)
+            title.setTextFormat(QtCore.Qt.RichText)
+            sub = QtWidgets.QLabel("Il tuo ambiente. Le tue regole.")
+            sub.setProperty("muted", True)
+            text_box.addWidget(title)
+            text_box.addWidget(sub)
+            hero.addLayout(text_box, 1)
+            wave = QtWidgets.QLabel("━━━━━━")
+            wave.setProperty("wave", True)
+            hero.addWidget(wave)
+            layout.addLayout(hero)
+
+            prompt = QtWidgets.QFrame()
+            prompt.setProperty("card", True)
+            prompt_layout = QtWidgets.QHBoxLayout(prompt)
+            prompt_layout.setContentsMargins(14, 14, 14, 14)
+            prompt_layout.setSpacing(12)
+            self.prompt_input = QtWidgets.QLineEdit()
+            self.prompt_input.setPlaceholderText("Dimmi cosa vuoi fare?")
+            self.prompt_input.returnPressed.connect(lambda: self.handle_task(self.prompt_input.text()))
+            prompt_layout.addWidget(self.prompt_input, 1)
+            go = AurionButton("Go", accent=True)
+            go.clicked.connect(lambda: self.handle_task(self.prompt_input.text()))
+            prompt_layout.addWidget(go)
+            layout.addWidget(prompt)
+
+            section = QtWidgets.QLabel("Azioni rapide")
+            section.setProperty("section", True)
+            layout.addWidget(section)
+            self.tile_grid(
+                layout,
+                [
+                    Tile("Leggi email", "Apri il browser alla posta", "aurion-browser.svg", lambda: self.run_action("email")),
+                    Tile("Installa app", "Store integrato", "aurion-store.svg", lambda: self.set_page("store")),
+                    Tile("Controlla Wi-Fi", "Hardware Center", "aurion-hardware.svg", lambda: self.set_page("hardware")),
+                    Tile("Diagnosi", "Report e riparazione guidata", "aurion-terminal.svg", lambda: self.set_page("diagnostics")),
+                ],
+                columns=4,
+            )
+
+            cards = QtWidgets.QHBoxLayout()
+            cards.setSpacing(12)
+            cards.addWidget(InfoCard("Attivita recenti", "Sistema aggiornato\nHardware Center pronto\nStore alpha disponibile", "Dettagli", lambda: self.set_page("control")))
+            cards.addWidget(InfoCard("Suggerimenti", "Attiva il backup automatico e prepara il percorso rollback.", "Configura", lambda: self.run_action("backup")))
+            layout.addLayout(cards)
+            layout.addStretch(1)
+
+        return self.shell(fill)
+
+    def build_store_page(self):
+        def fill(layout):
+            self.page_title(layout, "Aurion Store", "Catalogo app integrato. In alpha non installa in modo silenzioso.")
+            self.tile_grid(
+                layout,
+                [
+                    Tile("Firefox", "Browser web", "aurion-browser.svg", lambda: self.run_action("browser")),
+                    Tile("LibreOffice", "Documenti e ufficio", "aurion-store.svg", lambda: self.run_action("install-libreoffice")),
+                    Tile("VLC", "Lettore multimediale", "aurion-store.svg", lambda: self.run_action("install-vlc")),
+                    Tile("OBS Studio", "Registrazione e streaming", "aurion-store.svg", lambda: self.run_action("install-obs")),
+                    Tile("GIMP", "Editing immagini", "aurion-files.svg", lambda: self.run_action("install-gimp")),
+                    Tile("VS Code", "Sviluppo", "aurion-terminal.svg", lambda: self.run_action("install-code")),
+                ],
+            )
+            layout.addWidget(InfoCard("Policy installazione", "Flatpak-first, Snap opzionale, .deb con conferma chiara, AppImage integrata nel launcher.", "Spiega con AI", lambda: self.set_page("ai")))
+            layout.addStretch(1)
+
+        return self.shell(fill)
+
+    def build_hardware_page(self):
+        def fill(layout):
+            self.page_title(layout, "Hardware Center", "Compatibilita read-only: nessun driver viene cambiato nella live.")
+            self.tile_grid(
+                layout,
+                [
+                    Tile("GPU", "Intel, AMD, NVIDIA", "aurion-hardware.svg", lambda: self.run_action("hardware-scan")),
+                    Tile("Wi-Fi", "Chipset e driver", "aurion-hardware.svg", lambda: self.run_action("hardware-scan")),
+                    Tile("Secure Boot", "Stato MOK/UEFI", "aurion-snapshot.svg", lambda: self.run_action("diagnostics-report")),
+                    Tile("Disco", "Spazio e filesystem", "aurion-terminal.svg", lambda: self.run_action("status-report")),
+                    Tile("Report", "Diagnostica completa", "aurion-terminal.svg", lambda: self.set_page("diagnostics")),
+                    Tile("Spiega", "AI locale o fallback", "aurion-assistant.svg", lambda: self.set_page("ai")),
+                ],
+            )
+            layout.addStretch(1)
+
+        return self.shell(fill)
+
+    def build_diagnostics_page(self):
+        def fill(layout):
+            self.page_title(layout, "Diagnostics", "Report leggibile prima di qualsiasi modifica al sistema.")
+            self.tile_grid(
+                layout,
+                [
+                    Tile("Boot mode", "UEFI o legacy", "aurion-terminal.svg", lambda: self.run_action("diagnostics-report")),
+                    Tile("Secure Boot", "mokutil quando disponibile", "aurion-snapshot.svg", lambda: self.run_action("diagnostics-report")),
+                    Tile("Desktop", "Sessione e runtime nativo", "aurion-experience.svg", lambda: self.run_action("desktop-check")),
+                    Tile("Installer", "Calamares presente", "aurion-installer.svg", lambda: self.run_action("diagnostics-report")),
+                    Tile("Log errori", "journalctl read-only", "aurion-terminal.svg", lambda: self.run_action("diagnostics-report")),
+                    Tile("AI spiega", "Interpreta report", "aurion-assistant.svg", lambda: self.set_page("ai")),
+                ],
+            )
+            layout.addStretch(1)
+
+        return self.shell(fill)
+
+    def build_ai_page(self):
+        def fill(layout):
+            self.page_title(layout, "Assistente AI", "Locale per default. Cloud disabilitato finche l'utente non lo abilita esplicitamente.")
+            self.tile_grid(
+                layout,
+                [
+                    Tile("Stato AI", "Ollama e phi4-mini", "aurion-assistant.svg", lambda: self.run_action("ai-setup")),
+                    Tile("Istruzioni", "Come abilitare Ollama", "aurion-assistant.svg", lambda: self.run_action("ai-instructions")),
+                    Tile("Installa Ollama", "Runtime locale opzionale", "aurion-assistant.svg", lambda: self.run_action("ai-install-ollama")),
+                    Tile("Scarica modello", "Conferma esplicita", "aurion-assistant.svg", lambda: self.run_action("ai-pull-model")),
+                    Tile("Spiega hardware", "Diagnosi guidata", "aurion-hardware.svg", lambda: self.set_page("hardware")),
+                    Tile("Aiuto app", "Scegli formato installazione", "aurion-store.svg", lambda: self.set_page("store")),
+                ],
+            )
+            layout.addWidget(InfoCard("Stato alpha", "Se Ollama non e' pronto, Aurion usa il router locale sicuro. Nessun dato lascia il dispositivo.", "Nuova conversazione", lambda: self.run_action("ai")))
+            layout.addStretch(1)
+
+        return self.shell(fill)
+
+    def build_control_page(self):
+        def fill(layout):
+            self.page_title(layout, "Control Center", "Superfici native per sistema, software, hardware, rollback e AI.")
+            self.tile_grid(
+                layout,
+                [
+                    Tile("Stato sistema", "aurion-status", "aurion-terminal.svg", lambda: self.run_action("status-report")),
+                    Tile("Store", "Catalogo app", "aurion-store.svg", lambda: self.set_page("store")),
+                    Tile("Hardware", "Compatibilita", "aurion-hardware.svg", lambda: self.set_page("hardware")),
+                    Tile("Rollback", "Snapshot plan", "aurion-snapshot.svg", lambda: self.run_action("backup")),
+                    Tile("AI", "Provider locale", "aurion-assistant.svg", lambda: self.set_page("ai")),
+                    Tile("Installer", "Calamares", "aurion-installer.svg", lambda: self.run_action("installer")),
+                ],
+            )
+            layout.addStretch(1)
+
+        return self.shell(fill)
+
+    def set_page(self, page):
+        aliases = {
+            "desktop": "home",
+            "experience": "home",
+            "overview": "home",
+            "launcher": "home",
+            "apps": "store",
+            "assistant": "ai",
+            "ai-status": "ai",
+            "settings": "control",
+        }
+        page = aliases.get(page or "home", page)
+        if page not in self.pages:
+            page = "home"
+        self.active_page = page
+        self.stack.setCurrentWidget(self.pages[page])
+
+    def run_action(self, name):
+        try:
+            subprocess.Popen(["aurion-action", f"aurion-action://{name}"])
+        except OSError:
+            QtWidgets.QMessageBox.warning(self, "Aurion action", f"Action unavailable: {name}")
+
+    def handle_task(self, text):
+        q = (text or "").lower()
+        if any(word in q for word in ("mail", "email", "posta")):
+            self.run_action("email")
+        elif any(word in q for word in ("install", "app", "programma")):
+            self.set_page("store")
+        elif any(word in q for word in ("wifi", "driver", "hardware")):
+            self.set_page("hardware")
+        elif any(word in q for word in ("diagn", "errore", "sistema")):
+            self.set_page("diagnostics")
+        elif any(word in q for word in ("ai", "ollama")):
+            self.set_page("ai")
+        else:
+            self.set_page("control")
+
+    def mousePressEvent(self, event):
+        if event.button() == QtCore.Qt.LeftButton and event.pos().y() <= self.header.height():
+            self.drag_pos = event.globalPos() - self.frameGeometry().topLeft()
+            event.accept()
+
+    def mouseMoveEvent(self, event):
+        if self.drag_pos and event.buttons() & QtCore.Qt.LeftButton:
+            self.move(event.globalPos() - self.drag_pos)
+            event.accept()
+
+    def mouseReleaseEvent(self, event):
+        self.drag_pos = None
+        super().mouseReleaseEvent(event)
+
+    def apply_style(self):
+        self.setStyleSheet(
+            """
+            #root {
+                background: #081014;
+                color: #eef8f8;
+                border: 1px solid #273740;
+            }
+            #header {
+                background: #10161b;
+                border-bottom: 1px solid #273740;
+            }
+            #sidebar {
+                background: #0b1216;
+                border-right: 1px solid #273740;
+            }
+            #rightRail {
+                background: #0c1317;
+                border-left: 1px solid #273740;
+            }
+            QLabel {
+                color: #eef8f8;
+                font-size: 12px;
+            }
+            QLabel[title="true"] {
+                font-size: 16px;
+                font-weight: 700;
+            }
+            QLabel[gold="true"] {
+                color: #f2bf63;
+                font-size: 11px;
+                font-weight: 700;
+            }
+            QLabel[muted="true"] {
+                color: #9dadb5;
+                font-size: 13px;
+            }
+            QLabel[pageTitle="true"] {
+                font-size: 30px;
+                font-weight: 800;
+            }
+            QLabel[heroTitle="true"] {
+                font-size: 31px;
+                font-weight: 800;
+            }
+            QLabel[section="true"] {
+                font-weight: 700;
+            }
+            QLabel[wave="true"] {
+                color: #35d0cf;
+                font-size: 52px;
+                letter-spacing: 0;
+            }
+            QFrame[card="true"] {
+                background: #10181d;
+                border: 1px solid #273740;
+                border-radius: 8px;
+            }
+            QLabel[cardTitle="true"] {
+                font-size: 15px;
+                font-weight: 700;
+            }
+            QPushButton {
+                background: #121b20;
+                color: #eef8f8;
+                border: 1px solid #273740;
+                border-radius: 7px;
+                padding: 7px 12px;
+                text-align: center;
+            }
+            QPushButton:hover {
+                background: #1c2a30;
+                border-color: #35d0cf;
+            }
+            QPushButton[accent="true"] {
+                background: #f2bf63;
+                color: #071115;
+                font-weight: 700;
+                border-color: #f2bf63;
+            }
+            QPushButton[nav="true"] {
+                text-align: left;
+                background: transparent;
+                border-color: transparent;
+            }
+            QPushButton[nav="true"]:hover {
+                background: #152127;
+                border-color: #273740;
+            }
+            QPushButton[tile="true"] {
+                background: #151f25;
+                border: 1px solid #273740;
+                border-radius: 8px;
+                padding: 12px;
+                text-align: left;
+                font-weight: 700;
+            }
+            QPushButton[tile="true"]:hover {
+                background: #18262c;
+                border-color: #35d0cf;
+            }
+            QLineEdit {
+                background: #10181d;
+                color: #eef8f8;
+                border: 0;
+                font-size: 22px;
+                padding: 8px;
+            }
+            """
+        )
+
+
+def parse_page(argv):
+    page = "home"
+    args = list(argv[1:])
+    if "--path" in args:
+        print(os.path.realpath(__file__))
+        sys.exit(0)
+    while args:
+        arg = args.pop(0)
+        if arg == "--page" and args:
+            page = args.pop(0)
+        elif arg in ("--help", "-h"):
+            print("Usage: aurion-native-home [--page experience|store|hardware|diagnostics|ai|control] [--path]")
+            sys.exit(0)
+    return page
+
+
+def main():
+    page = parse_page(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
+    app.setApplicationName("Aurion Experience")
+    app.setOrganizationName("AurionOS")
+    window = AurionHome(page)
+    window.show()
+    return app.exec_()
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -5,21 +5,21 @@ AurionOS must not look like stock Lubuntu. The alpha visual profile is intention
 ## Alpha implementation
 
 - Dark AurionOS wallpaper with teal/gold motion lines, no large centered Lubuntu-style identity block.
-- Native QML Aurion Experience as the first visible graphical home surface.
+- Native PyQt Aurion Experience as the first visible graphical home surface.
 - Home target preview: `docs/aurionos-home-target.svg`.
 - Rendered current preview: `docs/aurionos-home-preview.png`.
 - LXQt theme `aurionos-alpha`.
 - Dark top bar with Aurion menu, workspace controls, and system status.
 - Bottom dock with Experience, browser, file manager, terminal, Store, installer, and AI Assistant.
 - Home buttons and dock entries use real icon assets; internal pages switch inside the native window and system actions route through the local `aurion-action://` handler.
-- Aurion Store, Hardware Center, Diagnostics, AI, and Control now have integrated native QML pages in the Aurion Experience window.
-- Web surfaces are fallback only. When fallback is needed, `aurion-webapp-open` copies them into `~/AurionOSWeb` first so Firefox Snap can render them on real live media.
+- Aurion Store, Hardware Center, Diagnostics, AI, and Control now have integrated native desktop pages in the Aurion Experience window.
+- QML and web surfaces are fallback only. When web fallback is needed, `aurion-webapp-open` copies them into `~/AurionOSWeb` first so Firefox Snap can render them on real live media.
 - Openbox theme `AurionOS`.
 - Branded hicolor SVG icons for AurionOS, Experience, Assistant, Store, Hardware, and Snapshot.
 - Desktop shortcuts for Launcher, Experience, Store, and installer.
 - Local Aurion Shell surface with Launcher, AI Sidebar, app install flow, hardware flow, and control flow.
-- Qt/QML shell bridge at `/usr/share/aurionos/qml/AurionShell.qml` for the native desktop direction.
-- Native QML home surface at `/usr/share/aurionos/qml/AurionExperience.qml`, used by `aurion-experience`, `aurion-store`, `aurion-hardware-center`, `aurion-diagnostics`, and `aurion-ai-sidebar` before the HTML fallback.
+- Native PyQt home at `/usr/local/bin/aurion-native-home`, used by `aurion-experience`, `aurion-store`, `aurion-hardware-center`, `aurion-diagnostics`, and `aurion-ai-sidebar`.
+- Qt/QML shell bridge at `/usr/share/aurionos/qml/AurionShell.qml` for the later QML direction and as secondary fallback.
 - Keyboard shortcuts:
   - `Super+Space`: Aurion Launcher
   - `Super+E`: Aurion Experience
@@ -40,7 +40,7 @@ The final desktop should feel direct and task-oriented:
 
 ## Future native shell
 
-The alpha uses LXQt configuration, a native QML home bridge, and local HTML fallbacks. The target is a packaged Qt6/QML shell with:
+The alpha uses LXQt configuration, a native PyQt command center, a QML bridge, and local HTML fallbacks. The target is a packaged Qt6/QML shell with:
 
 - native top bar
 - native dock
