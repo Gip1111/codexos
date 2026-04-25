@@ -5,7 +5,7 @@
 
 LXQtPanel,
 QFrame#BackgroundWidget {
-  background: rgba(13, 17, 24, 242);
+  background: rgba(8, 13, 16, 244);
   color: #f8fafc;
   border: 0;
 }
@@ -15,9 +15,9 @@ QPushButton {
   background: transparent;
   color: #f8fafc;
   border: 1px solid transparent;
-  border-radius: 8px;
-  padding: 5px 9px;
-  margin: 3px;
+  border-radius: 7px;
+  padding: 4px 8px;
+  margin: 2px;
 }
 
 QToolButton:hover,
@@ -29,14 +29,15 @@ QPushButton:hover {
 QToolButton:pressed,
 QPushButton:pressed,
 QToolButton:checked {
-  background: rgba(245, 193, 92, 42);
-  border-color: rgba(245, 193, 92, 140);
+  background: rgba(241, 188, 85, 36);
+  border-color: rgba(241, 188, 85, 150);
+  color: #f1bc55;
 }
 
 QMenu {
-  background: #151f2c;
+  background: #0e1518;
   color: #f8fafc;
-  border: 1px solid #2d3a4a;
+  border: 1px solid #26373c;
   padding: 8px;
 }
 
@@ -52,9 +53,9 @@ QMenu::item:selected {
 }
 
 QToolTip {
-  background: #111923;
+  background: #0e1518;
   color: #f8fafc;
-  border: 1px solid #4fd1c5;
+  border: 1px solid #23c7c9;
   border-radius: 6px;
   padding: 6px;
 }

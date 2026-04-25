@@ -66,7 +66,7 @@ Basic VM acceptance:
 4. Confirm AurionOS wallpaper or release branding is visible.
 5. Confirm the top panel says Aurion and the bottom dock shows Launcher, Aurion Experience, browser, file manager, Store, and installer.
 6. Confirm desktop shortcuts exist for Aurion Launcher, Aurion Experience, Aurion Store, and Install AurionOS.
-7. Confirm the Aurion Experience command surface opens automatically on the first live login.
+7. Confirm the Aurion Experience command surface opens automatically on the first live login and visually matches `docs/aurionos-home-target.svg` in direction: dark desktop, central command center, AI/status right panel, and bottom dock.
 8. Confirm there is no duplicate `Install Lubuntu` desktop shortcut.
 9. Press `Super+Space` and confirm Aurion Launcher opens.
 10. Press `Super+A` and confirm Aurion AI Sidebar opens.

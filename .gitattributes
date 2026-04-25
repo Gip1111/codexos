@@ -14,6 +14,7 @@
 *.qss text eol=lf
 *.svg text eol=lf
 *.xml text eol=lf
+*.png binary
 
 iso-build/* text eol=lf
 iso-build/hooks/* text eol=lf

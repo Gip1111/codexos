@@ -1,23 +1,61 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
   <defs>
-    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#10151f"/>
-      <stop offset="0.48" stop-color="#183448"/>
-      <stop offset="1" stop-color="#d79f38"/>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#05090d"/>
+      <stop offset="0.45" stop-color="#071217"/>
+      <stop offset="1" stop-color="#10161b"/>
     </linearGradient>
-    <linearGradient id="band" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#4fd1c5" stop-opacity="0.9"/>
-      <stop offset="1" stop-color="#f5c15c" stop-opacity="0.85"/>
+    <linearGradient id="goldLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1f8b91" stop-opacity="0.1"/>
+      <stop offset="0.45" stop-color="#23c7c9" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#f1bc55" stop-opacity="0.95"/>
     </linearGradient>
+    <linearGradient id="softLine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1f8b91" stop-opacity="0.04"/>
+      <stop offset="0.55" stop-color="#23c7c9" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#f1bc55" stop-opacity="0.48"/>
+    </linearGradient>
+    <radialGradient id="glowTeal" cx="0.62" cy="0.18" r="0.58">
+      <stop offset="0" stop-color="#23c7c9" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#23c7c9" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowGold" cx="0.9" cy="0.8" r="0.5">
+      <stop offset="0" stop-color="#f1bc55" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#f1bc55" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="3" cy="3" r="1.4" fill="#f1bc55" opacity="0.35"/>
+    </pattern>
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
   </defs>
-  <rect width="1920" height="1080" fill="url(#sky)"/>
-  <path d="M0 760 C330 640 560 880 910 720 C1260 560 1520 560 1920 420 L1920 1080 L0 1080 Z" fill="#0c1119" opacity="0.78"/>
-  <path d="M0 838 C360 700 610 970 1010 790 C1340 642 1585 650 1920 520" fill="none" stroke="url(#band)" stroke-width="12" opacity="0.88"/>
-  <path d="M0 884 C380 760 640 1000 1050 850 C1395 724 1610 736 1920 632" fill="none" stroke="#ffffff" stroke-width="2" opacity="0.25"/>
-  <g transform="translate(160 160)">
-    <path d="M96 0 L192 168 H150 L124 122 H68 L42 168 H0 Z M96 45 L82 84 H110 Z" fill="#f5c15c"/>
-    <text x="230" y="86" font-family="Inter, Noto Sans, Ubuntu, Arial, sans-serif" font-size="76" font-weight="700" fill="#f8fafc">AurionOS</text>
-    <text x="234" y="136" font-family="Inter, Noto Sans, Ubuntu, Arial, sans-serif" font-size="30" fill="#cbd5e1">Alpha Fast Track v0.1</text>
+
+  <rect width="1920" height="1080" fill="url(#base)"/>
+  <rect width="1920" height="1080" fill="url(#glowTeal)"/>
+  <rect width="1920" height="1080" fill="url(#glowGold)"/>
+
+  <path d="M-120 1000 C260 800 520 730 830 700 C1180 666 1490 520 2070 90 L2070 1080 L-120 1080 Z" fill="#080e12" opacity="0.92"/>
+  <path d="M-180 840 C220 690 540 655 900 590 C1230 530 1510 330 2020 -130" fill="none" stroke="#20313a" stroke-width="3" opacity="0.7"/>
+  <path d="M-120 1010 C260 805 520 735 830 705 C1180 670 1490 535 2070 120" fill="none" stroke="url(#softLine)" stroke-width="3" opacity="0.85"/>
+
+  <g transform="translate(1320 320) rotate(-22)" opacity="0.9">
+    <path d="M-40 390 C180 150 430 42 800 -90" fill="none" stroke="url(#goldLine)" stroke-width="8" stroke-linecap="round" filter="url(#blur)" opacity="0.32"/>
+    <path d="M-40 390 C180 150 430 42 800 -90" fill="none" stroke="url(#goldLine)" stroke-width="5" stroke-linecap="round"/>
+    <path d="M-130 480 C150 245 420 132 850 -12" fill="none" stroke="#24424b" stroke-width="2" stroke-linecap="round" opacity="0.8"/>
+  </g>
+
+  <g transform="translate(1010 165) rotate(-8)" opacity="0.88">
+    <path d="M0 96 C116 28 210 18 304 64 C402 112 480 84 610 0" fill="none" stroke="#23c7c9" stroke-width="8" stroke-linecap="round" filter="url(#blur)" opacity="0.22"/>
+    <path d="M0 96 C116 28 210 18 304 64 C402 112 480 84 610 0" fill="none" stroke="url(#goldLine)" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <g opacity="0.42">
+    <rect x="1380" y="430" width="360" height="360" fill="url(#dots)" transform="rotate(-18 1560 610)"/>
+  </g>
+
+  <g transform="translate(54 46)" opacity="0.92">
+    <path d="M16 48 L42 0 L68 48 H54 L42 26 L30 48 Z" fill="#f1bc55"/>
+    <path d="M42 14 L50 48 H34 Z" fill="#121a1f"/>
   </g>
 </svg>
-

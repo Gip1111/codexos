@@ -15,11 +15,30 @@ fi
 
 echo "Opening Aurion Experience: $page"
 
-if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v xdg-open >/dev/null 2>&1; then
-  xdg-open "$page" >/dev/null 2>&1 || {
+if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]; then
+  page_uri="file://$page"
+
+  for browser in chromium-browser chromium google-chrome-stable google-chrome; do
+    if command -v "$browser" >/dev/null 2>&1; then
+      "$browser" --app="$page_uri" --class=AurionExperience >/dev/null 2>&1 &
+      exit 0
+    fi
+  done
+
+  if command -v firefox >/dev/null 2>&1; then
+    firefox --new-window "$page_uri" >/dev/null 2>&1 &
+    exit 0
+  fi
+
+  if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "$page" >/dev/null 2>&1 || {
+      echo "Could not open a browser automatically. Open this file manually:"
+      echo "$page"
+    }
+  else
     echo "Could not open a browser automatically. Open this file manually:"
     echo "$page"
-  }
+  fi
 else
   echo "No graphical session detected. Open this file from the desktop:"
   echo "$page"

@@ -20,6 +20,7 @@ The alpha goal is a credible first ISO, not a finished distribution. Ubuntu/Lubu
 - AurionOS wallpaper
 - AurionOS LXQt session entry
 - AurionOS visual profile for LXQt with branded theme, top bar, bottom dock, window theme, icons, desktop shortcuts, and keyboard shortcuts
+- Aurion Experience home surface styled as the first task-oriented desktop command center
 - Guarded LXQt session starter, Xsession guard, and live-session watchdog to recover the desktop if panel or wallpaper modules do not autostart
 - Welcome page and first-run live branding hook
 - Aurion Shell graphical alpha surface with Launcher, AI Sidebar, Dock concept, app flow, hardware flow, and control flow
@@ -91,3 +92,5 @@ AurionOS v0.1 preserves Ubuntu's signed Secure Boot flow. The build does not rep
 - `docs/testing-guide.md`
 - `docs/final-project-foundations.md`
 - `docs/visual-design.md`
+- `docs/aurionos-home-target.svg`
+- `docs/aurionos-home-preview.png`

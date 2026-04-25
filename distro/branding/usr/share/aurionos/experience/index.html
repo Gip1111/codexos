@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,106 +7,229 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="rail" aria-label="Aurion navigation">
-      <div class="brand-mark">
-        <span>A</span>
+  <div class="desktop-scene">
+    <header class="system-bar" aria-label="AurionOS top bar">
+      <div class="bar-brand">
+        <span class="brand-glyph">A</span>
+        <span>Aurion</span>
       </div>
-      <nav>
-        <button class="rail-btn is-active" data-view="today">Today</button>
-        <button class="rail-btn" data-view="apps">Apps</button>
-        <button class="rail-btn" data-view="hardware">Hardware</button>
-        <button class="rail-btn" data-view="ai">AI</button>
-      </nav>
+      <div class="workspace-switcher" aria-label="Desktop virtuali">
+        <button class="is-active" type="button">1</button>
+        <button type="button">2</button>
+        <button type="button">3</button>
+        <button type="button">4</button>
+        <button class="grid-button" type="button" aria-label="Panoramica applicazioni">::</button>
+      </div>
+      <div class="bar-status" aria-label="Stato sistema">
+        <span>Wi-Fi</span>
+        <span>82%</span>
+        <span>Audio</span>
+        <span>18:42</span>
+        <span class="power-dot"></span>
+      </div>
+    </header>
+
+    <aside class="desktop-icons" aria-label="Desktop">
+      <button class="desktop-icon" type="button">
+        <span class="icon-tile home-icon"></span>
+        <span>Home</span>
+      </button>
     </aside>
 
-    <main class="workspace">
-      <header class="topline" aria-label="AurionOS desktop">
-        <div>
-          <strong>AurionOS</strong>
-          <span>Alpha Fast Track v0.1</span>
+    <main class="experience-window" aria-label="Aurion Experience Command Center">
+      <header class="window-titlebar">
+        <div class="window-brand">
+          <span class="window-logo">A</span>
+          <div>
+            <strong>Aurion Experience</strong>
+            <span>Command Center</span>
+          </div>
         </div>
-        <div class="topline-actions">
-          <button type="button" data-task="read email">Mail</button>
-          <button type="button" data-task="install vlc">Install app</button>
-          <button type="button" data-task="check wifi">Wi-Fi</button>
+        <div class="window-controls" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
       </header>
 
-      <section class="hero-panel" aria-labelledby="aurion-title">
-        <div class="hero-copy">
-          <p class="eyebrow">Aurion command center</p>
-          <h1 id="aurion-title">Dimmi cosa vuoi fare.</h1>
-          <div class="task-box">
-            <label for="task-input">What do you want to do?</label>
-            <div class="task-row">
-              <input id="task-input" type="search" autocomplete="off" placeholder="read email, install vlc, check wifi, diagnose errors">
-              <button id="task-run" type="button">Ask</button>
-            </div>
-            <div class="task-presets" aria-label="Common tasks">
-              <button type="button" data-task="read email">Leggi email</button>
-              <button type="button" data-task="open browser">Browser</button>
-              <button type="button" data-task="install program">Installa</button>
-              <button type="button" data-task="diagnose errors">Diagnosi</button>
-            </div>
-          </div>
-        </div>
-        <div class="hero-visual">
-          <img class="hero-art" src="../../backgrounds/aurionos/aurionos-alpha.svg" alt="AurionOS wallpaper preview">
-          <div class="hero-card">
-            <span>AI locale</span>
-            <strong>Mock pronto</strong>
-          </div>
-          <div class="hero-card hero-card-secondary">
-            <span>App</span>
-            <strong>Store alpha</strong>
-          </div>
-        </div>
-      </section>
+      <div class="window-body">
+        <nav class="side-nav" aria-label="Navigazione Aurion">
+          <button class="nav-item is-active" data-view="overview" type="button">
+            <span class="nav-icon">O</span>
+            <span>Panoramica</span>
+          </button>
+          <button class="nav-item" data-view="system" type="button">
+            <span class="nav-icon">S</span>
+            <span>Sistema</span>
+          </button>
+          <button class="nav-item" data-view="network" type="button">
+            <span class="nav-icon">R</span>
+            <span>Rete</span>
+          </button>
+          <button class="nav-item" data-view="security" type="button">
+            <span class="nav-icon">P</span>
+            <span>Sicurezza</span>
+          </button>
+          <button class="nav-item" data-view="software" type="button">
+            <span class="nav-icon">A</span>
+            <span>Software</span>
+          </button>
+          <button class="nav-item" data-view="services" type="button">
+            <span class="nav-icon">V</span>
+            <span>Servizi</span>
+          </button>
+          <button class="nav-item" data-view="settings" type="button">
+            <span class="nav-icon">I</span>
+            <span>Impostazioni</span>
+          </button>
 
-      <section class="status-strip" aria-label="System status">
-        <div>
-          <span class="metric-label">Boot</span>
-          <strong>UEFI target</strong>
-        </div>
-        <div>
-          <span class="metric-label">Secure Boot</span>
-          <strong>Ubuntu chain preserved</strong>
-        </div>
-        <div>
-          <span class="metric-label">AI</span>
-          <strong>Local-first mock</strong>
-        </div>
-        <div>
-          <span class="metric-label">Apps</span>
-          <strong>Store alpha</strong>
-        </div>
-      </section>
+          <div class="edition-card">
+            <span class="edition-logo">A</span>
+            <div>
+              <strong>AurionOS Alpha</strong>
+              <span>v0.1 fast-track</span>
+            </div>
+            <i></i>
+          </div>
+        </nav>
 
-      <section class="content-grid">
-        <section class="panel assistant-panel">
-          <div class="panel-head">
-            <p class="eyebrow">Task Assistant</p>
-            <h2 id="assistant-title">Ready</h2>
-          </div>
-          <p id="assistant-response">Choose a task or type what you need. Aurion will map it to a safe alpha action.</p>
-          <div class="command-card">
-            <span>Suggested command</span>
-            <code id="assistant-command">aurion-status</code>
-            <button id="copy-command" type="button">Copy</button>
-          </div>
-          <div class="quick-actions" id="quick-actions"></div>
+        <section class="main-panel">
+          <section class="hero">
+            <div>
+              <h1>Ciao! Sono <span>Aurion.</span></h1>
+              <p>Il tuo ambiente. Le tue regole.</p>
+            </div>
+            <div class="aurora-line" aria-hidden="true"></div>
+          </section>
+
+          <section class="prompt-panel" aria-label="Assistente rapido">
+            <label for="task-input">Dimmi cosa vuoi fare?</label>
+            <div class="prompt-row">
+              <input id="task-input" type="search" autocomplete="off" placeholder='Esempi: "Installa app", "Pulisci cache", "Mostra disco"'>
+              <button id="task-run" type="button" aria-label="Esegui richiesta">Go</button>
+            </div>
+          </section>
+
+          <section class="quick-section" aria-label="Azioni rapide">
+            <h2>Azioni rapide</h2>
+            <div class="quick-grid" id="quick-grid"></div>
+          </section>
+
+          <section class="lower-grid">
+            <article class="activity-card">
+              <h2>Attivita recenti</h2>
+              <ul id="activity-list">
+                <li><span></span><strong>Sistema aggiornato</strong><em>2 ore fa</em></li>
+                <li><span></span><strong>Installato Visual Studio Code</strong><em>5 ore fa</em></li>
+                <li><span></span><strong>Pulizia cache completata</strong><em>Ieri</em></li>
+                <li><span></span><strong>Backup automatico completato</strong><em>2 giorni fa</em></li>
+              </ul>
+            </article>
+
+            <article class="suggestion-card">
+              <h2>Suggerimenti</h2>
+              <div class="suggestion-box">
+                <strong>Attiva il backup automatico</strong>
+                <p>Proteggi i tuoi dati con backup programmati.</p>
+                <button type="button" data-task="backup automatico">Configura ora</button>
+              </div>
+              <div class="pager" aria-hidden="true">
+                <span class="is-active"></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </article>
+          </section>
         </section>
 
-        <section class="panel view-panel" id="view-panel">
-          <div class="panel-head">
-            <p class="eyebrow">Today</p>
-            <h2>Fast actions</h2>
-          </div>
-          <div class="action-grid" id="action-grid"></div>
-        </section>
-      </section>
+        <aside class="right-panel" aria-label="Pannello AI e stato">
+          <section class="info-card ai-card">
+            <h2>Assistente AI</h2>
+            <p><strong>Modalita:</strong> <span>Locale (Privacy attiva)</span></p>
+            <p>Nessun dato lascia il tuo dispositivo.</p>
+            <button type="button" data-task="nuova conversazione">Nuova conversazione</button>
+          </section>
+
+          <section class="info-card status-card">
+            <h2>Stato sistema</h2>
+            <div class="metric">
+              <span>CPU</span>
+              <div><i style="width: 12%"></i></div>
+              <em>12%</em>
+            </div>
+            <div class="metric">
+              <span>RAM</span>
+              <div><i style="width: 27%"></i></div>
+              <em>2.1 / 7.7 GB (27%)</em>
+            </div>
+            <div class="metric">
+              <span>Disco</span>
+              <div><i style="width: 36%"></i></div>
+              <em>42.3 / 118.2 GB (36%)</em>
+            </div>
+            <div class="temperature">
+              <span>Temperatura</span>
+              <strong>49 C</strong>
+            </div>
+            <button type="button" data-task="dettagli sistema">Dettagli sistema</button>
+          </section>
+
+          <section class="info-card app-card">
+            <h2>Suggerimenti installazioni</h2>
+            <div class="app-suggestion">
+              <span class="app-dot obs"></span>
+              <div><strong>OBS Studio</strong><small>Registrazione e streaming</small></div>
+              <button type="button" data-task="installa obs">Installa</button>
+            </div>
+            <div class="app-suggestion">
+              <span class="app-dot gimp"></span>
+              <div><strong>GIMP</strong><small>Editing immagini</small></div>
+              <button type="button" data-task="installa gimp">Installa</button>
+            </div>
+            <div class="app-suggestion">
+              <span class="app-dot vlc"></span>
+              <div><strong>VLC Media Player</strong><small>Lettore multimediale</small></div>
+              <button type="button" data-task="installa vlc">Installa</button>
+            </div>
+            <button class="more-apps" type="button" data-task="mostra altre app">Mostra altre app</button>
+          </section>
+        </aside>
+      </div>
     </main>
+
+    <nav class="dock" aria-label="Applicazioni preferite">
+      <button class="dock-item is-active" type="button" data-task="apri aurion experience">
+        <span class="dock-icon aurion"></span>
+        <span>Aurion Experience</span>
+      </button>
+      <button class="dock-item" type="button" data-task="apri browser">
+        <span class="dock-icon browser"></span>
+        <span>Browser</span>
+      </button>
+      <button class="dock-item" type="button" data-task="apri file">
+        <span class="dock-icon files"></span>
+        <span>Files</span>
+      </button>
+      <button class="dock-item" type="button" data-task="apri terminale">
+        <span class="dock-icon terminal"></span>
+        <span>Terminal</span>
+      </button>
+      <button class="dock-item" type="button" data-task="apri store">
+        <span class="dock-icon store"></span>
+        <span>Store</span>
+      </button>
+      <button class="dock-item" type="button" data-task="apri installer">
+        <span class="dock-icon installer"></span>
+        <span>Installer</span>
+      </button>
+      <button class="dock-item" type="button" data-task="apri assistente">
+        <span class="dock-icon ai"></span>
+        <span>AI Assistant</span>
+      </button>
+    </nav>
+
+    <button class="floating-close" type="button" aria-label="Chiudi anteprima">x</button>
   </div>
 
   <script src="app.js"></script>

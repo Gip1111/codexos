@@ -212,6 +212,12 @@ main() {
   grep -Fq 'Wallpaper=/usr/share/backgrounds/aurionos/aurionos-alpha.png' "$WORK_DIR/pcmanfm-qt-settings.conf" \
     || fail "PCManFM-Qt settings do not point to the AurionOS wallpaper"
 
+  cat_squashfs_file usr/share/aurionos/experience/index.html > "$WORK_DIR/aurion-experience.html"
+  grep -Fq 'Aurion Experience' "$WORK_DIR/aurion-experience.html" \
+    || fail "Aurion Experience home surface is missing"
+  grep -Fq 'Ciao! Sono' "$WORK_DIR/aurion-experience.html" \
+    || fail "Aurion Experience does not contain the new home greeting"
+
   cat_squashfs_file usr/share/aurionos/ai/providers/ollama-phi4-mini.json > "$WORK_DIR/ai-provider.json"
   grep -Fq '"default_model": "phi4-mini"' "$WORK_DIR/ai-provider.json" \
     || fail "AI provider metadata does not declare phi4-mini"
