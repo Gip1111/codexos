@@ -186,6 +186,7 @@ main() {
   require_executable_in_squashfs usr/local/bin/aurion-startlabwc
   require_executable_in_squashfs usr/local/bin/aurion-control
   require_executable_in_squashfs usr/local/bin/aurion-action
+  require_executable_in_squashfs usr/local/bin/aurion-webapp-open
   require_executable_in_squashfs usr/local/bin/aurion-shell
   require_executable_in_squashfs usr/local/bin/aurion-qml-surface
   require_executable_in_squashfs usr/local/bin/aurion-launcher
@@ -280,6 +281,14 @@ main() {
   cat_squashfs_file usr/share/aurionos/experience/app.js > "$WORK_DIR/aurion-experience.js"
   grep -Fq 'aurion-action://' "$WORK_DIR/aurion-experience.js" \
     || fail "Aurion Experience does not expose clickable action links"
+
+  cat_squashfs_file usr/local/bin/aurion-experience > "$WORK_DIR/aurion-experience-bin"
+  grep -Fq 'aurion-webapp-open' "$WORK_DIR/aurion-experience-bin" \
+    || fail "Aurion Experience does not use the Snap-safe webapp opener"
+
+  cat_squashfs_file usr/local/bin/aurion-webapp-open > "$WORK_DIR/aurion-webapp-open"
+  grep -Fq 'AurionOSWeb' "$WORK_DIR/aurion-webapp-open" \
+    || fail "Aurion webapp opener does not materialize surfaces in a user-visible home path"
 
   cat_squashfs_file usr/share/aurionos/store/app.js > "$WORK_DIR/aurion-store.js"
   grep -Fq 'aurion-action://' "$WORK_DIR/aurion-store.js" \

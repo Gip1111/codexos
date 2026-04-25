@@ -161,6 +161,7 @@ install_tool_payload() {
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/control-center/aurion-control" "$rootfs/usr/local/bin/aurion-control"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/experience/aurion-action" "$rootfs/usr/local/bin/aurion-action"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/experience/aurion-experience" "$rootfs/usr/local/bin/aurion-experience"
+  "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/experience/aurion-webapp-open" "$rootfs/usr/local/bin/aurion-webapp-open"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hub/aurion-hub" "$rootfs/usr/local/bin/aurion-hub"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hardware-compat/aurion-hw-scan" "$rootfs/usr/local/bin/aurion-hw-scan"
   "${SUDO[@]}" install -Dm0755 "$PROJECT_ROOT/hardware-compat/aurion-hardware-center" "$rootfs/usr/local/bin/aurion-hardware-center"

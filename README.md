@@ -22,6 +22,7 @@ The alpha goal is a credible first ISO, not a finished distribution. Ubuntu/Lubu
 - AurionOS visual profile for LXQt with branded theme, top bar, bottom dock, window theme, icons, desktop shortcuts, and keyboard shortcuts
 - Experimental AurionOS LabWC Preview Wayland session with automatic fallback to the stable LXQt session if `labwc` is not installed
 - Aurion Experience home surface styled as the first task-oriented desktop command center
+- Snap-safe Aurion webapp opener that materializes graphical surfaces in `~/AurionOSWeb` before opening them in Firefox
 - Clickable home actions through the local `aurion-action://` handler for browser, email, files, terminal, Store, installer, AI, hardware, diagnostics, and rollback
 - Guarded LXQt session starter, Xsession guard, and live-session watchdog to recover the desktop if panel or wallpaper modules do not autostart
 - Welcome page and first-run live branding hook
@@ -60,6 +61,7 @@ aurion-do hardware
 aurion-experience
 aurion-hub
 aurion-action aurion-action://browser
+aurion-webapp-open --path /usr/share/aurionos/experience/index.html
 aurion-control
 aurion-task-assist "read email"
 aurion-hardware-center

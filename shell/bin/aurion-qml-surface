@@ -43,6 +43,21 @@ done
 
 open_html() {
   local target="$1"
+  local source_page="${target#file://}"
+  local fragment=""
+
+  case "$source_page" in
+    *#*)
+      fragment="#${source_page#*#}"
+      source_page="${source_page%%#*}"
+      ;;
+  esac
+
+  if command -v aurion-webapp-open >/dev/null 2>&1; then
+    aurion-webapp-open AurionShell "$source_page" "$fragment"
+    return 0
+  fi
+
   if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v xdg-open >/dev/null 2>&1; then
     xdg-open "$target" >/dev/null 2>&1 || {
       echo "Could not open automatically: $target"

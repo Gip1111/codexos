@@ -13,6 +13,7 @@ AurionOS must not look like stock Lubuntu. The alpha visual profile is intention
 - Bottom dock with Experience, browser, file manager, terminal, Store, installer, and AI Assistant.
 - Home buttons and dock entries use real icon assets and route through the local `aurion-action://` handler.
 - Aurion Store, Hardware Center, and Diagnostics now open graphical offline surfaces instead of only terminal output.
+- Web surfaces are opened through `aurion-webapp-open`, which copies them into `~/AurionOSWeb` first so Firefox Snap can render them on real live media.
 - Openbox theme `AurionOS`.
 - Branded hicolor SVG icons for AurionOS, Experience, Assistant, Store, Hardware, and Snapshot.
 - Desktop shortcuts for Launcher, Experience, Store, and installer.

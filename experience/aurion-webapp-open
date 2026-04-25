@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+app_class="${1:-AurionApp}"
+source_page="${2:-}"
+fragment="${3:-}"
+
+usage() {
+  cat <<'EOF'
+Aurion WebApp Open
+
+Usage:
+  aurion-webapp-open AppClass /usr/share/aurionos/experience/index.html [#hash]
+  aurion-webapp-open --path /usr/share/aurionos/experience/index.html
+
+Copies Aurion web surfaces into a non-hidden home directory before opening them.
+This avoids Firefox Snap visibility issues with file:///usr/share/... on live ISO.
+EOF
+}
+
+if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
+  usage
+  exit 0
+fi
+
+runtime_root="${AURION_WEBAPP_ROOT:-$HOME/AurionOSWeb}"
+
+if [ "${1:-}" = "--path" ]; then
+  source_page="${2:-}"
+  [ -n "$source_page" ] || { echo "Missing source page" >&2; exit 2; }
+  case "$source_page" in
+    /usr/share/*) echo "$runtime_root$source_page" ;;
+    *) echo "$source_page" ;;
+  esac
+  exit 0
+fi
+
+[ -n "$source_page" ] || { usage >&2; exit 2; }
+
+case "$source_page" in
+  /usr/share/*) ;;
+  *)
+    echo "Unsupported Aurion web surface path: $source_page" >&2
+    exit 2
+    ;;
+esac
+
+if [ ! -f "$source_page" ]; then
+  echo "Aurion web surface is missing in the live filesystem: $source_page" >&2
+  exit 1
+fi
+
+share_root="$runtime_root/usr/share"
+mkdir -p "$share_root"
+
+if [ -d /usr/share/aurionos ]; then
+  cp -a /usr/share/aurionos "$share_root/"
+fi
+
+if compgen -G "/usr/share/icons/hicolor/scalable/apps/aurion*.svg" >/dev/null; then
+  mkdir -p "$share_root/icons/hicolor/scalable/apps"
+  cp -a /usr/share/icons/hicolor/scalable/apps/aurion*.svg "$share_root/icons/hicolor/scalable/apps/"
+fi
+
+cached_page="$runtime_root$source_page"
+if [ ! -f "$cached_page" ]; then
+  echo "Aurion web surface cache was not created: $cached_page" >&2
+  exit 1
+fi
+
+page_uri="file://$cached_page$fragment"
+echo "Opening $app_class: $page_uri"
+
+if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]; then
+  for browser in chromium-browser chromium google-chrome-stable google-chrome; do
+    if command -v "$browser" >/dev/null 2>&1; then
+      "$browser" --app="$page_uri" --class="$app_class" >/dev/null 2>&1 &
+      exit 0
+    fi
+  done
+
+  if command -v firefox >/dev/null 2>&1; then
+    firefox --new-window "$page_uri" >/dev/null 2>&1 &
+    exit 0
+  fi
+
+  if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "$page_uri" >/dev/null 2>&1 || {
+      echo "Could not open a browser automatically. Open this file manually:"
+      echo "$cached_page"
+    }
+  else
+    echo "Could not open a browser automatically. Open this file manually:"
+    echo "$cached_page"
+  fi
+else
+  echo "No graphical session detected. Open this file from the desktop:"
+  echo "$cached_page"
+fi

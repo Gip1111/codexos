@@ -4,6 +4,9 @@ set -euo pipefail
 page="/usr/share/aurionos/hardware/index.html"
 
 if [ "${1:-}" = "--path" ]; then
+  if command -v aurion-webapp-open >/dev/null 2>&1; then
+    exec aurion-webapp-open --path "$page"
+  fi
   echo "$page"
   exit 0
 fi
@@ -13,33 +16,4 @@ if [ ! -f "$page" ]; then
   exit 1
 fi
 
-echo "Opening Aurion Hardware Center: $page"
-
-if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]; then
-  page_uri="file://$page"
-
-  for browser in chromium-browser chromium google-chrome-stable google-chrome; do
-    if command -v "$browser" >/dev/null 2>&1; then
-      "$browser" --app="$page_uri" --class=AurionHardwareCenter >/dev/null 2>&1 &
-      exit 0
-    fi
-  done
-
-  if command -v firefox >/dev/null 2>&1; then
-    firefox --new-window "$page_uri" >/dev/null 2>&1 &
-    exit 0
-  fi
-
-  if command -v xdg-open >/dev/null 2>&1; then
-    xdg-open "$page_uri" >/dev/null 2>&1 || {
-      echo "Could not open a browser automatically. Open this file manually:"
-      echo "$page"
-    }
-  else
-    echo "Could not open a browser automatically. Open this file manually:"
-    echo "$page"
-  fi
-else
-  echo "No graphical session detected. Open this file from the desktop:"
-  echo "$page"
-fi
+exec aurion-webapp-open AurionHardwareCenter "$page"
