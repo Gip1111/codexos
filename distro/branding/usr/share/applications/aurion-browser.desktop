@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Browser
+Comment=Open the default web browser
+Exec=aurion-action aurion-action://browser
+Icon=aurion-browser
+Terminal=false
+Categories=Network;WebBrowser;

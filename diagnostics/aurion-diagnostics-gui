@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+page="/usr/share/aurionos/diagnostics/index.html"
+
+if [ "${1:-}" = "--path" ]; then
+  echo "$page"
+  exit 0
+fi
+
+if [ ! -f "$page" ]; then
+  echo "Aurion Diagnostics page is missing: $page" >&2
+  exit 1
+fi
+
+echo "Opening Aurion Diagnostics: $page"
+
+if [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ]; then
+  page_uri="file://$page"
+
+  for browser in chromium-browser chromium google-chrome-stable google-chrome; do
+    if command -v "$browser" >/dev/null 2>&1; then
+      "$browser" --app="$page_uri" --class=AurionDiagnostics >/dev/null 2>&1 &
+      exit 0
+    fi
+  done
+
+  if command -v firefox >/dev/null 2>&1; then
+    firefox --new-window "$page_uri" >/dev/null 2>&1 &
+    exit 0
+  fi
+
+  if command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "$page_uri" >/dev/null 2>&1 || {
+      echo "Could not open a browser automatically. Open this file manually:"
+      echo "$page"
+    }
+  else
+    echo "Could not open a browser automatically. Open this file manually:"
+    echo "$page"
+  fi
+else
+  echo "No graphical session detected. Open this file from the desktop:"
+  echo "$page"
+fi

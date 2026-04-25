@@ -2,6 +2,6 @@
 Type=Application
 Name=Aurion Store
 Comment=Apps and installers
-Exec=qterminal -e aurion-store
+Exec=aurion-store
 Icon=aurion-store
 Terminal=false

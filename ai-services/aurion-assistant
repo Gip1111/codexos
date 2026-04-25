@@ -29,7 +29,9 @@ while true; do
     "") continue ;;
   esac
 
-  if command -v aurion-task-assist >/dev/null 2>&1; then
+  if command -v aurion-ai-service >/dev/null 2>&1; then
+    aurion-ai-service "$question"
+  elif command -v aurion-task-assist >/dev/null 2>&1; then
     aurion-task-assist "$question"
   else
     cat <<EOF

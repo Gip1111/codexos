@@ -2,7 +2,7 @@
 Type=Application
 Name=Aurion Store
 Comment=Open Aurion Store alpha catalog
-Exec=qterminal -e aurion-store
+Exec=aurion-store
 Icon=aurion-store
 Terminal=false
 Categories=System;Utility;

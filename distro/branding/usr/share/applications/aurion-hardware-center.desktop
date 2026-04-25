@@ -2,7 +2,7 @@
 Type=Application
 Name=Aurion Hardware Center
 Comment=Open AurionOS hardware compatibility report
-Exec=qterminal -e aurion-hardware-center
+Exec=aurion-hardware-center
 Icon=aurion-hardware
 Terminal=false
 Categories=System;Utility;

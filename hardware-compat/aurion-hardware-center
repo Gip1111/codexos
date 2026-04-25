@@ -3,6 +3,22 @@ set -euo pipefail
 
 db="/usr/share/aurionos/hardware/alpha-hardware.json"
 
+if [ "${1:-}" = "--path" ]; then
+  if command -v aurion-hardware-gui >/dev/null 2>&1; then
+    exec aurion-hardware-gui --path
+  fi
+  echo "/usr/share/aurionos/hardware/index.html"
+  exit 0
+fi
+
+if [ "${1:-}" != "--cli" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-hardware-gui >/dev/null 2>&1; then
+  exec aurion-hardware-gui "$@"
+fi
+
+if [ "${1:-}" = "--cli" ]; then
+  shift
+fi
+
 echo "AurionOS Hardware Center - alpha read-only classification"
 echo
 

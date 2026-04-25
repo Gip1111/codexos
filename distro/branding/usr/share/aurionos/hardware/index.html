@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aurion Hardware Center</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="hardware">
+    <header class="topbar">
+      <div class="brand">
+        <img src="../../icons/hicolor/scalable/apps/aurion-hardware.svg" alt="">
+        <div>
+          <strong>Aurion Hardware Center</strong>
+          <span>Compatibilita read-only</span>
+        </div>
+      </div>
+      <button type="button" data-action="diagnostics-report">Report reale</button>
+    </header>
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Driver e compatibilita</p>
+        <h1>Capire l'hardware prima di cambiarlo.</h1>
+        <p>AurionOS Alpha classifica GPU, Wi-Fi, boot e stato driver senza installare moduli DKMS o componenti proprietari nella live.</p>
+      </div>
+      <div class="score">
+        <span>Stato live</span>
+        <strong>Safe</strong>
+        <small>Nessuna modifica driver automatica</small>
+      </div>
+    </section>
+
+    <section class="grid">
+      <section class="panel wide">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Controlli rapidi</p>
+            <h2>Hardware essenziale</h2>
+          </div>
+          <button type="button" data-action="hardware-scan">Scansione CLI</button>
+        </div>
+        <div class="device-grid" id="device-grid"></div>
+      </section>
+
+      <aside class="panel">
+        <p class="eyebrow">Regole alpha</p>
+        <h2>Secure Boot resta intatto</h2>
+        <ul>
+          <li>Kernel Ubuntu firmato preservato.</li>
+          <li>Shim e GRUB firmati non sostituiti.</li>
+          <li>Driver proprietari rimandati al flusso Ubuntu/MOK.</li>
+          <li>Diagnostica prima, installazione dopo consenso.</li>
+        </ul>
+      </aside>
+
+      <section class="panel wide">
+        <p class="eyebrow">Database iniziale</p>
+        <h2>Dispositivi riconosciuti in v0.1</h2>
+        <div class="compat-list" id="compat-list"></div>
+      </section>
+
+      <aside class="panel accent">
+        <h2>Problema Wi-Fi o GPU?</h2>
+        <p>Apri il report diagnostico e condividi l'output. La live non deve forzare driver rischiosi.</p>
+        <div class="stack">
+          <button type="button" data-action="diagnostics-report">Genera report</button>
+          <button type="button" data-action="ai">Spiega con AI</button>
+        </div>
+      </aside>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

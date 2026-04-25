@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Installer
+Comment=Install AurionOS to disk
+Exec=aurion-action aurion-action://installer
+Icon=aurion-installer
+Terminal=false
+Categories=System;Utility;

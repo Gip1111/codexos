@@ -31,10 +31,11 @@ The alpha goal is a credible first ISO, not a finished distribution. Ubuntu/Lubu
 - Mock AI assistant foundation
 - Safe task runner for email, browser, Store, hardware, diagnostics, AI, and rollback actions
 - Task assistant for email, browser, app install, hardware and diagnostics flows
-- Ollama/phi4-mini provider metadata and status command
+- Ollama/phi4-mini provider metadata, status command, optional local service bridge, and setup helper
 - Hardware scanner CLI
-- Hardware Center alpha classification database
-- Aurion Store alpha catalog and command
+- Hardware Center graphical alpha surface plus read-only classification database
+- Aurion Diagnostics graphical alpha surface plus CLI report
+- Aurion Store graphical alpha catalog and command
 - Aurion Install handler foundation for `.deb`, `.flatpakref`, and AppImage flows
 - AppImage user launcher integration command
 - Diagnostics CLI
@@ -60,10 +61,14 @@ aurion-control
 aurion-task-assist "read email"
 aurion-hardware-center
 aurion-ai-status
+aurion-ai-service "check wifi"
+aurion-ai-setup --status
 aurion-store
+aurion-store --cli
 aurion-install --explain
 aurion-snapshot-plan
 aurion-diagnostics
+aurion-diagnostics --cli
 aurion-hw-scan
 aurion-channel
 aurion-rollback-status

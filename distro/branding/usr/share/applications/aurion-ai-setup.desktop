@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Name=Aurion AI Status
-Comment=Check local AI provider readiness
+Name=Aurion AI Setup
+Comment=Configure optional local Ollama AI
 Exec=aurion-action aurion-action://ai-setup
 Icon=aurion-assistant
 Terminal=false

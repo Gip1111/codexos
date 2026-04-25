@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "channel": "alpha",
-  "install_policy": "list-only in v0.1; no package installation from the alpha store command",
+  "install_policy": "graphical catalog in v0.1; no package installation from the alpha store command",
   "sources": {
     "flatpak": "preferred future default",
     "snap": "optional during MVP",
@@ -25,6 +25,36 @@
       "name": "VLC",
       "source": "flatpak-later",
       "category": "media",
+      "alpha_action": "document only"
+    },
+    {
+      "name": "OBS Studio",
+      "source": "flatpak-later",
+      "category": "media",
+      "alpha_action": "document only"
+    },
+    {
+      "name": "GIMP",
+      "source": "flatpak-later",
+      "category": "creative",
+      "alpha_action": "document only"
+    },
+    {
+      "name": "Visual Studio Code",
+      "source": "deb-or-flatpak-later",
+      "category": "development",
+      "alpha_action": "document only"
+    },
+    {
+      "name": "Thunderbird",
+      "source": "snap-or-flatpak-later",
+      "category": "office",
+      "alpha_action": "document only"
+    },
+    {
+      "name": "Bitwarden",
+      "source": "flatpak-later",
+      "category": "security",
       "alpha_action": "document only"
     }
   ]

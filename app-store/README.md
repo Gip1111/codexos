@@ -11,4 +11,4 @@ Alpha policy:
 - `.flatpakref` support through graphical flow
 - AppImage integration flow: run once, integrate, add launcher
 
-The alpha command lists a catalog and explains the install strategy. It does not install packages yet.
+The alpha command opens a graphical offline catalog when a desktop session is available. Use `aurion-store --cli` for the terminal catalog. It does not install packages yet.

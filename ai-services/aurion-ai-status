@@ -28,3 +28,4 @@ fi
 
 echo
 echo "Cloud AI: disabled by default; must be explicit opt-in later."
+echo "Setup helper: aurion-ai-setup --instructions"

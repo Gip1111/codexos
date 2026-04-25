@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Terminal
+Comment=Open a terminal
+Exec=aurion-action aurion-action://terminal
+Icon=aurion-terminal
+Terminal=false
+Categories=System;TerminalEmulator;

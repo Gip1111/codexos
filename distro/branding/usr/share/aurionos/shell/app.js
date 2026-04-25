@@ -14,19 +14,19 @@ const apps = [
   {
     title: "Install an app",
     detail: "Open the Store alpha and installer guidance",
-    command: "aurion-do store",
+    command: "aurion-store",
     tags: ["install", "app", "store", "vlc"]
   },
   {
     title: "Hardware Center",
     detail: "Check compatibility without changing drivers",
-    command: "aurion-do hardware",
+    command: "aurion-hardware-center",
     tags: ["wifi", "gpu", "driver", "hardware"]
   },
   {
     title: "Diagnostics",
     detail: "Collect a read-only system report",
-    command: "aurion-do diagnostics",
+    command: "aurion-diagnostics",
     tags: ["diagnostics", "error", "repair"]
   },
   {
@@ -39,7 +39,7 @@ const apps = [
 
 const controls = [
   ["System status", "aurion-status"],
-  ["AI provider", "aurion-ai-status"],
+  ["AI provider", "aurion-ai-setup --status"],
   ["App install model", "aurion-install --explain"],
   ["Hardware scan", "aurion-hw-scan"],
   ["Release channel", "aurion-channel"],
@@ -57,19 +57,19 @@ const responses = [
     match: ["install", "app", "vlc", "programma"],
     title: "Install an app",
     text: "Use Aurion Store first. The alpha is catalog-only and will not install silently.",
-    command: "aurion-do store"
+    command: "aurion-store"
   },
   {
     match: ["wifi", "driver", "gpu", "hardware"],
     title: "Check hardware",
     text: "Run read-only hardware classification and diagnostics. No driver changes are made.",
-    command: "aurion-do hardware"
+    command: "aurion-hardware-center"
   },
   {
     match: ["error", "diagn", "problema", "fix"],
     title: "Diagnostics",
     text: "Collect release, boot, disk and recent error information for debugging.",
-    command: "aurion-do diagnostics"
+    command: "aurion-diagnostics"
   }
 ];
 

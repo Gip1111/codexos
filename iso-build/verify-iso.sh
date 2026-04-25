@@ -132,6 +132,15 @@ main() {
   require_file_in_squashfs usr/share/aurionos/experience/index.html
   require_file_in_squashfs usr/share/aurionos/experience/styles.css
   require_file_in_squashfs usr/share/aurionos/experience/app.js
+  require_file_in_squashfs usr/share/aurionos/store/index.html
+  require_file_in_squashfs usr/share/aurionos/store/styles.css
+  require_file_in_squashfs usr/share/aurionos/store/app.js
+  require_file_in_squashfs usr/share/aurionos/hardware/index.html
+  require_file_in_squashfs usr/share/aurionos/hardware/styles.css
+  require_file_in_squashfs usr/share/aurionos/hardware/app.js
+  require_file_in_squashfs usr/share/aurionos/diagnostics/index.html
+  require_file_in_squashfs usr/share/aurionos/diagnostics/styles.css
+  require_file_in_squashfs usr/share/aurionos/diagnostics/app.js
   require_file_in_squashfs usr/share/aurionos/shell/index.html
   require_file_in_squashfs usr/share/aurionos/shell/styles.css
   require_file_in_squashfs usr/share/aurionos/shell/app.js
@@ -146,7 +155,12 @@ main() {
   require_file_in_squashfs usr/share/applications/aurion-hub.desktop
   require_file_in_squashfs usr/share/applications/aurion-shell.desktop
   require_file_in_squashfs usr/share/applications/aurion-launcher.desktop
+  require_file_in_squashfs usr/share/applications/aurion-browser.desktop
+  require_file_in_squashfs usr/share/applications/aurion-files.desktop
+  require_file_in_squashfs usr/share/applications/aurion-terminal.desktop
+  require_file_in_squashfs usr/share/applications/aurion-installer.desktop
   require_file_in_squashfs usr/share/applications/aurion-ai-sidebar.desktop
+  require_file_in_squashfs usr/share/applications/aurion-ai-setup.desktop
   require_file_in_squashfs usr/share/applications/aurion-action-handler.desktop
   require_file_in_squashfs usr/share/applications/mimeapps.list
   require_file_in_squashfs etc/xdg/mimeapps.list
@@ -173,15 +187,20 @@ main() {
   require_executable_in_squashfs usr/local/bin/aurion-experience
   require_executable_in_squashfs usr/local/bin/aurion-hub
   require_executable_in_squashfs usr/local/bin/aurion-ai-status
+  require_executable_in_squashfs usr/local/bin/aurion-ai-service
+  require_executable_in_squashfs usr/local/bin/aurion-ai-setup
   require_executable_in_squashfs usr/local/bin/aurion-do
   require_executable_in_squashfs usr/local/bin/aurion-task-assist
   require_executable_in_squashfs usr/local/bin/aurion-install
   require_executable_in_squashfs usr/local/bin/aurion-appimage-integrate
   require_executable_in_squashfs usr/local/bin/aurion-hardware-center
+  require_executable_in_squashfs usr/local/bin/aurion-hardware-gui
   require_executable_in_squashfs usr/local/bin/aurion-store
+  require_executable_in_squashfs usr/local/bin/aurion-store-gui
   require_executable_in_squashfs usr/local/bin/aurion-snapshot-plan
   require_executable_in_squashfs usr/local/bin/aurion-channel
   require_executable_in_squashfs usr/local/bin/aurion-diagnostics
+  require_executable_in_squashfs usr/local/bin/aurion-diagnostics-gui
   require_executable_in_squashfs usr/local/bin/aurion-hw-scan
   require_executable_in_squashfs usr/local/bin/aurion-assistant
   require_executable_in_squashfs etc/skel/Desktop/aurion-launcher.desktop
@@ -214,6 +233,16 @@ main() {
   grep -Fq 'pcmanfm-desktop=true' "$WORK_DIR/session.conf" \
     || fail "LXQt session.conf does not keep the desktop module enabled"
 
+  cat_squashfs_file etc/skel/.config/lxqt/panel.conf > "$WORK_DIR/panel.conf"
+  grep -Fq 'aurion-browser.desktop' "$WORK_DIR/panel.conf" \
+    || fail "LXQt dock does not use the Aurion browser launcher"
+  grep -Fq 'aurion-files.desktop' "$WORK_DIR/panel.conf" \
+    || fail "LXQt dock does not use the Aurion files launcher"
+  grep -Fq 'aurion-terminal.desktop' "$WORK_DIR/panel.conf" \
+    || fail "LXQt dock does not use the Aurion terminal launcher"
+  grep -Fq 'aurion-installer.desktop' "$WORK_DIR/panel.conf" \
+    || fail "LXQt dock does not use the Aurion installer launcher"
+
   cat_squashfs_file etc/skel/.config/pcmanfm-qt/lxqt/settings.conf > "$WORK_DIR/pcmanfm-qt-settings.conf"
   grep -Fq '[*]' "$WORK_DIR/pcmanfm-qt-settings.conf" \
     || fail "PCManFM-Qt settings do not include the default desktop section"
@@ -229,6 +258,18 @@ main() {
   grep -Fq 'aurion-action://' "$WORK_DIR/aurion-experience.js" \
     || fail "Aurion Experience does not expose clickable action links"
 
+  cat_squashfs_file usr/share/aurionos/store/app.js > "$WORK_DIR/aurion-store.js"
+  grep -Fq 'aurion-action://' "$WORK_DIR/aurion-store.js" \
+    || fail "Aurion Store does not expose clickable action links"
+
+  cat_squashfs_file usr/share/aurionos/hardware/app.js > "$WORK_DIR/aurion-hardware.js"
+  grep -Fq 'aurion-action://' "$WORK_DIR/aurion-hardware.js" \
+    || fail "Aurion Hardware Center does not expose clickable action links"
+
+  cat_squashfs_file usr/share/aurionos/diagnostics/app.js > "$WORK_DIR/aurion-diagnostics.js"
+  grep -Fq 'aurion-action://' "$WORK_DIR/aurion-diagnostics.js" \
+    || fail "Aurion Diagnostics does not expose clickable action links"
+
   cat_squashfs_file etc/xdg/mimeapps.list > "$WORK_DIR/mimeapps.list"
   grep -Fq 'x-scheme-handler/aurion-action=aurion-action-handler.desktop' "$WORK_DIR/mimeapps.list" \
     || fail "Aurion action URL handler is not registered"
@@ -238,6 +279,12 @@ main() {
     || fail "AI provider metadata does not declare phi4-mini"
   grep -Fq '"cloud_fallback_enabled_by_default": false' "$WORK_DIR/ai-provider.json" \
     || fail "AI provider metadata does not keep cloud AI disabled by default"
+
+  cat_squashfs_file usr/local/bin/aurion-ai-service > "$WORK_DIR/aurion-ai-service"
+  grep -Fq 'ollama run "$model"' "$WORK_DIR/aurion-ai-service" \
+    || fail "Aurion AI service does not use the local Ollama model path"
+  grep -Fq 'fallback "$query"' "$WORK_DIR/aurion-ai-service" \
+    || fail "Aurion AI service does not keep the safe alpha fallback"
 
   cat_squashfs_file usr/share/aurionos/ai/tasks/alpha-tasks.json > "$WORK_DIR/ai-tasks.json"
   grep -Fq '"primary_command": "aurion-do email"' "$WORK_DIR/ai-tasks.json" \

@@ -81,15 +81,20 @@ for tool in \
   aurion-channel \
   aurion-assistant \
   aurion-ai-status \
+  aurion-ai-service \
+  aurion-ai-setup \
   aurion-do \
   aurion-task-assist \
   aurion-install \
   aurion-appimage-integrate \
   aurion-hardware-center \
+  aurion-hardware-gui \
   aurion-hw-scan \
   aurion-store \
+  aurion-store-gui \
   aurion-snapshot-plan \
   aurion-diagnostics \
+  aurion-diagnostics-gui \
   aurion-rollback-status; do
   if command -v "$tool" >/dev/null 2>&1; then
     printf '  [ok] %s\n' "$tool"

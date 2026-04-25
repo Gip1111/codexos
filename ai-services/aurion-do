@@ -65,16 +65,16 @@ case "$1" in
     open_url "https://www.google.com"
     ;;
   store)
-    open_terminal_tool aurion-store
+    aurion-store
     ;;
   install|apps|app)
     open_terminal_tool aurion-install --explain
     ;;
   hardware|wifi|driver)
-    open_terminal_tool aurion-hardware-center
+    aurion-hardware-center
     ;;
   diagnostics|diagnose|diag)
-    open_terminal_tool aurion-diagnostics
+    aurion-diagnostics
     ;;
   ai|assistant)
     if has_graphics && command -v aurion-ai-sidebar >/dev/null 2>&1; then

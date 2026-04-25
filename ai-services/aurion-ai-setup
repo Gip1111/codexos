@@ -1,0 +1,94 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+model="${AURION_AI_MODEL:-phi4-mini}"
+
+usage() {
+  cat <<EOF
+Aurion AI Setup - optional local AI
+
+Usage:
+  aurion-ai-setup --status
+  aurion-ai-setup --instructions
+  aurion-ai-setup --pull-model
+
+This tool does not install Ollama automatically. It can pull $model only when
+Ollama is already installed and the user confirms the download.
+EOF
+}
+
+status() {
+  echo "Aurion AI setup status"
+  echo
+
+  if command -v ollama >/dev/null 2>&1; then
+    echo "Ollama: installed"
+    if ollama list 2>/dev/null | awk '{ print $1 }' | grep -Eq "^${model}(:|$)"; then
+      echo "$model: available locally"
+    else
+      echo "$model: not available locally"
+    fi
+  else
+    echo "Ollama: not installed"
+  fi
+
+  echo
+  echo "Cloud AI: disabled by default"
+  echo "Default local model target: $model"
+}
+
+instructions() {
+  cat <<EOF
+Optional local AI path:
+
+1. Install Ollama from the official Linux download page:
+   https://ollama.com/download/linux
+
+2. Pull the AurionOS default local model:
+   ollama pull $model
+
+3. Test the assistant:
+   aurion-ai-service "controlla wifi"
+
+Alpha rule: AurionOS will not enable cloud AI or download models unless the
+user explicitly chooses that path.
+EOF
+}
+
+pull_model() {
+  if ! command -v ollama >/dev/null 2>&1; then
+    echo "Ollama is not installed. Run: aurion-ai-setup --instructions" >&2
+    exit 2
+  fi
+
+  printf 'Download local model %s now? [y/N] ' "$model"
+  IFS= read -r answer || answer=""
+  case "$answer" in
+    y|Y|yes|YES)
+      ollama pull "$model"
+      ;;
+    *)
+      echo "Cancelled. No model was downloaded."
+      ;;
+  esac
+}
+
+case "${1:-}" in
+  --help|-h|"")
+    usage
+    ;;
+  --status)
+    status
+    ;;
+  --instructions)
+    instructions
+    ;;
+  --pull-model)
+    pull_model
+    ;;
+  *)
+    echo "Unknown option: $1" >&2
+    usage >&2
+    exit 2
+    ;;
+esac

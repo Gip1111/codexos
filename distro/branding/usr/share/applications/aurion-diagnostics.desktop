@@ -2,7 +2,7 @@
 Type=Application
 Name=Aurion Diagnostics
 Comment=Run basic AurionOS diagnostics
-Exec=qterminal -e aurion-diagnostics
+Exec=aurion-diagnostics
 Icon=aurion-snapshot
 Terminal=false
 Categories=System;Utility;

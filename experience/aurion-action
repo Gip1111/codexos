@@ -25,7 +25,8 @@ open_url() {
 terminal_run() {
   local title="$1"
   shift
-  local command="$*"
+  local command
+  printf -v command '%q ' "$@"
 
   if command -v qterminal >/dev/null 2>&1; then
     qterminal -T "$title" -e bash -lc "$command; printf '\n'; read -r -p 'Premi Invio per chiudere...'" >/dev/null 2>&1 &
@@ -57,8 +58,36 @@ case "$action" in
     launch qterminal
     launch x-terminal-emulator
     ;;
-  store|apps|install-app|install-obs|install-gimp|install-vlc|more-apps)
-    terminal_run "Aurion Store" aurion-store
+  store|apps|more-apps)
+    launch aurion-store
+    terminal_run "Aurion Store" aurion-store --cli
+    ;;
+  install-app)
+    terminal_run "Aurion Store" aurion-store --request app
+    ;;
+  install-obs)
+    terminal_run "Aurion Store" aurion-store --request "OBS Studio"
+    ;;
+  install-gimp)
+    terminal_run "Aurion Store" aurion-store --request GIMP
+    ;;
+  install-vlc)
+    terminal_run "Aurion Store" aurion-store --request "VLC Media Player"
+    ;;
+  install-firefox)
+    terminal_run "Aurion Store" aurion-store --request Firefox
+    ;;
+  install-libreoffice)
+    terminal_run "Aurion Store" aurion-store --request LibreOffice
+    ;;
+  install-code)
+    terminal_run "Aurion Store" aurion-store --request "Visual Studio Code"
+    ;;
+  install-thunderbird)
+    terminal_run "Aurion Store" aurion-store --request Thunderbird
+    ;;
+  install-bitwarden)
+    terminal_run "Aurion Store" aurion-store --request Bitwarden
     ;;
   installer|install-os)
     launch calamares
@@ -66,11 +95,25 @@ case "$action" in
   ai|assistant|conversation)
     launch aurion-ai-sidebar
     ;;
-  wifi|hardware|network)
-    terminal_run "Aurion Hardware" aurion-hardware-center
+  ai-setup)
+    terminal_run "Aurion AI Setup" aurion-ai-setup --status
     ;;
-  diagnostics|system-details|status)
-    terminal_run "Aurion Diagnostics" aurion-status
+  wifi|hardware|network)
+    launch aurion-hardware-center
+    terminal_run "Aurion Hardware" aurion-hardware-center --cli
+    ;;
+  hardware-scan)
+    terminal_run "Aurion Hardware Scan" aurion-hw-scan
+    ;;
+  diagnostics)
+    launch aurion-diagnostics
+    terminal_run "Aurion Diagnostics" aurion-diagnostics --cli
+    ;;
+  diagnostics-report)
+    terminal_run "Aurion Diagnostics Report" aurion-diagnostics --cli
+    ;;
+  system-details|status|status-report)
+    terminal_run "Aurion Status" aurion-status
     ;;
   backup)
     terminal_run "Aurion Rollback" aurion-snapshot-plan

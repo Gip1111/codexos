@@ -12,6 +12,7 @@ AurionOS must not look like stock Lubuntu. The alpha visual profile is intention
 - Dark top bar with Aurion menu, workspace controls, and system status.
 - Bottom dock with Experience, browser, file manager, terminal, Store, installer, and AI Assistant.
 - Home buttons and dock entries use real icon assets and route through the local `aurion-action://` handler.
+- Aurion Store, Hardware Center, and Diagnostics now open graphical offline surfaces instead of only terminal output.
 - Openbox theme `AurionOS`.
 - Branded hicolor SVG icons for AurionOS, Experience, Assistant, Store, Hardware, and Snapshot.
 - Desktop shortcuts for Launcher, Experience, Store, and installer.
@@ -45,6 +46,7 @@ The alpha uses LXQt configuration and local HTML surfaces. The target is a Qt6/Q
 - settings/control center
 - app store
 - hardware center
+- diagnostics
 
 ## Files
 

@@ -3,6 +3,40 @@ set -euo pipefail
 
 catalog="/usr/share/aurionos/store/alpha-catalog.json"
 
+if [ "${1:-}" = "--path" ]; then
+  if command -v aurion-store-gui >/dev/null 2>&1; then
+    exec aurion-store-gui --path
+  fi
+  echo "/usr/share/aurionos/store/index.html"
+  exit 0
+fi
+
+if [ "${1:-}" = "--request" ]; then
+  app_name="${2:-selected app}"
+  cat <<EOF
+Aurion Store install request
+
+Selected app: $app_name
+
+Alpha policy:
+- no packages are installed silently
+- final flow will show source, permissions, package format, and user confirmation
+- Flatpak is the preferred target path
+- Snap remains optional during MVP
+
+No changes were made.
+EOF
+  exit 0
+fi
+
+if [ "${1:-}" != "--cli" ] && [ -n "${DISPLAY:-}${WAYLAND_DISPLAY:-}" ] && command -v aurion-store-gui >/dev/null 2>&1; then
+  exec aurion-store-gui "$@"
+fi
+
+if [ "${1:-}" = "--cli" ]; then
+  shift
+fi
+
 echo "Aurion Store - alpha foundation"
 echo
 

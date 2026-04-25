@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aurion Diagnostics</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="diagnostics">
+    <header class="topbar">
+      <div class="brand">
+        <img src="../../icons/hicolor/scalable/apps/aurion-snapshot.svg" alt="">
+        <div>
+          <strong>Aurion Diagnostics</strong>
+          <span>Read-only system report</span>
+        </div>
+      </div>
+      <button type="button" data-action="diagnostics-report">Apri report</button>
+    </header>
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Sistema sotto controllo</p>
+        <h1>Diagnosi chiara prima di qualsiasi modifica.</h1>
+        <p>La alpha raccoglie stato boot, Secure Boot, desktop, installer, disco e errori recenti. Nessuna riparazione automatica viene eseguita.</p>
+      </div>
+      <div class="terminal-card">
+        <span>Comando sicuro</span>
+        <code>aurion-diagnostics --cli</code>
+      </div>
+    </section>
+
+    <section class="layout">
+      <section class="panel wide">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Checklist</p>
+            <h2>Controlli principali</h2>
+          </div>
+          <button type="button" data-action="diagnostics-report">Esegui nel terminale</button>
+        </div>
+        <div class="check-grid" id="check-grid"></div>
+      </section>
+
+      <aside class="panel">
+        <p class="eyebrow">AI locale</p>
+        <h2>Spiegazione opzionale</h2>
+        <p>Se Ollama e phi4-mini sono presenti, Aurion puo' spiegare i risultati. Altrimenti resta il router sicuro alpha.</p>
+        <div class="stack">
+          <button type="button" data-action="ai">Apri AI</button>
+          <button type="button" data-action="ai-setup">Stato AI</button>
+        </div>
+      </aside>
+
+      <section class="panel wide">
+        <p class="eyebrow">Prossime fondamenta</p>
+        <h2>Rollback e manutenzione</h2>
+        <div class="flow">
+          <button type="button" data-action="backup">
+            <strong>Snapshot</strong>
+            <span>Base Btrfs/Snapper/Timeshift prevista.</span>
+          </button>
+          <button type="button" data-action="status-report">
+            <strong>Stato sistema</strong>
+            <span>Riepilogo rapido dei componenti AurionOS.</span>
+          </button>
+          <button type="button" data-action="hardware">
+            <strong>Hardware</strong>
+            <span>Controlla GPU, Wi-Fi e boot mode.</span>
+          </button>
+        </div>
+      </section>
+
+      <aside class="panel accent">
+        <h2>Quando qualcosa non parte</h2>
+        <p>Usa il report CLI dalla live e salva le righe su Secure Boot, sessione e log errori.</p>
+        <button type="button" data-action="diagnostics-report">Genera report</button>
+      </aside>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

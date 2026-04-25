@@ -27,6 +27,8 @@ Final target:
 Current alpha:
 
 - `aurion-assistant` is a mock assistant.
+- `aurion-ai-service` can use local Ollama with `phi4-mini` when the user has installed and pulled the model.
+- `aurion-ai-setup` explains the optional local setup path and can pull the model only after confirmation.
 - `aurion-do` provides a safe action runner for common tasks without silent installs, driver changes, or cloud AI.
 - `aurion-task-assist` routes common natural-language tasks to safe local actions.
 - `aurion-ai-status` reports provider readiness.
@@ -45,7 +47,7 @@ Final target:
 Current alpha:
 
 - `aurion-hw-scan` provides raw read-only hardware facts.
-- `aurion-hardware-center` adds basic classification from an alpha JSON database.
+- `aurion-hardware-center` opens a graphical alpha surface and keeps `--cli` for raw classification from an alpha JSON database.
 - No drivers are installed or changed.
 
 Final target:
@@ -59,7 +61,7 @@ Final target:
 
 Current alpha:
 
-- `aurion-store` lists an alpha catalog.
+- `aurion-store` opens a graphical alpha catalog and keeps `--cli` for terminal testing.
 - It does not install packages.
 - `aurion-install --explain` documents handler behavior.
 - `aurion-appimage-integrate` can integrate an AppImage into the current user's launcher.

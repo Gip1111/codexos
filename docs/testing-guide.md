@@ -34,7 +34,7 @@ For the first run, inspect these points in order:
 2. `Build AurionOS ISO` downloads a Lubuntu 24.04 desktop amd64 ISO and verifies SHA256.
 3. The log prints `Secure Boot critical file hashes are unchanged`.
 4. `Verify ISO output` prints a SHA256 for `aurion-os-0.1-alpha-amd64.iso`.
-5. `Verify ISO contents` confirms AurionOS branding, guarded session startup, LXQt profile, wallpaper settings, tools, welcome files, AI metadata, hardware database, and store catalog are present inside the ISO.
+5. `Verify ISO contents` confirms AurionOS branding, guarded session startup, LXQt profile, wallpaper settings, tools, welcome files, AI metadata, graphical Store, graphical Hardware Center, graphical Diagnostics, hardware database, and store catalog are present inside the ISO.
 6. `aurion-os-alpha-iso` contains both the ISO and `.sha256` file.
 
 If the run fails, download `aurion-os-alpha-build-logs` first. The most useful files are:
@@ -81,12 +81,17 @@ Basic VM acceptance:
 19. Run `aurion-task-assist "read email"`.
 20. Run `aurion-hub`.
 21. Run `aurion-control` and open each menu option.
-22. Run `aurion-install --explain`.
-23. Run `aurion-snapshot-plan`.
-24. Run `aurion-diagnostics`.
-25. Launch the installer.
-26. Install to a blank VM disk.
-27. Reboot into the installed system.
+22. Run `aurion-store` and confirm the graphical Store opens.
+23. Run `aurion-hardware-center` and confirm the graphical Hardware Center opens.
+24. Run `aurion-diagnostics` and confirm the graphical Diagnostics surface opens.
+25. Run `aurion-ai-service "check wifi"` and confirm it uses Ollama if ready or falls back to the safe task router.
+26. Run `aurion-ai-setup --status`.
+27. Run `aurion-install --explain`.
+28. Run `aurion-snapshot-plan`.
+29. Run `aurion-diagnostics --cli`.
+30. Launch the installer.
+31. Install to a blank VM disk.
+32. Reboot into the installed system.
 
 ## USB test
 
@@ -115,14 +120,16 @@ Hardware acceptance:
 11. Run `aurion-hw-scan`.
 12. Run `aurion-hardware-center`.
 13. Run `aurion-ai-status`.
-14. Run `aurion-store`.
-15. Run `aurion-experience`.
-16. Run `aurion-task-assist "install vlc"`.
-17. Run `aurion-hub`.
-18. Run `aurion-install --explain`.
-19. Run `aurion-snapshot-plan`.
-20. Launch the installer and confirm the visible installer branding says AurionOS where safe.
-21. Do not install to a real disk unless the target disk can be erased.
+14. Run `aurion-ai-setup --status`.
+15. Run `aurion-ai-service "check wifi"`.
+16. Run `aurion-store`.
+17. Run `aurion-experience`.
+18. Run `aurion-task-assist "install vlc"`.
+19. Run `aurion-hub`.
+20. Run `aurion-install --explain`.
+21. Run `aurion-snapshot-plan`.
+22. Launch the installer and confirm the visible installer branding says AurionOS where safe.
+23. Do not install to a real disk unless the target disk can be erased.
 
 ## Real hardware retest after platform foundation additions
 
@@ -146,11 +153,16 @@ aurion-hub
 aurion-channel
 aurion-control
 aurion-ai-status
+aurion-ai-service "controlla wifi"
+aurion-ai-setup --status
 aurion-hardware-center
+aurion-hardware-center --cli
 aurion-store
+aurion-store --cli
 aurion-install --explain
 aurion-snapshot-plan
 aurion-diagnostics
+aurion-diagnostics --cli
 aurion-hw-scan
 aurion-session-watchdog --once
 ```
@@ -168,8 +180,11 @@ Expected improvements:
 - `aurion-hub` opens or generates a local HTML overview report.
 - `aurion-control` opens a grouped alpha control surface.
 - `aurion-ai-status` shows Ollama/phi4-mini metadata and confirms cloud AI is disabled by default.
-- `aurion-hardware-center` uses the alpha hardware database where it matches known devices.
-- `aurion-store` lists the alpha catalog without installing packages.
+- `aurion-ai-service` uses local Ollama only if available and falls back safely otherwise.
+- `aurion-ai-setup --status` reports the optional local AI readiness without installing anything.
+- `aurion-hardware-center` opens the graphical Hardware Center; `--cli` uses the alpha hardware database where it matches known devices.
+- `aurion-store` opens the graphical Store; `--cli` lists the alpha catalog without installing packages.
+- `aurion-diagnostics` opens the graphical Diagnostics surface; `--cli` prints the read-only report.
 - `aurion-install --explain` describes `.deb`, `.flatpakref`, and AppImage handling.
 - `aurion-snapshot-plan` reports rollback readiness without changing disks.
 - Terminal session variables report AurionOS instead of Lubuntu where the live shell allows it.
@@ -178,8 +193,8 @@ Expected improvements:
 
 ## Known alpha limits
 
-- The assistant is mocked and does not download Ollama or `phi4-mini`.
+- The assistant falls back to mocked/rule-based behavior unless the user has installed Ollama and pulled `phi4-mini`.
 - The labwc/Qt shell is not active.
 - Plymouth branding is included but not enabled.
 - Driver installation and DKMS are not part of v0.1.
-- Aurion Store is catalog-only and does not install packages yet.
+- Aurion Store is graphical but catalog-only and does not install packages yet.

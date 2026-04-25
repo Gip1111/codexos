@@ -21,12 +21,12 @@
 - Mock AI assistant
 - Safe task runner for email, browser, Store, hardware, diagnostics, AI, and rollback actions
 - Task assistant routing for browser, email, app install, hardware, diagnostics, and rollback tasks
-- Ollama/phi4-mini provider metadata and AI status command
+- Ollama/phi4-mini provider metadata, AI status command, optional local service bridge, and setup helper
 - Hardware scanner CLI
-- Hardware Center alpha classification database
-- Diagnostics CLI
+- Hardware Center graphical alpha surface and alpha classification database
+- Diagnostics graphical alpha surface and CLI report
 - One-command `aurion-status` live validation helper
-- Aurion Store alpha catalog and command
+- Aurion Store graphical alpha catalog and command
 - Aurion Install handler foundation
 - AppImage user launcher integration flow
 - Release channel metadata
@@ -39,9 +39,9 @@
 
 ## Mocked
 
-- AI responses
-- AI natural language handling beyond rule-based task routing
-- Hardware compatibility explanations beyond the small alpha database
+- AI responses when Ollama/phi4-mini is not installed locally
+- AI natural language handling beyond the optional local Ollama bridge and rule-based task routing
+- Hardware compatibility explanations beyond the small alpha database and static GUI
 - Native Qt6/QML TopBar, Dock, Launcher, and AI Sidebar behavior beyond the HTML/LXQt alpha surfaces
 - Rollback automation
 - Real app installation from Aurion Store
@@ -54,14 +54,14 @@
 - labwc Aurion session
 - Qt6/QML shell
 - Full Calamares theme replacement
-- Graphical hardware compatibility center
-- Ollama runtime integration
+- Native Qt6/QML replacements for Store, Hardware Center, Diagnostics, and AI setup
+- Bundled Ollama runtime or automatic model manager
 - Production App Store backend and installers
 - Btrfs snapshot automation
 
 ## App installation direction
 
-The alpha now includes an Aurion Store catalog command, but it does not install packages yet. The target architecture is:
+The alpha now includes an Aurion Store graphical catalog, but it does not install packages yet. The target architecture is:
 
 - Flatpak-first graphical app installation.
 - Snap remains optional for the MVP and is not aggressively removed in v0.1.
@@ -95,7 +95,7 @@ AurionOS Alpha Fast Track v0.1 is accepted only when:
 - AurionOS top bar, bottom dock, desktop shortcuts, icons, and Experience command center are visible.
 - Installer launches.
 - Installed system boots.
-- `aurion-status`, `aurion-control`, `aurion-hardware-center`, `aurion-ai-status`, and `aurion-store` run in the live session.
+- `aurion-status`, `aurion-control`, `aurion-hardware-center`, `aurion-ai-status`, `aurion-ai-service`, `aurion-ai-setup`, and `aurion-store` run in the live session.
 - `aurion-shell`, `aurion-launcher`, `aurion-ai-sidebar`, `aurion-experience`, `aurion-hub`, `aurion-install --explain`, and `aurion-snapshot-plan` run in the live session.
 - CI verifies the built ISO contains required AurionOS tools, metadata, welcome page, and catalogs.
 - Build logs are available.

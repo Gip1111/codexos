@@ -11,5 +11,5 @@
     "settings guidance",
     "package/app install help"
   ],
-  "alpha_status": "metadata only; model is not downloaded into the ISO"
+  "alpha_status": "optional local bridge available; model is not downloaded into the ISO"
 }

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aurion Store</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <img src="../../icons/hicolor/scalable/apps/aurion-store.svg" alt="">
+        <div>
+          <strong>Aurion Store</strong>
+          <span>Alpha catalog</span>
+        </div>
+      </div>
+      <button type="button" data-action="ai">Assistente AI</button>
+    </header>
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Software center</p>
+        <h1>Installa app senza usare il terminale.</h1>
+        <p>In questa alpha lo Store e' sicuro e non installa in modo silenzioso. I pulsanti aprono il flusso guidato e preparano il modello Flatpak-first.</p>
+      </div>
+      <label class="search">
+        <span>Cerca app</span>
+        <input id="search" type="search" placeholder="Browser, ufficio, media, sviluppo">
+      </label>
+    </section>
+
+    <section class="layout">
+      <aside class="filters" aria-label="Categorie Store">
+        <button class="is-active" type="button" data-filter="all">Tutte</button>
+        <button type="button" data-filter="browser">Browser</button>
+        <button type="button" data-filter="office">Ufficio</button>
+        <button type="button" data-filter="media">Media</button>
+        <button type="button" data-filter="creative">Creativita</button>
+        <button type="button" data-filter="development">Sviluppo</button>
+        <button type="button" data-filter="security">Sicurezza</button>
+      </aside>
+
+      <section class="catalog" id="catalog" aria-label="Applicazioni"></section>
+
+      <aside class="rail">
+        <section class="panel">
+          <h2>Installazione sicura</h2>
+          <ul>
+            <li>Flatpak come percorso principale.</li>
+            <li>Snap opzionale durante MVP.</li>
+            <li>.deb solo dopo revisione chiara.</li>
+            <li>AppImage integrata nel launcher.</li>
+          </ul>
+        </section>
+        <section class="panel accent">
+          <h2>AI pronta ad aiutare</h2>
+          <p>L'assistente puo' spiegare quale formato scegliere e aprire il flusso corretto.</p>
+          <button type="button" data-action="ai">Chiedi ad Aurion</button>
+        </section>
+      </aside>
+    </section>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

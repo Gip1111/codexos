@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+model="${AURION_AI_MODEL:-phi4-mini}"
+query="${*:-}"
+
+usage() {
+  cat <<EOF
+Aurion AI Service - optional local provider
+
+Usage:
+  aurion-ai-service "explain my wifi problem"
+  aurion-ai-service --status
+
+Policy:
+  - local Ollama only in this alpha path
+  - default model target: $model
+  - no cloud fallback
+  - no silent package install, driver change, or destructive system action
+EOF
+}
+
+fallback() {
+  local text="$1"
+
+  echo "Aurion AI: local model is not ready, using the safe alpha task router."
+  echo
+  if command -v aurion-task-assist >/dev/null 2>&1; then
+    aurion-task-assist "$text"
+  else
+    echo "Task router is unavailable. Open Aurion Experience with: aurion-experience"
+  fi
+}
+
+status() {
+  if command -v aurion-ai-status >/dev/null 2>&1; then
+    aurion-ai-status
+  else
+    echo "aurion-ai-status is unavailable"
+  fi
+}
+
+if [ -z "$query" ] || [ "$query" = "--help" ] || [ "$query" = "-h" ]; then
+  usage
+  exit 0
+fi
+
+if [ "$query" = "--status" ]; then
+  status
+  exit 0
+fi
+
+if ! command -v ollama >/dev/null 2>&1; then
+  fallback "$query"
+  exit 0
+fi
+
+if ! ollama list 2>/dev/null | awk '{ print $1 }' | grep -Eq "^${model}(:|$)"; then
+  echo "Aurion AI: Ollama is installed, but $model is not available locally."
+  echo "Run: aurion-ai-setup --pull-model"
+  echo
+  fallback "$query"
+  exit 0
+fi
+
+prompt="You are AurionOS Assistant running locally on AurionOS Alpha.
+Answer in the user's language.
+Be concise and practical.
+Never claim that you changed the system.
+Never install packages, change drivers, enroll MOK keys, or enable cloud services.
+When the user asks for actions, suggest safe Aurion commands first:
+- aurion-experience
+- aurion-store
+- aurion-hardware-center
+- aurion-diagnostics --cli
+- aurion-ai-status
+
+User request:
+$query"
+
+ollama run "$model" "$prompt"
